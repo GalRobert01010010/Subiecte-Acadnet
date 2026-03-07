@@ -1,0 +1,85 @@
+1. 
+Pachet software
+  - contine: date, executabile (fisiere binare sau script), fisiere de configurare, documentatie;
+  - ruleaza in totalitate in User Space, deci nu acceseaza nucleul;
+  
+Driverele hardware
+  - module care asociaza componente hardware cu fisiere din /dev;
+  
+Modificarile asupra Kernelului
+  - se pot face cu module LKM (Loadable Kernel Modules), patch-uri si recompilare;
+
+2. 
+Service
+  - echivalentul in Windows al unui proces daemon din Linux;
+  - gestionat de Service Control Manager (SCM)
+  
+Spooler
+  - serviciu Windows care trimite documente catre imprimanta;
+  
+Background Intelligent Transfer Service (BITS)
+  - serviciu Windows pentru transfere de fisiere;
+
+3. 
+Windows Installer
+  - instrumentul standard Windows pentru instalarea si gestionarea pachetelor software (cu extensia .msi);
+  
+Nullsoft Scriptable Install System (NSIS)
+  - nefiind "Wizard", ci scriptable, permite dezvoltarea de logica compelxa;
+  - sistem open-source utilizat pentru crearea instalatoarelor de Windows;
+  - creeaza instalatoare cu extensia .exe (fisiere executabile);
+  
+InstallShield
+  - unealta pentru pachete de instalare complexe;
+  - nu e script, ci o mica baza de date relationara;
+
+Ninite
+  - serviciu web si utilitar care automatizeaza instalari
+
+Chocolatey 
+  - manager Windows de pachete (ca 'apt' in Linux);
+
+Msconfig
+  - utilitar de proces (exclusiv Windows) pentru depanarea procesului de pornire;
+
+
+4. 
+'help [command]'
+  - comanda care afiseaza manualul de utilizare al unei comenzi
+/?
+  - argumentul care afiseasa informatii despre comanda data
+
+
+5. 
+Rolul principal al unui manager de pachete
+  - localizarea, descarcarea si instalarea pachetelor;
+  - gestiune completa pana la descarcare;
+  - actualizarea pachetelor deja existente este o functie secundara;
+    - 'apt' pt Debian (.deb)
+    - 'dns' sau 'yum' pt Red Hat (.rpm)
+    - 'pacman' pt Arch (.pkg.tar.zst)
+
+Rolul principal al unui software de securitate (antivirus)
+  - scaneaza pachetele impotriva virusilor
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
