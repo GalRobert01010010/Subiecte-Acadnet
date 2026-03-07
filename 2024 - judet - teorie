@@ -333,6 +333,283 @@ systemctl
   - rol: Utilitar CLI pentru controlul unitatilor si serviciilor din systemd.
 
 
+17. 
+FAMILIA DE SISTEME DE OPERARE UNIX SI UNIX-LIKE
+
+FreeBSD / OpenBSD / NetBSD
+  - sisteme de operare derivate din BSD (Berkeley Software Distribution); recunoscute pentru stabilitate si securitate extrema.
+
+macOS
+  - sistem de operare Apple, bazat pe nucleul Darwin; este un sistem UNIX certificat oficial (SUS - Single UNIX Specification).
+
+Linux (Ubuntu, Debian, CentOS, etc.)
+  - sistem de operare "Unix-like"; nu este Unix original, dar respecta standardele POSIX si se comporta identic cu unul.
+
+Android
+  - bazat pe nucleul Linux, deci face parte din marea familie a sistemelor Unix-like (desi interfata si aplicatiile sunt diferite).  
+
+
+18.
+
+Cautarea Exhaustiva
+  - Procedeu: Verifica fiecare element unul cate unul, de la inceput la sfarsit.
+  - Avantaj: Gaseste cele mai recente date; nu necesita baza de date.
+  - Dezavantaj: Foarte lenta pe volume mari de date (consuma I/O disc).
+  - Utilitare: 'find' (cautare dupa nume/proprietati), grep (cautare in continut).
+
+Cautarea Indexata
+  - Procedeu: Consulta o baza de date (index) creata anterior care contine locatiile fisierelor.
+  - Avantaj: Extrem de rapida (raspuns aproape instantaneu).
+  - Dezavantaj: Rezultatele pot fi invechite daca indexul nu este actualizat recent.
+  - Utilitare: 'locate' (Linux), Windows Search, Spotlight (macOS).
+
+
+19.
+
+# SCHEME DE PARTITIONARE
+MBR (Master Boot Record)
+  - Caracteristici: Suportă maxim 4 partiții primare și unități de stocare de maxim 2 TB.
+  - EX: Folosit pe sisteme vechi (Legacy) și BIOS.
+GPT (GUID Partition Table)
+  - Caracteristici: Suportă până la 128 de partiții și unități de stocare de ordinul Zettabytes (ZB). Include backup pentru tabela de partiții la sfârșitul discului.
+  - EX: Standardul modern pentru sisteme UEFI; obligatoriu pentru Windows 11.
+
+# FIRMWARE
+BIOS (Basic Input/Output System)
+  - Caracteristici: Firmware vechi (Legacy), rulează în mod pe 16 biți, interfață bazată pe text, proces de boot secvențial.
+  - EX: Prezent pe plăcile de bază fabricate înainte de 2012.
+UEFI (Unified Extensible Firmware Interface)
+  - Caracteristici: Suportă mouse, interfață grafică, Secure Boot (verificarea semnăturii digitale a OS) și încărcare rapidă a driverelor.
+  - EX: Standardul actual pe toate laptopurile și PC-urile moderne.
+
+# BOOTLOADER
+GRUB (GRand Unified Bootloader)
+  - Caracteristici: Foarte flexibil, suportă boot-are multiplă (Dual Boot), poate citi diverse sisteme de fișiere (ext4, NTFS).
+  - EX: Bootloader-ul implicit pentru majoritatea distribuțiilor Linux (Ubuntu, Debian).
+Windows Boot Manager
+  - Caracteristici: Specializat pentru încărcarea nucleului Windows (winload.exe), stochează setările în fișierul BCD (Boot Configuration Data).
+  - EX: Apare când ai mai multe versiuni de Windows instalate.
+LILO (LInux LOader)
+  - Caracteristici: Un bootloader mai vechi și simplu pentru Linux; spre deosebire de GRUB, trebuie reinstalat la fiecare schimbare de configurare a kernel-ului.
+  - EX: Folosit pe sisteme Linux de tip legacy.
+
+
+20. 
+Servicii Nucleu pt Windows:
+  Active Directory Domain Services (AD DS)
+  - Identitate: Gestioneaza baza de date centralizata a utilizatorilor si permisiunilor (Autentificare).
+
+  Domain Name System (DNS)
+    - Rezolutie: Traduce numele de domenii in adrese IP; serviciu obligatoriu pentru functionarea AD.
+
+  Dynamic Host Configuration Protocol (DHCP)
+    - Alocare: Atribuie automat si dinamic adrese IP dispozitivelor din retea.
+
+
+21.
+Tipuri de memorie aflate in procesor:
+
+Registre (Registers)
+  - Rol: Stocheaza datele si instructiunile procesate imediat (acum).
+  - Caracteristica: Cea mai rapida si mica memorie; integrata direct in unitatea de executie.
+
+Memoria Cache L1 (Level 1)
+  - Rol: Stocheaza datele accesate frecvent de un nucleu specific.
+  - Caracteristica: Viteza foarte mare, capacitate mica (KB); divizata de obicei in cache pentru date si cache pentru instructiuni.
+
+Memoria Cache L2 (Level 2)
+  - Rol: Buffer intre L1 si L3.
+  - Caracteristica: Mai lenta decat L1, dar mai mare (sute de KB sau MB); de obicei dedicata fiecarui nucleu.
+
+Memoria Cache L3 (Level 3)
+  - Rol: Partajarea datelor intre toate nucleele procesorului.
+  - Caracteristica: Cea mai lenta dintre cache-uri, dar cea mai mare (zeci de MB); este memoria comuna (shared).
+
+
+22. 
+Principalul rol al unui depozit de pachete
+  - distribuirea pachetelor corecte pentru distributiile de sisteme de operare suportate
+Functia secundara a pachetelor
+  - listarea pachetelor disponibile pentru distributiile de sisteme de operare suportate
+
+
+23.
+Magistrale (Buses)
+  Def. Caile de comunicatie fizica (autostrazile de date).
+  - EX: FSB (Front Side Bus), PCIe (Peripheral Component Interconnect Express), QPI (QuickPath Interconnect).
+
+Controler de stocare (Storage Controller)
+  Def. "Creierul" care gestioneaza fluxul de date spre stocare.
+  - EX: AHCI (Advanced Host Controller Interface), NVMe (Non-Volatile Memory express), RAID Controller.
+
+Protocoale (Protocols)
+  Def. Setul de reguli (limbajul) in care vorbesc componentele.
+  - EX: PATA (Parallel ATA), SATA (Serial ATA), SCSI (Small Computer System Interface), NVMe (Non-Volatile Memory express).
+
+Obs. 1) NVMe apare si ca protocol, si ca tip de controler in grilele de concurs.
+     2) IDE este interfata hardware care foloseste protocolul PATA.
+
+
+24.
+Dispoziitive de stocare:
+
+Linux (/dev/sdX)
+  - Identifica discul fizic: sda, sdb, sdc.
+  - Identifica partitia: sda1, sda2.
+  - EX: /dev/sda (SSD principal), /dev/sdb (HDD secundar).
+    sda
+      - EX: Primul disc fizic detectat de sistem (ex: SSD-ul cu sistemul de operare).
+    sdb
+      - EX: Al doilea disc fizic detectat (ex: un HDD secundar pentru date).
+    sdc
+      - EX: Al treilea disc fizic detectat (ex: un Stick USB introdus ulterior).
+    sda1, sda2
+      - EX: Partitiile individuale de pe primul disc fizic (sda).
+
+Windows (Drive Letters)
+  - Identifica partitiile direct: C:, D:, E:.
+  - EX: C: (Partitia de sistem), D: (Partitia de date).
+
+
+
+25.
+Legatura simbolica (Soft Link)
+  - referinta la un fisier prin alta cale
+  - este echivalentul Shortcut-ului in Windows
+  - daca fisierul sursa este sters, legatura devine inutilizabila
+  - EX: ln -s sursa destinatie (in Linux).
+
+Legatura fizica (Hard Link)
+  - Referinta directa la datele de pe disc (inode)
+  - daca stergi sursa, datele raman accesibile prin legatura fizica.
+  - EX: ln sursa destinatie (fara -s).
+
+Semnatura digitala
+  - Cod matematic bazat pe hash si chei asimetrice
+  - garanteaza integritatea (datele nu au fost modificate) si autenticitatea (sursa e de incredere)
+  - EX: Drivere semnate in Windows; pachete .deb semnate in Linux.
+
+Checksum (Hash)
+  - Valoare unica (ex: MD5, SHA-256) rezultata din continutul unui fisier
+  - se foloseste doar pentru a verifica daca fisierul a fost descarcat corect (integritate).
+  - EX: Verificarea ISO-ului de Linux dupa download.
+    - fisierul ISO = imaginea pe disc, replica digitala identica, a unui continut
+
+Metadata
+  - Date despre date (informatie care descrie un fisier fara a face parte din continutul lui propriu-zis).
+  - EX: Data crearii, autorul, dimensiunea, permisiunile.
+
+Inode (Index Node)
+  - Structura de date in Linux care stocheaza toate informatiile despre un fisier, in afara de numele lui si datele efective.
+  - EX: Contine permisiuni, proprietar, locatia pe disc.
+
+
+26. 
+# UTILITARE DE ARHIVARE SI COMPRESIE (LINUX)
+
+tar (Tape Archiver)
+  - -c (Create): Creeaza o arhiva noua.
+      - EX: tar -cf arhiva.tar folder/
+  - -x (Extract): Extrage fisierele dintr-o arhiva.
+      - EX: tar -xf arhiva.tar
+  - -t (List): Afiseaza continutul arhivei fara a o extrage.
+      - EX: tar -tf arhiva.tar
+  - -z (Gzip): Foloseste compresia gzip (.tar.gz).
+      - EX: tar -czf arhiva.tar.gz folder/
+  - -j (Bzip2): Folosește compresia bzip2 (.tar.bz2).
+      - EX: tar -cjf arhiva.tar.bz2 folder/
+  - -f (File): Specifica numele arhivei (obligatoriu inainte de nume).
+      - EX: tar -f arhiva.tar
+  - -v (Verbose): Afiseaza detaliat progresul operatiunii.
+      - EX: tar -cvf arhiva.tar folder/
+  - -C (Directory): Specifica directorul de destinatie pentru extractie.
+      - EX: tar -xf arhiva.tar -C /home/user/
+
+gzip / gunzip (GNU Zip)
+  - -d (Decompress): Despacheteaza un fisier .gz (echivalent cu gunzip).
+      - EX: gzip -d fisier.gz
+  - -r (Recursive): Comprima toate fisierele dintr-o ierarhie de directoare.
+      - EX: gzip -r folder/
+  - -k (Keep): Pastreaza fisierul original dupa compresie/extragere.
+      - EX: gzip -k fisier.txt
+
+zip / unzip
+  - -r (Recursive): Arhiveaza si comprima un director cu tot continutul sau.
+      - EX: zip -r arhiva.zip folder/
+  - -e (Encrypt): Adauga o parola arhivei create.
+      - EX: zip -e arhiva.zip fisier.txt
+  - -l (List): Afiseaza continutul arhivei .zip (pentru unzip).
+      - EX: unzip -l arhiva.zip
+
+
+27. 
+Registry (Registrul Windows)
+  - Ce este: O baza de date ierarhica (un fisier gigant de configurari).
+  - Rol: Stocheaza setari, optiuni si valori pentru OS si aplicatii (ex: ce imagine ai pe desktop, ce programe pornesc la boot).
+
+System32 (C:\Windows\System32)
+  - Ce este: Un folder fizic de pe hard disk.
+  - Rol: Contine fisierele vitale ale sistemului: executabile (.exe), librarii (.dll) si drivere (.sys).
+
+
+28.
+# MECANISME DE REGLEMENTARE A PRIVILEGIILOR
+
+UAC (User Account Control)
+  - Rol: Solicita permisiunea sau parola de administrator inainte de a permite actiuni care pot afecta securitatea sistemului.
+  - Caracteristica: Creeaza un "token" de acces restrictionat; cand o aplicatie cere drepturi, apare fereastra de confirmare (Secure Desktop).
+
+sudo (SuperUser Do)
+  - Sistem de operare: Linux / macOS.
+  - Rol: Permite utilizatorilor obisnuiti sa ruleze comenzi cu privilegiile superutilizatorului (root).
+  - EX: sudo apt update (cere parola utilizatorului curent pentru a executa comanda).
+
+su (Substitute User)
+  - Sistem de operare: Linux / Unix.
+  - Rol: Schimba identitatea utilizatorului curent cu cea a altui utilizator (de obicei root).
+  - EX: su - (cere parola de root pentru a deschide un shell nou).
+
+Run as Administrator
+  - Sistem de operare: Windows.
+  - Rol: Actiune manuala prin care utilizatorul porneste un executabil cu drepturi depline de scriere in foldere protejate (precum System32).
+
+Polkit (PolicyKit)
+  - Sistem de operare: Linux (interfata grafica).
+  - Rol: Gestioneaza privilegiile in mediile grafice Linux pentru actiuni specifice.
+  - EX: Cand Ubuntu iti cere parola sa instalezi un update dintr-o fereastra pop-up.
+
+
+29.
+# IERARHIA DIRECTOARELOR WINDOWS
+
+C:\Windows
+  - Asociere: Nucleul sistemului de operare.
+  - EX: Contine System32 (scule), Drivere si fonturi. Daca dispare, PC-ul nu mai porneste.
+
+C:\Program Files
+  - Asociere: Aplicatii pe 64 de biti (x64).
+  - EX: Locatia pentru Microsoft Office, Adobe Photoshop sau browsere moderne.
+
+C:\Program Files (x86)
+  - Asociere: Aplicatii pe 32 de biti (Legacy).
+  - EX: Software mai vechi care ruleaza pe arhitectura x86.
+
+C:\Users
+  - Asociere: Spatiul personal (Home).
+  - EX: Contine folderele Desktop, Documents si AppData pentru fiecare utilizator.
+
+C:\ProgramData
+  - Asociere: Setari comune pentru toate aplicatiile (Hidden).
+  - EX: Datele de configurare ale antivirusului care trebuie sa fie accesibile oricarui user de pe PC.
+
+C:\Windows\Temp (si %TEMP%)
+  - Asociere: Cosul de gunoi temporar.
+  - EX: Fisiere create in timpul instalarilor care pot fi sterse pentru a elibera spatiu.
+
+C:\Windows\SoftwareDistribution
+  - Asociere: Centrul de actualizari.
+  - EX: Locul unde Windows Update descarca patch-urile inainte de instalare.
+
 
 
 
