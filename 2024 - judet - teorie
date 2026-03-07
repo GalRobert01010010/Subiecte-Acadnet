@@ -88,9 +88,249 @@ pip
 
 7. 
 Backup-urile
-  - 
+  - copie a datelor in caz ca cele originale nu mai sunt accesibile
+  - asigura disponibilitate din triada CIA
+
+Servicii File Sharing 
+  - permite userului sa modifice, sa acceseze si sa stocheze date pe un server central sau intre calculatoare
+  - serverul este local (LAN)
+
+Servicii Cloud
+  - serverul nu este local, este undeva in lume si poate fi accesat atata vreme cat exista conexiune la internet
+  - ofera Versionalizare (capacitatea de a te intoarce la alta versiune de informatie stocata)
+    -> duce la Integritate
+
+Data Base Management Systems (DBMS)
+  - software de gestiune a bazelor de date
+  - SQL: Limbajul standard de interogare pentru baze de date relationale
+  - CRUD: Operatiile de baza (Create, Read, Update, Delete)
+  - DBA (Database Administrator): Persoana care se ocupa de performanta si backup-uri
+    Ex: avem fisierul "note.db". Nu il deschidem cu Notepad/Nano, ci folosim:
+      Linia de comandă (CLI): mysql, psql, sqlite3.
+      Interfață Grafică (GUI): phpMyAdmin, DBeaver, MySQL Workbench.
 
 
+8.
+Pasii de baza pentru a compila si descarca un program din codul sursa pe Linux (Triada de instalare):
+  - despachetarea arhivei cu codul sursa
+  - rularea scriptului configure (verifica daca ai toate bibliotecile necesare si pregateste Makefile)
+  - rularea comenzii 'make' (Compileaza codul sursa in binare si foloseste instructiunile din Makefile)
+  - rularea comenzii 'make install' (copiaza fisierele descarcate in directoare de sistem (ex: usr/local/bin/))
+
+
+9. 
+CLI implicit pentru Windows
+  - PowerShell (este construit pe platforma .NET)
+
+CLI implicit pt macOS
+  - Zsh (Z shell)
+
+WS-Management
+  - protocol standardizat pt managementul sistemelor la distanta
+  - motorul din spatele WinRM (Windows Remote Managemet)
+  - linie de comanda
+  - porturi: 5985 (HTTP) / 5986 (HTTPS)
+
+Remote Desktop Services (RDS)
+  - este un serviciu care îți oferă interfață grafică (GUI) la distanță
+  - folosește protocolul RDP (Port 3389)
+  - grafic
+
+
+10.
+Dependentele unui pechet
+  - alte pachete care trebuie sa fie instalate pentru ca pachetul de baza sa poata fi instalat si sa ruleze
+
+Alternative / Conflicte
+  - pachete cu functii similare pachetului instalat deja
+
+Extensii / Add-ons
+  - pachete care extind functionalitatea programului vizat sa fie instalat
+
+Recomandari / Sugestii
+  - pachete care pot fi utile in combinatie cu programul instalat, dar care sunt obtionale
+
+Pachete orfane
+  - biblioteci sau dependente care au ramas instalate chiar daca programul care avea nevoie de ele a fost sters
+  - se sterg cu 'sudo apt autoremove'
+
+Pachete virtuale 
+  - pachete care nu contin fisiere, dar promit ca asigura sistemului o functionalitate
+  - ex: pachetul "mail-transport-agent" poate fi îndeplinit de postfix sau sendmail
+
+
+11.
+Componentele hardware pot fi identificate prin:
+  - capacitatea de stocare (SSD, HDD, RAM, Flash Drive etc.)
+  - viteza de transfer / latimea de banda (NIC, USB, Bus-uri de sistem)
+  - adresa fizica / adresa MAC (Media Access COntrol) (NIC - Placa de retea, Bluetooth)
+  - frecventa de lucru / numar de nuclee (CPU, RAM, GPU (placa video))
+  - numarul de canale / rata de esantionare (placa de sunet)
+  - rezolutia si rata de refresh (monitor, placa video)
+  - tensiunea de alimentare / puterea (PSU - Power Usage Unit)
+
+NIC (Network Interface Card)
+  - este hardware
+  - adresa MAC e un identificator fizic unic pe 48 biti
+  - transforma date digitale in semnale electronice sau optice
+
+Metode de recunoastere a dispozitivului:
+  lsblk -> Identifică Stocarea
+  lscpu -> Identifică CPU
+  lspci -> Identifică NIC / Sunet / Video
+  lsusb -> Identifică Dispozitive USB
+
+
+12. 
+Comanda integrata in shell
+  - face parte din codul sursa al interpretorului Bash
+  - nu exista ca fisier separat pe disc
+  - sunt mai rapide si pot modifica direct satrea shell-ului
+
+Comanda neintegrata in shell (externa)
+  - program independent stocat ca fisier executabil pe disk (de obicei in /bin sau in /usr/bin)
+  - shellul porneste proces nou pt a rula acest fisier
+  Obs. Comanda 'which [nume_comanda]' va returna calea unde se afla.
+
+Application Programming Interface (API)
+  - set de reguli prin care un program comunica cu alt program sau cu sistemul
+  API-uri speciale (semnale System Calls pt procese ca Bash)
+    fork(): Creează o copie a procesului curent (așa pornește Bash o comandă externă).
+    exec(): Înlocuiește procesul curent cu un alt program (transformă copia de Bash în ls, de exemplu).
+    wait(): Bash așteaptă ca programul început să se termine înainte să îți dea iar acces la prompt.
+    pipe(): API-ul care permite transferul datelor între comenzi (simbolul |).
+    chdir(): API-ul folosit de comanda cd pentru a schimba directorul de lucru.
+
+
+
+13.
+Roluri de baza ale unui sistem de operare:
+  Abstractizarea hardware
+    - Ascunde complexitatea pieselor; oferă o interfață unică (API) pentru programe.
+  Medierea resurselor
+    - Împarte „dreptul” la CPU și RAM între aplicații, fără favoritisme sau blocaje.
+  Securizarea și izolarea
+    - Blochează accesul unei aplicații la memoria sau datele altei aplicații.
+  Portabilitatea programelor
+    - Permite aceleiași aplicații să ruleze pe PC-uri cu piese diferite.
+
+
+14.
+# SISTEME DE FISIERE SI COMPATIBILITATI (OIA 2026)
+
+- FAT32: File Allocation Table 32-bit
+    - sisteme de operare: Windows, Linux, macOS (Nativ R/W)
+    - dimensiune maxima de fisier: 4 GB
+    - jurnalizare: nu
+    Obs. 1) Cel mai folosit sistem de fisiere pentru compatibilitate universala.
+         2) Windows limiteaza crearea la 32 GB, dar poate citi partitii mai mari.
+
+- exFAT: Extended File Allocation Table
+    - sisteme de operare: Windows, Linux, macOS (Nativ R/W)
+    - dimensiune maxima de fisier: 16 EiB
+    - jurnalizare: nu
+    Obs. 1) Creat special pentru stick-uri si carduri SD mari.
+         2) Elimina limita de 4 GB a FAT32, mentinand compatibilitatea universala.
+
+- NTFS: New Technology File System
+    - sisteme de operare: Windows (Nativ R/W), Linux (Suportat R/W), macOS (Nativ DOAR CITIRE)
+    - dimensiune maxima de fisier: 16 TiB
+    - jurnalizare: da
+    Obs. 1) Singurul sistem recomandat de Microsoft pentru instalarea Windows.
+         2) Singurul sistem pentru Windows care suporta securitate si permisiuni (ACL).
+
+- Ext2 si Ext3: Extended File System
+    - sisteme de operare: Linux (Nativ R/W), Windows/macOS (Incompatibil fara soft extra)
+    - dimensiune maxima de fisier: 16 GiB - 64 TiB
+    - jurnalizare: Ext2 nu / Ext3 da
+    Obs. 1) Considerat extrem de stabil.
+         2) Ext3 este compatibil cu Ext2, aducand in plus jurnalizarea pentru siguranta.
+
+- Ext4: Extended File System
+    - sisteme de operare: Linux (Nativ R/W), Windows/macOS (Incompatibil fara soft extra)
+    - dimensiune maxima de fisier: 16 TiB
+    - jurnalizare: da
+    Obs. 1) Succesorul lui Ext3, cu performanta si stabilitate imbunatatite.
+         2) Standardul actual in majoritatea distributiilor Linux.
+
+- HFS+: Hierarchical File System Plus
+    - sisteme de operare: macOS (Nativ R/W), Linux (Suportat R/W), Windows (Incompatibil fara soft extra)
+    - dimensiune maxima de fisier: 16 EiB
+    - jurnalizare: da
+    Obs. 1) Vechiul standard Apple inainte de APFS.
+         2) In Linux, scrierea poate fi blocata daca jurnalizarea este activa (necesita force).
+
+- APFS: Apple File System
+    - sisteme de operare: macOS (Nativ R/W), iOS
+    - dimensiune maxima de fisier: 8 EiB
+    - jurnalizare: da
+    Obs. 1) Optimizat special pentru SSD-uri si memorii Flash.
+         2) Incompatibil nativ cu Windows sau Linux.
+
+- ISO9660 / UDF:
+    - sisteme de operare: Windows, Linux, macOS (Nativ Universal)
+    - jurnalizare: ISO9660 nu / UDF da
+    Obs. 1) Standarde pentru medii optice (CD/DVD/Blu-ray).
+
+
+15.
+Utilitari Windows de baza:
+  net: administreaza useri, grupuri si resurse partajate.
+  ipconfig: afiseaza si gestioneaza configuratia adreselor IP.
+  ping: verifica conectivitatea de retea cu un alt host.
+  hostname: afiseaza numele de identificare al sistemului in retea.
+  tasklist: listeaza toate procesele si aplicatiile active in memorie.
+  taskkill: opreste procesele blocate sau nedorite.
+  systeminfo: afiseaza date despre hardware, OS si timpul de functionare.
+  chkdsk: scaneaza si repara erorile de pe sistemul de fisiere.
+  getmac: afiseaza adresa fizica (MAC) a placilor de retea.
+  cls: curata ecranul terminalului de comenzile anterioare.
+  dir: listeaza fisierele si directoarele din locatia curenta.
+  help: ofera informatii despre sintaxa celorlalte comenzi.
+
+
+16.
+
+Am înțeles. Am eliminat liniuțele și am păstrat structura curată, exact cum ai cerut, păstrând formatul pentru fișa ta de studiu.
+
+Markdown
+# PROCESE REPREZENTATIVE SI MANAGEMENT (OIA 2026)
+
+init / systemd
+  - sistem de operare: Linux
+  - rol: Primul proces (PID 1) care porneste toate celelalte servicii ale sistemului.
+
+launchd
+  - sistem de operare: macOS
+  - rol: Primul proces (PID 1) pe sisteme Apple; gestioneaza serviciile de fundal.
+
+wininit.exe
+  - sistem de operare: Windows
+  - rol: Procesul de initializare Windows care porneste serviciile critice de sistem.
+
+lsass.exe (Local Security Authority Subsystem Service)
+  - sistem de operare: Windows
+  - rol: Gestioneaza securitatea locala, autentificarea si politicile de parola.
+
+explorer.exe
+  - sistem de operare: Windows
+  - rol: Gestioneaza interfata grafica (Desktop, Taskbar, File Explorer).
+
+smss.exe (Session Manager Subsystem)
+  - sistem de operare: Windows
+  - rol: Creeaza sesiunile de utilizator si mediul de lucru la pornire.
+
+kthreadd
+  - sistem de operare: Linux
+  - rol: Procesul parinte pentru toate firele de executie (threads) ale Kernel-ului (PID 2).
+
+Xorg / Wayland
+  - sistem de operare: Linux
+  - rol: Serverele de afisare care permit rularea unei interfete grafice (GUI).
+
+systemctl
+  - sistem de operare: Linux
+  - rol: Utilitar CLI pentru controlul unitatilor si serviciilor din systemd.
 
 
 
