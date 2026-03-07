@@ -55,16 +55,40 @@ Rolul principal al unui manager de pachete
   - localizarea, descarcarea si instalarea pachetelor;
   - gestiune completa pana la descarcare;
   - actualizarea pachetelor deja existente este o functie secundara;
-    - 'apt' pt Debian (.deb)
-    - 'dns' sau 'yum' pt Red Hat (.rpm)
-    - 'pacman' pt Arch (.pkg.tar.zst)
+    - 'apt' pt Debian (.deb); de ex: Debian, Ubuntu, Kali, Linux Mint;
+    - 'dns' sau 'yum' pt Red Hat (.rpm); de ex: Fedora, RHEL, CentOS, AlmaLinux;
+    - 'pacman' pt Arch (.pkg.tar.zst); de ex: Arch Linux, Manjaro;
 
-Rolul principal al unui software de securitate (antivirus)
-  - scaneaza pachetele impotriva virusilor
-
-
+Rolul principal al unui software de securitate (antivirus);
+  - scaneaza pachetele impotriva virusilor;
 
 
+6. 
+Utilitare care pot interactiona cu depozitele de pachete
+  - apt, apt-get, dnf, pacman;
+
+'make'
+  - utilitar de automatizare (Build Automation Tool) pt C/C++
+  - citeste fisierul Makefile si decide ce fisiere trebuie compilate si in ce ordine
+  - apoi apeleaza gcc sau clang (compilatorul)
+
+clang
+  - bazat pe infrastructura LLVM (Low Level Virtual Machine)
+  - compilator pt C/C++/Objective-C
+  - traduce cod sursa in cod masina
+  - similar cu gcc (GNU Compiler Collection)
+
+rubygems
+  - package manager pentru limbajnul Ruby (cum este 'apt' pt Linux si 'npm' si 'yarn' pt JavaScript)
+  - compilatorul pt limbajul Ruby se numeste "ruby"
+
+pip
+  - manager pt Python
+
+
+7. 
+Backup-urile
+  - 
 
 
 
