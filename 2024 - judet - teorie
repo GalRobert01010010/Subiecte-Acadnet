@@ -1,6 +1,7 @@
 1. 
 Pachet software
-  - contine: date, executabile (fisiere binare sau script), fisiere de configurare, documentatie;
+  - contine: date, executabile (fisiere binare sau script), 
+  fisiere de configurare, documentatie;
   - ruleaza in totalitate in User Space, deci nu acceseaza nucleul;
   
 Driverele hardware
@@ -22,7 +23,8 @@ Background Intelligent Transfer Service (BITS)
 
 3. 
 Windows Installer
-  - instrumentul standard Windows pentru instalarea si gestionarea pachetelor software (cu extensia .msi);
+  - instrumentul standard Windows pentru instalarea si gestionarea pachetelor 
+  software (cu extensia .msi);
   
 Nullsoft Scriptable Install System (NSIS)
   - nefiind "Wizard", ci scriptable, permite dezvoltarea de logica compelxa;
@@ -92,11 +94,13 @@ Backup-urile
   - asigura disponibilitate din triada CIA
 
 Servicii File Sharing 
-  - permite userului sa modifice, sa acceseze si sa stocheze date pe un server central sau intre calculatoare
+  - permite userului sa modifice, sa acceseze si sa stocheze date pe un server 
+  central sau intre calculatoare
   - serverul este local (LAN)
 
 Servicii Cloud
-  - serverul nu este local, este undeva in lume si poate fi accesat atata vreme cat exista conexiune la internet
+  - serverul nu este local, este undeva in lume si poate fi accesat atata vreme 
+  cat exista conexiune la internet
   - ofera Versionalizare (capacitatea de a te intoarce la alta versiune de informatie stocata)
     -> duce la Integritate
 
@@ -112,10 +116,11 @@ Data Base Management Systems (DBMS)
 
 8.
 Pasii de baza pentru a compila si descarca un program din codul sursa pe Linux (Triada de instalare):
-  - despachetarea arhivei cu codul sursa
-  - rularea scriptului configure (verifica daca ai toate bibliotecile necesare si pregateste Makefile)
-  - rularea comenzii 'make' (Compileaza codul sursa in binare si foloseste instructiunile din Makefile)
-  - rularea comenzii 'make install' (copiaza fisierele descarcate in directoare de sistem (ex: usr/local/bin/))
+- despachetarea arhivei cu codul sursa
+- rularea scriptului configure (verifica daca ai toate bibliotecile necesare si pregateste Makefile)
+- rularea comenzii 'make' (Compileaza codul sursa in binare si foloseste instructiunile din Makefile)
+- rularea comenzii 'make install' (copiaza fisierele descarcate in directoare de sistem 
+  (ex: usr/local/bin/))
 
 
 9. 
@@ -139,7 +144,8 @@ Remote Desktop Services (RDS)
 
 10.
 Dependentele unui pechet
-  - alte pachete care trebuie sa fie instalate pentru ca pachetul de baza sa poata fi instalat si sa ruleze
+  - alte pachete care trebuie sa fie instalate pentru ca pachetul de baza sa 
+  poata fi instalat si sa ruleze
 
 Alternative / Conflicte
   - pachete cu functii similare pachetului instalat deja
@@ -151,7 +157,8 @@ Recomandari / Sugestii
   - pachete care pot fi utile in combinatie cu programul instalat, dar care sunt obtionale
 
 Pachete orfane
-  - biblioteci sau dependente care au ramas instalate chiar daca programul care avea nevoie de ele a fost sters
+  - biblioteci sau dependente care au ramas instalate chiar daca programul 
+  care avea nevoie de ele a fost sters
   - se sterg cu 'sudo apt autoremove'
 
 Pachete virtuale 
@@ -290,11 +297,7 @@ Utilitari Windows de baza:
 
 
 16.
-
-Am înțeles. Am eliminat liniuțele și am păstrat structura curată, exact cum ai cerut, păstrând formatul pentru fișa ta de studiu.
-
-Markdown
-# PROCESE REPREZENTATIVE SI MANAGEMENT (OIA 2026)
+Procese administrative:
 
 init / systemd
   - sistem de operare: Linux
@@ -337,16 +340,20 @@ systemctl
 FAMILIA DE SISTEME DE OPERARE UNIX SI UNIX-LIKE
 
 FreeBSD / OpenBSD / NetBSD
-  - sisteme de operare derivate din BSD (Berkeley Software Distribution); recunoscute pentru stabilitate si securitate extrema.
+  - sisteme de operare derivate din BSD (Berkeley Software Distribution); 
+  - recunoscute pentru stabilitate si securitate extrema.
 
 macOS
-  - sistem de operare Apple, bazat pe nucleul Darwin; este un sistem UNIX certificat oficial (SUS - Single UNIX Specification).
+  - sistem de operare Apple, bazat pe nucleul Darwin; este un sistem UNIX 
+  certificat oficial (SUS - Single UNIX Specification).
 
 Linux (Ubuntu, Debian, CentOS, etc.)
-  - sistem de operare "Unix-like"; nu este Unix original, dar respecta standardele POSIX si se comporta identic cu unul.
+  - sistem de operare "Unix-like"; nu este Unix original, dar respecta standardele 
+  POSIX si se comporta identic cu unul.
 
 Android
-  - bazat pe nucleul Linux, deci face parte din marea familie a sistemelor Unix-like (desi interfata si aplicatiile sunt diferite).  
+  - bazat pe nucleul Linux, deci face parte din marea familie a sistemelor 
+  Unix-like (desi interfata si aplicatiile sunt diferite).  
 
 
 18.
@@ -371,36 +378,46 @@ MBR (Master Boot Record)
   - Caracteristici: Suportă maxim 4 partiții primare și unități de stocare de maxim 2 TB.
   - EX: Folosit pe sisteme vechi (Legacy) și BIOS.
 GPT (GUID Partition Table)
-  - Caracteristici: Suportă până la 128 de partiții și unități de stocare de ordinul Zettabytes (ZB). Include backup pentru tabela de partiții la sfârșitul discului.
+  - Caracteristici: Suportă până la 128 de partiții și unități de stocare de ordinul 
+  Zettabytes (ZB). Include backup pentru tabela de partiții la sfârșitul discului.
   - EX: Standardul modern pentru sisteme UEFI; obligatoriu pentru Windows 11.
 
 # FIRMWARE
 BIOS (Basic Input/Output System)
-  - Caracteristici: Firmware vechi (Legacy), rulează în mod pe 16 biți, interfață bazată pe text, proces de boot secvențial.
+  - Caracteristici: Firmware vechi (Legacy), rulează în mod pe 16 biți, interfață 
+  bazată pe text, proces de boot secvențial.
   - EX: Prezent pe plăcile de bază fabricate înainte de 2012.
 UEFI (Unified Extensible Firmware Interface)
-  - Caracteristici: Suportă mouse, interfață grafică, Secure Boot (verificarea semnăturii digitale a OS) și încărcare rapidă a driverelor.
+  - Caracteristici: Suportă mouse, interfață grafică, Secure Boot (verificarea 
+  semnăturii digitale a OS) și încărcare rapidă a driverelor.
   - EX: Standardul actual pe toate laptopurile și PC-urile moderne.
 
 # BOOTLOADER
 GRUB (GRand Unified Bootloader)
-  - Caracteristici: Foarte flexibil, suportă boot-are multiplă (Dual Boot), poate citi diverse sisteme de fișiere (ext4, NTFS).
+  - Caracteristici: Foarte flexibil, suportă boot-are multiplă (Dual Boot), 
+  poate citi diverse sisteme de fișiere (ext4, NTFS).
   - EX: Bootloader-ul implicit pentru majoritatea distribuțiilor Linux (Ubuntu, Debian).
+
 Windows Boot Manager
-  - Caracteristici: Specializat pentru încărcarea nucleului Windows (winload.exe), stochează setările în fișierul BCD (Boot Configuration Data).
+  - Caracteristici: Specializat pentru încărcarea nucleului Windows (winload.exe), 
+  stochează setările în fișierul BCD (Boot Configuration Data).
   - EX: Apare când ai mai multe versiuni de Windows instalate.
+
 LILO (LInux LOader)
-  - Caracteristici: Un bootloader mai vechi și simplu pentru Linux; spre deosebire de GRUB, trebuie reinstalat la fiecare schimbare de configurare a kernel-ului.
+  - Caracteristici: Un bootloader mai vechi și simplu pentru Linux; spre deosebire de 
+  GRUB, trebuie reinstalat la fiecare schimbare de configurare a kernel-ului.
   - EX: Folosit pe sisteme Linux de tip legacy.
 
 
 20. 
 Servicii Nucleu pt Windows:
   Active Directory Domain Services (AD DS)
-  - Identitate: Gestioneaza baza de date centralizata a utilizatorilor si permisiunilor (Autentificare).
+  - Identitate: Gestioneaza baza de date centralizata a utilizatorilor 
+    si permisiunilor (Autentificare).
 
   Domain Name System (DNS)
-    - Rezolutie: Traduce numele de domenii in adrese IP; serviciu obligatoriu pentru functionarea AD.
+    - Rezolutie: Traduce numele de domenii in adrese IP; 
+    serviciu obligatoriu pentru functionarea AD.
 
   Dynamic Host Configuration Protocol (DHCP)
     - Alocare: Atribuie automat si dinamic adrese IP dispozitivelor din retea.
@@ -415,15 +432,18 @@ Registre (Registers)
 
 Memoria Cache L1 (Level 1)
   - Rol: Stocheaza datele accesate frecvent de un nucleu specific.
-  - Caracteristica: Viteza foarte mare, capacitate mica (KB); divizata de obicei in cache pentru date si cache pentru instructiuni.
+  - Caracteristica: Viteza foarte mare, capacitate mica (KB); divizata de 
+    obicei in cache pentru date si cache pentru instructiuni.
 
 Memoria Cache L2 (Level 2)
   - Rol: Buffer intre L1 si L3.
-  - Caracteristica: Mai lenta decat L1, dar mai mare (sute de KB sau MB); de obicei dedicata fiecarui nucleu.
+  - Caracteristica: Mai lenta decat L1, dar mai mare (sute de KB sau MB); 
+                    de obicei dedicata fiecarui nucleu.
 
 Memoria Cache L3 (Level 3)
   - Rol: Partajarea datelor intre toate nucleele procesorului.
-  - Caracteristica: Cea mai lenta dintre cache-uri, dar cea mai mare (zeci de MB); este memoria comuna (shared).
+  - Caracteristica: Cea mai lenta dintre cache-uri, dar cea mai mare (zeci de MB); 
+                    este memoria comuna (shared).
 
 
 22. 
@@ -436,15 +456,18 @@ Functia secundara a pachetelor
 23.
 Magistrale (Buses)
   Def. Caile de comunicatie fizica (autostrazile de date).
-  - EX: FSB (Front Side Bus), PCIe (Peripheral Component Interconnect Express), QPI (QuickPath Interconnect).
+  - EX: FSB (Front Side Bus), PCIe (Peripheral Component Interconnect Express), 
+  QPI (QuickPath Interconnect).
 
 Controler de stocare (Storage Controller)
   Def. "Creierul" care gestioneaza fluxul de date spre stocare.
-  - EX: AHCI (Advanced Host Controller Interface), NVMe (Non-Volatile Memory express), RAID Controller.
+  - EX: AHCI (Advanced Host Controller Interface), NVMe (Non-Volatile Memory express), 
+  RAID Controller.
 
 Protocoale (Protocols)
   Def. Setul de reguli (limbajul) in care vorbesc componentele.
-  - EX: PATA (Parallel ATA), SATA (Serial ATA), SCSI (Small Computer System Interface), NVMe (Non-Volatile Memory express).
+  - EX: PATA (Parallel ATA), SATA (Serial ATA), SCSI (Small Computer System Interface),
+  NVMe (Non-Volatile Memory express).
 
 Obs. 1) NVMe apare si ca protocol, si ca tip de controler in grilele de concurs.
      2) IDE este interfata hardware care foloseste protocolul PATA.
@@ -500,7 +523,8 @@ Metadata
   - EX: Data crearii, autorul, dimensiunea, permisiunile.
 
 Inode (Index Node)
-  - Structura de date in Linux care stocheaza toate informatiile despre un fisier, in afara de numele lui si datele efective.
+  - Structura de date in Linux care stocheaza toate informatiile despre un fisier, 
+  in afara de numele lui si datele efective.
   - EX: Contine permisiuni, proprietar, locatia pe disc.
 
 
@@ -545,19 +569,23 @@ zip / unzip
 27. 
 Registry (Registrul Windows)
   - Ce este: O baza de date ierarhica (un fisier gigant de configurari).
-  - Rol: Stocheaza setari, optiuni si valori pentru OS si aplicatii (ex: ce imagine ai pe desktop, ce programe pornesc la boot).
+  - Rol: Stocheaza setari, optiuni si valori pentru OS si aplicatii (ex: ce imagine 
+    ai pe desktop, ce programe pornesc la boot).
 
 System32 (C:\Windows\System32)
   - Ce este: Un folder fizic de pe hard disk.
-  - Rol: Contine fisierele vitale ale sistemului: executabile (.exe), librarii (.dll) si drivere (.sys).
+  - Rol: Contine fisierele vitale ale sistemului: executabile (.exe), librarii (.dll) 
+  si drivere (.sys).
 
 
 28.
 # MECANISME DE REGLEMENTARE A PRIVILEGIILOR
 
 UAC (User Account Control)
-  - Rol: Solicita permisiunea sau parola de administrator inainte de a permite actiuni care pot afecta securitatea sistemului.
-  - Caracteristica: Creeaza un "token" de acces restrictionat; cand o aplicatie cere drepturi, apare fereastra de confirmare (Secure Desktop).
+  - Rol: Solicita permisiunea sau parola de administrator inainte de 
+    a permite actiuni care pot afecta securitatea sistemului.
+  - Caracteristica: Creeaza un "token" de acces restrictionat; 
+    cand o aplicatie cere drepturi, apare fereastra de confirmare (Secure Desktop).
 
 sudo (SuperUser Do)
   - Sistem de operare: Linux / macOS.
@@ -571,7 +599,8 @@ su (Substitute User)
 
 Run as Administrator
   - Sistem de operare: Windows.
-  - Rol: Actiune manuala prin care utilizatorul porneste un executabil cu drepturi depline de scriere in foldere protejate (precum System32).
+  - Rol: Actiune manuala prin care utilizatorul porneste un executabil cu drepturi depline de 
+  scriere in foldere protejate (precum System32).
 
 Polkit (PolicyKit)
   - Sistem de operare: Linux (interfata grafica).
@@ -611,6 +640,196 @@ C:\Windows\SoftwareDistribution
   - EX: Locul unde Windows Update descarca patch-urile inainte de instalare.
 
 
+30.
+Adresa MAC (Media Access Control)
+
+- Denumire: Adresa fizica sau adresa hardware.
+- Lungime: 48 de biti (6 octeti).
+- Format: Hexazecimal (cifre 0-9 si litere A-F). 
+- Structura: 6 grupuri de cate doua cifre hexazecimale, separate prin ":" sau "-".
+- OUI (Organizationally Unique Identifier): Primii 24 de biti (primele 3 grupuri). 
+  - acest cod identifica producatorul placii (ex: Intel, Realtek, Apple).
+- NIC Specific: Ultimii 24 de biti. Reprezinta numarul de serie unic atribuit de producator acelei placi.
+- Nivel OSI: Functioneaza la Layer 2 (Data Link).
+- EX: 00:1A:2B:3C:4D:5E 
+    - 00:1A:2B -> OUI (Producatorul).
+    - 3C:4D:5E -> Identificatorul unic al placii tale.
+- Utilitate: Switch-urile folosesc adresele MAC pentru a sti exact la ce port 
+  fizic este conectat un calculator intr-o retea locala (LAN).
+
+
+31.
+Clasificarea Protocoalelor (Stiva TCP/IP)
+
+1. Nivel APLICAȚIE (Interfața cu utilizatorul)
+- HTTP / HTTPS: Navigare web (port 80 / 443).
+- FTP: Transfer de fișiere (port 20, 21).
+- POP3 / IMAP / SMTP: Protocoale pentru e-mail.
+- DNS: Traducerea numelor în IP-uri (port 53).
+- SSH: Conectare securizată la distanță (port 22).
+
+2. Nivel TRANSPORT (Cum pleacă datele)
+- TCP: Sigur, cu confirmare (error-checking).
+- UDP: Rapid, fără confirmare (streaming, jocuri online).
+
+3. Nivel INTERNET (Adresare și Rutare)
+- IP (IPv4 / IPv6): Adresarea logică a pachetelor.
+- ICMP: Mesaje de control/eroare (folosit de comanda 'ping').
+
+4. Nivel ACCES REȚEA (Hardware și Mediu)
+- Ethernet: Standardul pentru rețele prin cablu.
+- Wi-Fi (802.11): Standardul pentru rețele wireless.
+- ARP: Face legătura între adresa IP și adresa MAC.
+
+
+32.
+1. Criptarea Simetrica (Secretul Partajat)
+- foloseste o singura cheie pentru ambele operatiuni (Criptare si Decriptare).
+  Logica: Ca un seif cu o singura cheie fizica. Cine are cheia, are acces total.
+  Viteza: Foarte mare (optima pentru volume uriase de date).
+  Protocoale EX: AES (Advanced Encryption Standard), ChaCha20.
+  Dezavantaj: Problema Distributiei. Daca vrei sa trimiti datele cuiva, 
+    trebuie sa ii trimiti si cheia. Daca cineva intercepteaza cheia, securitatea e compromisa.
+
+2. Criptarea Asimetrica (Perechea de Chei)
+- foloseste doua chei diferite, legate matematic intre ele: una Publica si una Privata.
+  Cheia Publica (Public Key):
+    Este vizibila pentru toata lumea.
+    ROL: Doar pentru INCHIDERE (Criptare). Oricine poate incuia un mesaj pentru tine.
+  Cheia Privata (Private Key):
+    Trebuie pastrata strict secret de catre proprietar.
+    ROL: Doar pentru DESCHIDERE (Decriptare). Doar tu poti citi ce a fost incuiat cu cheia ta publica.
+
+
+33.
+1. Ce este Sistemul X?
+Def. Un protocol si un software care permite afisarea ferestrelor si a elementelor grafice pe un monitor. 
+- Este independent de sistemul de operare.
+- Are o arhitectura retea: poate rula un program pe un calculator si sa afiseze imaginea pe altul.
+
+Serverul X (X Server)
+- Ruleaza pe calculatorul unde se afla Monitorul, Tastatura si Mouse-ul.
+- Rol: Gestioneaza hardware-ul de afisare si primeste input-ul de la utilizator.
+- EX: Daca stai in fata laptopului tau, laptopul ruleaza Serverul X.
+
+Clientul X (X Client)
+- Este aplicatia propriu-zisa care vrea sa afiseze ceva (ex: Firefox, GIMP, un terminal grafic).
+- Rol: Trimite cereri catre Serverul X pentru a desena ferestre sau butoane.
+- EX: Aplicatia poate rula pe acelasi PC sau pe un server la distanta.
+
+3. Functia X Forwarding
+Def. Este o tehnica prin care poti rula o aplicatie grafica pe un server remote 
+  (prin SSH) si sa ii vezi interfata pe calculatorul tau local.
+
+- Cum functioneaza: SSH creeaza un tunel securizat prin care pachetele de date grafice 
+  ale Clientului X sunt trimise catre Serverul tau X local.
+- Utilitate: Poti rula un utilitar de configurare grafica de pe un server care nu are monitor atasat.
+- Comanda: ssh -X utilizator@adresa_ip
+
+
+34.
+Procesul de boot:
+  1. Firmware (BIOS/UEFI) -> Hardware Check (POST)
+  2. Bootloader (GRUB) -> Incarca Kernel-ul
+  3. Kernel -> Incarca Drivere si monteaza Radacina (/)
+  4. Init (systemd) -> Porneste serviciile (PID 1)
+
+Detalii de Retinut (Functii Cheie)
+- BIOS/UEFI: Primul cod care ruleaza; cauta discul de pe care sa plece sistemul.
+- GRUB: Programul care iti da meniul de selectie a sistemului de operare.
+- Kernel: Inima sistemului; face legatura intre software si hardware.
+- systemd: Managerul de procese; aduce sistemul in starea in care poti sa te loghezi.
+
+
+35.
+VIRTUALIZARE: HYPERVISOARE SI CONTAINERE
+
+1. Masini Virtuale (VM) vs. Containere
+  Diferenta: VM-ul simuleaza tot hardware-ul si are propriul OS (Greoi)
+    Containerul foloseste nucleul sistemului gazda si are doar aplicatia (Usor).
+
+2. Hypervisoare (Pentru Masini Virtuale)
+Def. Este software-ul care permite rularea mai multor sisteme de 
+  operare pe acelasi hardware fizic.
+Tip 1 (Native / Bare Metal)
+  Ruleaza direct pe hardware-ul serverului (fara un OS dedesubt).
+  - Caracteristica: Performanta maxima, izolare totala.
+  - EX Windows: Hyper-V (varianta de server).
+  - EX Linux: KVM (Kernel-based Virtual Machine), Xen.
+  - EX Industry: VMware ESXi.
+  Tip 2 (Hosted)
+  Ruleaza ca o aplicatie peste un sistem de operare existent (Windows/Linux).
+  - Caracteristica: Usor de instalat, performanta usor scazuta.
+  - EX Windows/Linux: VMware Workstation, Oracle VirtualBox.
+
+3. Containere (Docker / Podman)
+Containerele nu virtualizeaza hardware-ul, ci doar izoleaza procesele aplicatiei.
+- Caracteristica: Pornesc in milisecunde, consuma foarte putine resurse.
+- Trasatura definitorie: Impart acelasi Kernel (nucleu) cu sistemul gazda.
+- EX Windows: Docker Desktop (foloseste WSL2 - Windows Subsystem for Linux).
+- EX Linux: Docker, Podman, LXC (Linux Containers).
+
+4. Tabel Sintetic: VM vs Container
+| Caracteristica | Masina Virtuala (VM)               | Container (Docker)               |
+| :---           | :---                               | :---                             |
+| Izolare        | Totala (Hardware + OS)             | La nivel de proces (OS partajat) |
+| Viteza Boot    | Minute                             | Secunde                          |
+| Dimensiune     | GigaBytes (GB)                     | MegaBytes (MB)                   |
+| Portabilitate  | Scazuta (fisiere .vmdk/.ova mari)  | Maxima (Imagini Docker mici)     |
+
+
+36.
+MBR VS GPT:
+
+1. MBR (Master Boot Record) - Tehnologia Veche
+- Limita Capacitate: Suporta discuri de maxim 2 TB.
+- Limita Partitii: Permite maxim 4 partitii primare.
+- Siguranta: Tabelul de partitii este stocat intr-un singur loc
+  - daca se corupe, pierzi accesul la date.
+
+2. GPT (GUID Partition Table) - Tehnologia Moderna
+- Capacitate: Suporta discuri uriase (ZettaBytes).
+- Partitii: Permite un numar aproape nelimitat de partitii (128 in Windows).
+- Siguranta: Stocheaza mai multe copii ale tabelului de partitii (la inceputul 
+  si la finalul discului). Daca una se strica, sistemul se repara singur.
+- Integritate: Foloseste CRC32 (checksum) pentru a detecta daca datele 
+  din tabel au fost modificate sau corupte.
+
+
+37.
+ARM VS X86: ARHITECTURI DE PROCESOR
+
+1. Filosofia de Design (RISC vs CISC)
+ARM (Advanced RISC Machine)
+- Tip: RISC (Reduced Instruction Set Computer).
+- Logica: Instructiuni simple care se executa intr-un singur ciclu de ceas.
+- Design: Mai putine tranzistoare, hardware mai simplu.
+x86 (Intel / AMD)
+- Tip: CISC (Complex Instruction Set Computer).
+- Logica: Instructiuni complexe care pot face mai multe operatii simultan (dar consuma mai multa energie).
+- Design: Hardware sofisticat, optimizat pentru performanta bruta in aplicatii grele.
+
+2. Eficienta Energetica si Dispozitive Mobile
+De ce este ARM campionul pe mobil:
+- Design SoC (System on a Chip): ARM integreaza CPU, GPU si RAM pe acelasi cip. Distantele mici 
+  intre componente reduc consumul de curent.
+- Caldura redusa: Deoarece are un set de instructiuni simplu, procesorul nu se incinge la fel 
+  de tare. Nu are nevoie de coolere uriase.
+- Arhitectura big.LITTLE: ARM foloseste nuclee de putere mica pentru task-uri simple 
+  (notificari) si nuclee puternice doar cand te joci. Asta salveaza enorm bateria.
+De ce x86 nu domina pe mobil:
+- Consum mare: Arhitectura CISC este facuta sa "traga" curent pentru a termina task-uri complexe cat mai repede.
+- Caldura: Degaja multa energie sub forma de caldura, necesitand ventilatoare sau radiatoare mari, 
+  imposibil de pus intr-un telefon subtire.
+
+3. Tabel Comparativ
+| Caracteristica    | ARM                             | x86                                     |
+| :---              | :---                            | :---                                    |
+| Model de calcul   | RISC (Simplu)                   | CISC (Complex)                          |
+| Eficienta baterie | Maxima (Zile)                   | Scazuta (Ore)                           |
+| Racire            | Pasiva (Fara ventilator)        | Activa (Necesita ventilatoare)          |
+| Utilizare         | Telefoane, Tablete, Apple M1/M2 | Laptopuri Gaming, Workstations, Servere |
+| Producatori       | Qualcomm, Apple, Samsung        | Intel, AMD                              |
 
 
 
@@ -619,8 +838,3 @@ C:\Windows\SoftwareDistribution
 
 
 
-
-
-
-
-  
