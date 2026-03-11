@@ -1,0 +1,87 @@
+1.
+- Semnalele proceselor (kill signals)
+Situatie: Vrei să trimiți instrucțiuni specifice unui proces pentru a-i schimba starea sau pentru a-l opri forțat.
+
+a. SIGINT - Signal Interrupt
+  - Functie: Trimite o cerere de întrerupere de la tastatură (echivalent cu CTRL+C).
+  - Situatie: Vrei să oprești politicos un program care rulează în terminal și care are implementată o rutină de închidere curată.
+      - EX: kill -2 [PID]
+
+b. SIGSTOP - Signal Stop
+  - Functie: Suspendă execuția procesului fără a-l termina (îl pune în pauză).
+  - Situatie: Vrei să eliberezi procesorul temporar fără a pierde progresul procesului, urmând să îl pornești mai târziu cu SIGCONT.
+      - EX: kill -19 [PID]
+
+c. SIGTERM - Signal Terminate (Varianta implicită)
+  - Functie: Trimite o cerere de terminare software; procesul poate intercepta semnalul pentru a salva datele înainte de închidere.
+  - Situatie: Vrei să închizi un proces în mod normal, oferindu-i timp să elibereze resursele și să șteargă fișierele temporare.
+      - EX: kill -15 [PID]
+
+d. SIGKILL - Signal Kill (Varianta corectă pentru întrebare)
+  - Functie: Forțează terminarea imediată a procesului; semnalul nu poate fi ignorat sau interceptat de către proces.
+  - Situatie: Ai un proces blocat (zombie sau care nu mai răspunde) care refuză să se închidă prin metodele standard.
+      - EX: kill -9 [PID]
+
+
+2.
+- CMake - Cross-Platform Make
+Situatie: Lucrezi la un proiect software complex care trebuie să poată fi compilat pe mai multe sisteme de operare (Linux, Windows, macOS) folosind diferite instrumente de build.
+
+a. IDE (Integrated Development Environment)
+  - Functie: Oferă o interfață grafică completă cu editor de text, debugger și unelte de management de proiect.
+  - Situatie: Vrei să scrii cod și să ai sugestii de sintaxă (autocomplete) într-un mediu vizual.
+      - EX: Visual Studio Code, CLion, Code::Blocks
+
+b. Compilator (C/C++ Compiler)
+  - Functie: Traduce codul sursă scris în limbaj de nivel înalt (C/C++) în cod mașină (binar) executabil de procesor.
+  - Situatie: Ai un fișier .cpp și vrei să obții un executabil direct din terminal.
+      - EX: gcc, g++, clang
+
+c. Sistem de gestiune a pachetelor (Package Manager)
+  - Functie: Automatizează instalarea, actualizarea și configurarea bibliotecilor sau programelor externe.
+  - Situatie: Vrei să instalezi o librărie de grafică pe sistem fără să o descarci manual de pe internet.
+      - EX: apt (Debian/Ubuntu), pacman (Arch), pip (Python)
+
+d. Build Automation Tool (Varianta corectă pentru întrebare)
+  - Functie: Generează fișierele de configurare necesare pentru build (precum Makefiles sau proiecte de Visual Studio) pornind de la un script simplu.
+  - Situatie: Vrei să descrii cum trebuie compilat un proiect (ce fișiere intră în el, ce librării folosește) astfel încât oricine să îl poată construi, indiferent de sistem.
+      - EX: cmake . && make
+
+3.
+- Shell Parameter Expansion
+Situatie: Vrei să modifici sau să extragi părți dintr-un șir de caractere stocat într-o variabilă fără a folosi utilitare externe ca sed sau cut.
+
+a. sh (Varianta corectă pentru întrebare)
+  - Functie: Construcția ${PATH#/*/} elimină cea mai scurtă potrivire a modelului (prefix) de la începutul șirului.
+  - Situatie: Modelul /*/ caută un slash, orice text, și un alt slash la început. În /bin/sh, acesta găsește /bin/ și îl șterge, rămânând sh.
+      - EX: echo ${PATH#/*/}
+
+b. /sh
+  - Functie: Rezultatul ar fi fost acesta dacă am fi folosit doar ${PATH#/bin}, eliminând prefixul fix fără al doilea slash.
+  - Situatie: Vrei să elimini doar prima parte a căii.
+      - EX: echo ${PATH#/bin}
+
+c. bin/sh
+  - Functie: Rezultatul ar fi acesta dacă am fi eliminat doar primul caracter slash.
+  - Situatie: Vrei să transformi o cale absolută într-una relativă față de root.
+      - EX: echo ${PATH#/}
+
+d. /bin
+  - Functie: Rezultatul ar fi acesta dacă am fi folosit extragerea sufixului de la final (%).
+  - Situatie: Vrei să păstrezi directorul părinte și să elimini numele fișierului.
+      - EX: echo ${PATH%/*}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
