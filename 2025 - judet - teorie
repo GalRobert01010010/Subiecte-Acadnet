@@ -30,7 +30,7 @@ Situatie: Lucrezi la un proiect software complex care trebuie să poată fi comp
 a. IDE (Integrated Development Environment)
   - Functie: Oferă o interfață grafică completă cu editor de text, debugger și unelte de management de proiect.
   - Situatie: Vrei să scrii cod și să ai sugestii de sintaxă (autocomplete) într-un mediu vizual.
-      - EX: Visual Studio Code, CLion, Code::Blocks
+      - EX: Visual Studio, CLion, Code::Blocks, Viual Studio (cu extensii)
 
 b. Compilator (C/C++ Compiler)
   - Functie: Traduce codul sursă scris în limbaj de nivel înalt (C/C++) în cod mașină (binar) executabil de procesor.
@@ -40,9 +40,9 @@ b. Compilator (C/C++ Compiler)
 c. Sistem de gestiune a pachetelor (Package Manager)
   - Functie: Automatizează instalarea, actualizarea și configurarea bibliotecilor sau programelor externe.
   - Situatie: Vrei să instalezi o librărie de grafică pe sistem fără să o descarci manual de pe internet.
-      - EX: apt (Debian/Ubuntu), pacman (Arch), pip (Python)
+      - EX: apt / apt-get(Debian/Ubuntu), pacman (Arch), pip (Python), dnf / yum (RedHat, CentOS, Fedora)
 
-d. Build Automation Tool (Varianta corectă pentru întrebare)
+d. Build Automation Tool 
   - Functie: Generează fișierele de configurare necesare pentru build (precum Makefiles sau proiecte de Visual Studio) pornind de la un script simplu.
   - Situatie: Vrei să descrii cum trebuie compilat un proiect (ce fișiere intră în el, ce librării folosește) astfel încât oricine să îl poată construi, indiferent de sistem.
       - EX: cmake . && make
@@ -51,7 +51,7 @@ d. Build Automation Tool (Varianta corectă pentru întrebare)
 - Shell Parameter Expansion
 Situatie: Vrei să modifici sau să extragi părți dintr-un șir de caractere stocat într-o variabilă fără a folosi utilitare externe ca sed sau cut.
 
-a. sh (Varianta corectă pentru întrebare)
+a. sh
   - Functie: Construcția ${PATH#/*/} elimină cea mai scurtă potrivire a modelului (prefix) de la începutul șirului.
   - Situatie: Modelul /*/ caută un slash, orice text, și un alt slash la început. În /bin/sh, acesta găsește /bin/ și îl șterge, rămânând sh.
       - EX: echo ${PATH#/*/}
@@ -72,9 +72,50 @@ d. /bin
       - EX: echo ${PATH%/*}
 
 
+4.
+- Semnale (Signals) - Categoria: IPC (Inter-Process Communication)
+Situatie: Vrei sa intrerupi un proces care nu mai raspunde sau sa anunti un program ca s-a schimbat dimensiunea ferestrei de terminal.
+
+- Raspunsuri corecte:
+  - a. Un mesaj trimis unui proces pentru a-i solicita efectuarea unei anumite actiuni (ex: SIGTERM pentru inchidere).
+  - d. Un mesaj trimis unui proces pentru a-l informa despre un eveniment (ex: SIGCHLD cand un proces copil se termina).
+  - f. O modalitate de comunicare intre procese (reprezinta cea mai simpla forma de IPC).
+
+- Analiza variantelor gresite:
+  - b, c, e: Semnalele nu sunt fisiere, protocoale de retea sau tipuri de procese, ci simple notificari asincrone trimise catre un proces.
+      - EX: kill -l (listeaza toate semnalele disponibile in sistem)
 
 
+5.
+- rsync - Remote Sync (Categorie: File Synchronization)
+Situatie: Dorești să oglindești date între două locații, transferând eficient doar modificările (delta-transfer).
 
+a. Suport pentru sincronizarea între mai multe calculatoare
+  - Functie: Permite copierea fișierelor între mașini diferite prin rețea (folosind SSH sau rsync daemon).
+  - Situatie: Vrei să trimiți un backup de pe un server local pe unul la distanță.
+      - EX: rsync -av /data/ user@192.168.1.10:/backup/
+
+b. GUI ușor de folosit
+  - Functie: rsync este nativ un utilitar CLI (Command Line Interface).
+  - Situatie: Nu are interfață grafică inclusă; pentru asta ai nevoie de aplicații externe precum Grsync.
+
+c. Sincronizarea fișierelor cu servicii de stocare cloud
+  - Functie: rsync lucrează cu sisteme de fișiere (ext4, ntfs), nu cu protocoalele API (HTTP/JSON) ale Cloud-ului.
+  - Situatie: Pentru Google Drive sau Amazon S3 ai nevoie de rclone (care știe să "vorbească" cu acele API-uri).
+
+d. Suport pentru replicarea permisiunilor
+  - Functie: Poate păstra atributele originale (Proprietar, Grup, Permisiuni rwx) ale fișierelor.
+  - Situatie: Vrei ca fișierele copiate să fie identice cu originalul, nu create ca fișiere noi de către utilizatorul curent.
+      - EX: rsync -p poza.jpg /backup/
+
+e. Criptarea în mod implicit a datelor în tranzit
+  - Functie: rsync nu are motor de criptare propriu; el este un utilitar de transfer, nu de securitate.
+  - Situatie: Devine securizat doar dacă îl "îmbraci" în SSH (Network Security Protocol), dar implicit (pe portul 873) trimite datele necriptate.
+      - EX: rsync -e ssh sursa destinatie
+
+f. Suport pentru replicare în timp real
+  - Functie: rsync este un proces de tip Batch (se execută o dată și se închide).
+  - Situatie: Pentru replicare instantanee, ai nevoie de un serviciu tip Daemon (ex: lsyncd) care folosește inotify (Kernel API) pentru a detecta schimbările pe loc.
 
 
 
