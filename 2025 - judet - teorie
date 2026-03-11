@@ -118,6 +118,187 @@ f. Suport pentru replicare în timp real
   - Situatie: Pentru replicare instantanee, ai nevoie de un serviciu tip Daemon (ex: lsyncd) care folosește inotify (Kernel API) pentru a detecta schimbările pe loc.
 
 
+7.
+Situatie: Dorești să conectezi un calculator la un router sau un switch pentru a avea acces la internet sau la o rețea locală.
+NIC - Network Interface Card (Network Hardware)
+  - a. Controlează alocarea memoriei RAM: Aceasta este sarcina MMU (Memory Management Unit), nu a plăcii de rețea.
+  - b. Permite conectarea unui sistem de calcul într-o rețea: Este funcția principală, transformând datele în semnale electrice sau optice.
+      - EX: ip link show (pentru a vedea interfețele NIC active)
+  - c. Asigură stocarea permanentă a datelor: Aceasta este sarcina HDD/SSD (Storage Devices), nu a unei plăci de rețea.
+  - d. Optimizează viteza de acces la datele de pe disc: Aceasta este sarcina controlerului de disc sau a memoriei Cache, nu a NIC-ului.
+
+
+8.
+Situatie: Ai nevoie să accesezi date de pe un suport de stocare (stick, HDD) și trebuie să știi dacă sistemul tău de operare îl recunoaște direct sau are nevoie de software suplimentar.
+
+- b. Linux - ext4 - nativ
+  - Functie: ext4 este sistemul de fișiere standard (default) pentru majoritatea distribuțiilor Linux.
+  - Situatie: Instalezi Ubuntu sau Debian și folosești hard disk-ul intern.
+      - EX: mount -t ext4 /dev/sdb1 /mnt/data
+
+- c. Windows - NTFS - nativ
+  - Functie: NTFS este sistemul de fișiere proprietar Microsoft, utilizat implicit pentru partițiile de sistem.
+  - Situatie: Windows pornește și citește datele de pe partitia C:.
+
+- f. Windows - FAT32 - nativ
+  - Functie: Un sistem de fișiere vechi, dar universal acceptat de aproape orice OS.
+  - Situatie: Folosești un stick USB de capacitate mică pentru a transfera fișiere între un PC și un laptop.
+
+- h. Windows - UDF - nativ
+  - Functie: Universal Disk Format, utilizat în principal pentru medii optice (CD/DVD/Blu-ray).
+  - Situatie: Introduci un DVD cu date într-o unitate optică la un sistem Windows.
+
+- k. Linux - exFAT - nativ
+  - Functie: Creat de Microsoft pentru carduri SD, suportul a fost inclus direct în nucleul Linux (Kernel 5.4+).
+  - Situatie: Conectezi un card de memorie de la o cameră foto la un sistem Linux modern.
+
+- Analiza variantelor gresite:
+  - a. APFS (Apple) nu este nativ sau facil de montat pe Linux (necesită drivere reverse-engineered).
+  - d. macOS nu suportă ext4 nativ (ai nevoie de FUSE sau drivere plătite).
+  - e. ZFS pe Linux (ZoL) nu este considerat "nativ" în sensul de cod inclus direct în kernel-ul principal din cauza licenței CDDL.
+  - j. Windows nu suportă ext4 nativ direct în Explorer (necesită WSL2 sau software de la terți).
+  - l. ReFS este proprietar Microsoft și nu are un modul de kernel open-source stabil pentru Linux.
+
+
+9.
+Situatie: Dorești să alegi un sistem de operare stabil pentru un server sau unul personalizabil pentru stația de lucru.
+GNU/Linux Distributions - Operating Systems
+  - a. CentOS: O distribuție derivată din Red Hat Enterprise Linux, folosită masiv pe servere pentru stabilitate.
+      - EX: cat /etc/centos-release
+  - b. Arch: O distribuție minimalistă, de tip rolling release, unde utilizatorul instalează manual fiecare componentă.
+      - EX: pacman -Syu (pentru actualizarea sistemului)
+  - c. Fedora: O distribuție sponsorizată de Red Hat, care servește ca teren de testare pentru cele mai noi tehnologii Linux.
+      - EX: dnf install htop
+
+- Analiza variantelor gresite:
+  - d. FreeBSD: Este un sistem de operare de tip Unix, dar aparține familiei BSD (Berkeley Software Distribution), nu Linux.
+  - e. Shell: Nu este o distribuție, ci o interfață (interpretor de comenzi) prin care utilizatorul comunică cu nucleul (ex: Bash).
+  - f. Android: Deși folosește nucleul Linux, nu este considerat o distribuție GNU/Linux deoarece nu folosește librăriile și utilitarele standard GNU.
+
+
+10.
+Situatie: Dorești să adaugi suport pentru un hardware nou fără a opri sistemul, folosind extensii dinamice ale nucleului.
+
+- a. de a extinde funcționalitatea acestuia
+  - Functie: Adaugă drivere sau suport pentru protocoale de rețea/sisteme de fișiere în timpul rulării.
+  - Situatie: Conectezi o placă de rețea nouă și nucleul încarcă driverul corespunzător.
+      - EX: insmod driver_nou.ko
+Obs. Modulele de Kernel au extensia .ko
+
+- Analiza variantelor gresite:
+  - b. de a optimiza performanța sistemului: Aceasta este sarcina algoritmilor de **Kernel Scheduler** (pentru procese) și a **Memory Management Unit** (pentru RAM).
+  - c. de a îmbunătăți securitatea sistemului: Aceasta este sarcina subsistemelor de securitate integrate, precum **SELinux** sau **AppArmor** (Kernel Security Modules).
+  - d. de a corecta erori de kernel: Aceasta se realizează prin **Kernel Patching** (actualizarea codului sursă) sau tehnologii de tip **Livepatch** (Kpatch).
+      - EX: kpatch load patch_eroare.ko (pentru reparații fără reboot)
+
+11.
+Situatie: Ai finalizat scrierea codului pentru o aplicație Java și dorești să împachetezi toate clasele și resursele într-un singur fișier executabil sau partajabil.
+JAR - Java Archive (Package Archive Format)
+  - a. o bibliotecă: Aceasta este funcția principală; un .jar grupează mai multe fișiere .class (bytecode) și metadate pentru a fi folosite de alte programe sau pentru a rula aplicația.
+      - EX: java -jar aplicatie.jar
+  - b. un fișier care conține o imagine: Imaginile (ex: .png, .jpg) sunt resurse media; deși pot fi incluse în interiorul unei arhive JAR, fișierul .jar în sine nu este un format de imagine.
+  - c. un fișier temporar: Fișierele temporare în Java au de obicei extensia .tmp; fișierul .jar este produsul final al build-ului, nu unul volatil creat în timpul compilării.
+  - d. un fișier care conține o bază de date: Bazele de date folosesc formate specifice (ex: .db, .sqlite, .mdf, .mdb, .accdb); un .jar poate conține un driver de conexiune la bază, dar nu stochează datele propriu-zise.
+  - e. un fișier de configurare: Fișierele de configurare sunt de obicei de tip text (ex: .xml, .properties, .yaml, .json, .conf, .init); JAR-ul este un format binar comprimat (bazat pe ZIP).
+
+
+13.
+Situatie: Sistemul tău s-a oprit brusc (pană de curent) și vrei să te asiguri că structura directoarelor și a fișierelor de pe disc nu a fost coruptă.
+fsck - File System Check (File System Maintenance)
+  - a. Verifică erorile de pe un sistem de fișiere: Aceasta este funcția de bază; scanează inode-urile și blocurile de date pentru a găsi și repara inconsecvențele.
+      - EX: fsck /dev/sda1
+  - b. Optimizează performanța prin defragmentare: Aceasta este sarcina utilitarelor de tip e4defrag; fsck se ocupă de integritate (corectitudine), nu de așezarea contiguă a datelor.
+  - c. Montează un sistem de fișiere: Aceasta este sarcina utilitarului mount (Storage Management).
+      - EX: mount /dev/sdb1 /mnt
+  - d. Formatează un disc: Aceasta este sarcina utilitarelor din familia mkfs (Make File System).
+      - EX: mkfs.ext4 /dev/sdc1
+
+
+15.
+Situatie: Dorești să previi pierderea sau alterarea datelor în cazul unei pene de curent sau a unei defecțiuni hardware a discului.
+
+- e. Prin jurnalizare (Journaling)
+  - Functie: Înregistrează toate modificările intenționate într-un jurnal înainte de a le scrie efectiv în zona principală a sistemului de fișiere.
+  - Situatie: Dacă sistemul cade, la repornire, OS-ul citește jurnalul și finalizează operațiunile întrerupte pentru a evita coruperea.
+      - EX: ext4, NTFS, APFS (toate folosesc jurnalizarea)
+
+- f. Prin calcularea unei sume de control (Checksumming)
+  - Functie: Generează un cod unic bazat pe conținutul datelor; dacă datele se schimbă accidental (bit rot), suma de control nu se mai potrivește și eroarea este detectată.
+  - Situatie: Verifici dacă un fișier descărcat de pe internet este identic cu originalul sau dacă un bloc de date de pe disc a fost alterat fizic.
+      - EX: sha256sum fisier.iso
+
+- Analiza celorlalte concepte:
+  - a. Salvarea datelor SMART: S.M.A.R.T. (Self-Monitoring, Analysis and Reporting Technology) este un sistem de monitorizare a sănătății fizice a discului (temperatură, sectoare realocate), nu asigură direct integritatea fișierelor, ci avertizează asupra cedării hardware.
+  - b. Permisiunile pentru utilizatori: Acestea fac parte din categoria Securității Accesului (Access Control - rwx); ele previn accesul neautorizat, dar nu pot preveni coruperea datelor cauzată de o eroare de sistem sau hardware.
+  - c. Scrierea datelor pe un singur disc: Aceasta crește riscul de pierdere a datelor (Single Point of Failure); integritatea și disponibilitatea se obțin prin redundanță (RAID).
+  - d. Evitarea redundanței: Redundanța (copierea datelor pe mai multe discuri) este esențială pentru siguranță; evitarea ei face sistemul vulnerabil la orice defect hardware.
+
+
+17.
+Situatie: Dorești să setezi o cale către un director (PATH) sau o limbă de sistem (LANG) care să fie recunoscută automat de orice program sau script pe care îl pornești din terminalul curent.
+Environment Variables - IPC (Inter-Process Communication)
+  - c. Variabilă de mediu: Aceasta este varianta corectă deoarece variabilele exportate devin parte din mediul proceselor noi.
+      - EX: export VAR_MEA=10
+  - a. Variabilă temporară: Nu este un termen tehnic standard în Bash; orice variabilă care nu este salvată în fișiere de configurare (precum .bashrc) dispare la închiderea shell-ului.
+  - b. Variabilă locală: Este vizibilă doar în interiorul shell-ului curent sau al funcției în care a fost definită; nu este moștenită de procesele copil.
+      - EX: local x=5 (folosit în funcții)
+  - d. Variabilă globală: În Bash, variabilele sunt "globale" în interiorul aceluiași script, dar fără comanda export ele nu părăsesc procesul curent pentru a ajunge la sub-procese.
+
+
+18.
+Situatie: Scrii cod într-un limbaj modern (ca Java sau C#) și vrei ca acesta să poată rula pe orice sistem (Windows, Linux, Mac) fără a fi rescris, folosind o etapă de traducere neutră.
+Intermediate Language - Programming Paradigms
+  - a. Limbaj intermediar: Este varianta corectă deoarece se referă la un cod (precum Bytecode în Java sau MSIL în .NET) care nu este încă instrucțiune pură pentru procesor, ci o formă optimizată ce va fi tradusă final de o mașină virtuală (JVM).
+      - EX: javac Fisier.java (produce Fisier.class, care este cod intermediar)
+  - b. Limbaj de asamblare: Aceasta este o reprezentare textuală directă a codului mașină specific unei arhitecturi (ex: x86); nu facilitează traducerea generică, ci este aproape de hardware.
+      - EX: mov eax, 1
+  - c. Limbaj interpretor: Acesta nu este un tip de limbaj, ci un mod de execuție; interpretorul citește codul sursă linie cu linie și îl execută direct, fără a genera neapărat un fișier intermediar permanent.
+  - d. Limbaj de nivel scăzut: Se referă la limbaje care oferă puțină abstracție față de setul de instrucțiuni al procesorului (ex: Assembly sau C); ele sunt destinația sau un pas apropiat de codul mașină, nu "facilitatorul" generic.
+
+
+19.
+Situatie: Dorești să rulezi o aplicație în microservicii asigurându-te că aceasta funcționează identic pe mediul de dezvoltare, testare și producție.
+Containerization - Virtualization (OS-level Virtualization)
+  - a. Portabilitate: Varianta corectă; un container include toate dependințele (biblioteci, configurații), deci va rula la fel pe orice server Linux care are motorul de containerizare instalat.
+  - b. Izolare: Varianta corectă; procesele din interiorul unui container nu pot vedea sau influența procesele din alte containere sau de pe sistemul gazdă, utilizând tehnologii precum namespaces și cgroups.
+  - c. Ușurință în utilizare: Deși uneltele moderne sunt intuitive, containerizarea adaugă un strat de complexitate în orchestrare și rețelistică față de rularea nativă.
+  - d. Compatibilitate cu toate sistemele de operare: Varianta greșită; containerele nu sunt mașini virtuale (VM) și depind direct de nucleul (kernel) sistemului gazdă.
+
+
+21.
+Situatie: Dorești să interacționezi cu sistemul de operare într-un mod rapid și eficient, fără a folosi mouse-ul, introducând instrucțiuni direct de la tastatură pentru a automatiza sarcini.
+CLI - Command Line Interface (User Interface / Shell)
+  - a. Un program care interpretează și execută comenzi: Aceasta este varianta corectă deoarece CLI este mediul de lucru bazat pe text unde un interpretor (shell-ul) preia input-ul și returnează output-ul.
+      - EX: bash, zsh, sh, ksh, fish, csh, PowerShell, cmd.exe
+  - b. O aplicație folosită pentru scrierea de cod: Aceasta este definiția pentru un Editor de text sau IDE.
+      - EX: vim, Visual Studio Code, nano, emacs, PyCharm, Sublime Text, Notepad++, IntelliJ IDEA
+  - c. Un software care gestionează interacțiunile cu baza de date prin GUI: Aceasta descrie un client de baze de date grafic.
+      - EX: MySQL Workbench, pgAdmin, DBeaver, SQL Server Management Studio (SSMS), MongoDB Compass, HeidiSQL, Robo 3T
+  - d. O aplicație grafică pentru navigarea pe internet: Aceasta este definiția unui Web Browser.
+      - EX: Firefox, Google Chrome, Safari, Microsoft Edge, Opera, Brave, Tor Browser, Chromium
+
+
+22.
+Situatie: Dorești să protejezi datele sensibile de pe disc împotriva accesului neautorizat, chiar dacă cineva fură unitatea de stocare fizică.
+TPM - Trusted Platform Module (Hardware Security)
+  - d. Asigură criptarea datelor stocate pe disc: Aceasta este varianta corectă deoarece TPM generează și stochează chei criptografice într-un mod securizat, fiind esențial pentru funcții precum BitLocker sau autentificarea biometrică.
+      - EX: Criptarea partițiilor de sistem pe Windows 11.
+  - a. Optimizează viteza de acces la fișiere: Greșit; această funcție aparține controlerului de disc (DMA) sau memoriei Cache.
+  - b. Monitorizează temperatura componentelor: Greșit; această sarcină revine senzorilor termici gestionați de BIOS/UEFI și tehnologiei S.M.A.R.T.
+  - c. Verifică starea bateriei: Greșit; aceasta este funcția controlerului de gestionare a energiei (ACPI).
+
+Definiții Abrevieri:
+- DMA (Direct Memory Access): Tehnologie care permite componentelor hardware (precum discul) să acceseze memoria RAM direct, fără a mai trece prin procesor (CPU), economisind astfel resurse.
+- S.M.A.R.T. (Self-Monitoring, Analysis and Reporting Technology): Sistem de diagnosticare integrat în unitățile de stocare (HDD/SSD) care detectează și raportează indicatorii de fiabilitate pentru a anticipa defecțiunile hardware.
+- BIOS/UEFI (Basic Input-Output System / Unified Extensible Firmware Interface): Software-ul de nivel scăzut (firmware) care pornește primul când deschizi PC-ul și face legătura între hardware și sistemul de operare.
+- ACPI (Advanced Configuration and Power Interface): Standard industrial care permite sistemului de operare să gestioneze direct consumul de energie al componentelor hardware și al perifericelor.
+
+
+
+
+
+
+
 
 
 
