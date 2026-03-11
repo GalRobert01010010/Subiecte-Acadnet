@@ -295,15 +295,116 @@ Definiții Abrevieri:
 
 
 
+23.
+Situatie: Identificarea kernel-ului Linux în electronicele de consum și echipamentele de comunicații.
+Linux Distribution - Embedded Devices (Hardware Compatibility)
+  - b. Smart TV: Varianta corectă; sisteme ca Tizen sau WebOS se bazează pe Linux pentru gestionarea resurselor.
+  - d. Rutere: Varianta corectă; majoritatea rulează versiuni de Linux (precum OpenWrt) pentru stabilitatea proceselor de rutare.
+      - EX: Router-ul tău de acasă.
+  - c. PlayStation: Greșit; rulează Orbis OS, bazat pe FreeBSD (Unix, dar nu Linux).
+  - f. Nintendo Switch: Greșit; folosește microkernel-ul proprietar Horizon.
+
+Definiții Abrevieri:
+- FreeBSD (Berkeley Software Distribution): Sistem de operare de tip Unix, cu kernel diferit de Linux, folosit de Sony pentru console.
+- OpenWrt (Open Wireless Receiver Transmitter): Proiect open-source bazat pe Linux, utilizat ca sistem de operare pentru rutere.
+- Tizen: Sistem de operare bazat pe Linux, dezvoltat de Samsung pentru televizoare și ceasuri inteligente.
+- WebOS: Sistem de operare bazat pe kernel-ul Linux, utilizat în principal de LG pentru Smart TV-uri.
 
 
+25.
+Situație: Trebuie să identifici elementele care alcătuiesc contextul de execuție al unui program în memorie (Process Control Block).
+Process Components - Operating Systems (IPC/Memory Management)
+  - b. Cod executabil, stivă, heap, date, registrele procesorului, descriptorii de fișiere: Varianta corectă; reprezintă imaginea completă a unui proces.
+      - EX: Un script Python care rulează are propriul heap pentru obiecte și registre pentru calcule.
+  - Cod executabil (Text): Instrucțiunile mașină pe care procesorul le citește și le execută.
+  - Stivă (Stack): Memorie temporară pentru variabile locale și adrese de revenire din funcții.
+  - Heap: Memorie alocată dinamic în timpul rulării (ex: malloc în C).
+  - Date (Data): Variabile globale și statice inițializate.
+  - Registre: Unități de stocare ultra-rapide în interiorul CPU-ului care rețin starea curentă a execuției.
+  - Descriptori de fișiere: Referințe (indecsi) către fișierele sau resursele deschise de proces.
+
+Definiții Abrevieri:
+- IPC (Inter-Process Communication): Mecanismele prin care procesele schimbă date între ele.
+- CPU (Central Processing Unit): Creierul calculatorului care execută instrucțiunile procesului.
+- PCB (Process Control Block): Structură de date în kernel care stochează toate informațiile de mai sus pentru fiecare proces.
 
 
+28.
+Situatie: Trebuie să distingi între fișierele care reprezintă hardware real (discuri, unități optice) și cele care sunt interfețe software (pseudo-dispozitive).
+Device Files - Hardware Interface (Storage/Pseudo-devices)
+  - c. /dev/full: Dispozitiv virtual care simulează un disc plin; scrierea în el returnează eroarea ENOSPC (No space left on device).
+      - EX: echo "test" > /dev/full
+  - a. /dev/cdrom: Reprezintă unitatea optică fizică (CD/DVD-ROM). Este de obicei un link simbolic către /dev/sr0.
+      - EX: mount /dev/cdrom /mnt/cdrom
+  - b. /dev/nvme0: Reprezintă un SSD modern conectat prin interfața NVMe (Non-Volatile Memory Express). Este hardware fizic de stocare.
+      - EX: fdisk -l /dev/nvme0n1
+  - d. /dev/sda1: Prima partiție a primului hard disk/SSD detectat pe interfața SCSI/SATA. Este o subdiviziune a unui hardware fizic.
+      - EX: mount /dev/sda1 /boot
+  - e. /dev/virtual1: Nu este un dispozitiv standard în ierarhia Linux; este un nume fictiv în acest context.
+
+Definiții Abrevieri:
+- /dev (Device Directory): Directorul în care sistemul mapează toate resursele hardware sub formă de fișiere.
+- NVMe: Protocol de comunicare ultra-rapid pentru SSD-uri montate direct pe magistrala PCIe.
+- SATA (Serial ATA): Interfață standard pentru conectarea hard disk-urilor tradiționale.
+- Partition (Partiție): O secțiune logică a unei unități de stocare fizice (ex: sda1 este o bucată din sda).
 
 
+29.
+Situatie: Trebuie să instalezi manual un driver sau să verifici dacă modulele pentru placa de rețea există pe disc după un update de kernel.
+Kernel Modules - System Hierarchy (Drivers)
+  - b. /lib/modules/<version>/kernel: Varianta corectă; aici sunt stocate modulele (.ko) grupate pe categorii (drivers, net, fs).
+      - EX: ls /lib/modules/$(uname -r)/kernel/drivers/
+  - a. /usr/bin/drivers: Greșit; /usr/bin este pentru binare de utilizator (ex: ls, grep, cp).
+  - c. /sys/kernel/drivers: Greșit; acesta este un sistem de fișiere virtual (sysfs) care oferă o vedere structurală a driverelor deja încărcate.
+  - d. /etc/kernel/...: Greșit; /etc este rezervat exclusiv fișierelor de configurare (text).
+
+Definiții Abrevieri:
+- Module (.ko): Un fișier "Kernel Object" care poate fi încărcat sau descărcat din kernel la nevoie (echivalentul driverelor din Windows).
+- <version>: Se referă la versiunea specifică de kernel instalată (ex: 5.15.0-generic).
+- lsmod: Comanda care listează modulele (driverele) care sunt încărcate activ în memorie.
+- modprobe: Utilitarul folosit pentru a adăuga sau elimina module din kernel în mod inteligent.
 
 
+30.
+Situație: Trebuie să accesezi un fișier al cărui nume conține caractere problematice (spații, apostrofuri, semne de exclamare).
+Shell Expansion & Quoting - Command Line (Bash/POSIX)
+  - e. cat User\'s\ file: Varianta corectă; folosește Backslash Escaping pentru fiecare caracter special.
+      - EX: ls My\ Project\'s\ Data.txt
 
+Metode de "neutralizare" a caracterelor în Shell:
+  - Backslash (\): Anulează semnificația specială a UNUI SINGUR caracter care urmează imediat.
+      - EX: cat fisier\ cu\ spatiu.txt
+  - Apostrofuri (' '): Protejează TOT ce se află între ele; nimic nu este interpretat (Strong Quoting). 
+      - ATENȚIE: Nu poți pune un apostrof în interiorul unei perechi de apostrofuri.
+      - EX: cat 'fisier cu spatiu' (DAR NU 'User's file')
+  - Ghilimele (" "): Protejează majoritatea caracterelor, dar permit expandarea variabilelor ($) și a backtick-urilor (Weak Quoting).
+      - EX: cat "User's file" (Ghilimelele permit apostroful în interior, dar nu invers).
+
+Definiții Abrevieri:
+- Escaping: Tehnica de a prefixa un caracter special cu un backslash pentru a-l trata ca text simplu.
+- Quoting: Încadrarea unui text în semne de punctuație pentru a preveni interpretarea lui de către shell.
+- Literal: Valoarea exactă a unui caracter, fără nicio funcție specială în programare.
+
+Situație: Trebuie să generezi nume de fișiere, să accesezi variabile sau să incluzi rezultatul unei comenzi în interiorul altei comenzi.
+Shell Expansion Types - Command Line (Globbing/Substitution)
+  - Brace Expansion { }: Generarea de șiruri de caractere pe baza unei liste sau a unui interval.
+      - EX: mkdir proiect_{1,2,3} (Creează directoarele proiect_1, proiect_2, proiect_3).
+      - EX: mkdir -p laborator/{teste,rezultate}/{vechi,noi}, vor rezulta 4 căi distincte (puncte terminale): laborator/teste/vechi, laborator/teste/noi, laborator/rezultate/vechi, laborator/rezultate/noi
+  - Tilde Expansion (~): Înlocuirea tildei cu calea către directorul "home" al utilizatorului.
+      - EX: cd ~/Documents (Se transformă în cd /home/user/Documents).
+  - Variable Expansion ($): Înlocuirea numelui unei variabile cu valoarea ei.
+      - EX: echo $USER (Afișează numele de utilizator curent).
+  - Command Substitution $( ): Executarea unei comenzi și folosirea output-ului ei ca argument.
+      - EX: echo "Azi este $(date)" (Afișează data curentă în interiorul textului).
+  - Arithmetic Expansion $(( )): Efectuarea de calcule matematice simple direct în shell.
+      - EX: echo $((10 + 5)) (Afișează 15).
+  - Pathname Expansion (Globbing): Folosirea de metacaractere (*, ?) pentru a găsi fișiere.
+      - EX: ls *.txt (Afișează toate fișierele care se termină în .txt).
+
+Definiții Abrevieri:
+- Globbing: Procesul prin care caractere precum * (orice) sau ? (un singur caracter) sunt expandate în nume de fișiere existente.
+- POSIX: Standardul care definește cum ar trebui să se comporte un shell compatibil (ca Bash sau Dash).
+- Metacaracter: Un caracter care are o semnificație specială pentru interpretor (ex: $, *, {).
 
 
       
