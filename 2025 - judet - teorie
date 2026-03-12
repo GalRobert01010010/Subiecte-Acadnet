@@ -407,4 +407,368 @@ Definiții Abrevieri:
 - Metacaracter: Un caracter care are o semnificație specială pentru interpretor (ex: $, *, {).
 
 
-      
+
+31.
+Situație: Identificarea pilonilor structurali ai unui sistem informatic conform standardelor moderne de infrastructură.
+Componentele Sistemului Informatic - Arhitectură și Resurse
+  - b. Sisteme de calcul: Echipamente cu putere de procesare folosite direct sau indirect.
+      - EX: Servere, laptopuri, telefoane mobile.
+  - a. Infrastructură: Ansamblul care asigură conectivitatea, stocarea și accesul.
+      - EX: Rețele, sisteme de stocare (SAN/NAS), interfețe de acces.
+  - d. Date: Parametrii și informațiile procesate, reprezentând materia primă a sistemului.
+      - EX: Baze de date, fișiere de configurare, senzori.
+
+Definiții Abrevieri:
+- IT&C (Information and Communication Technology): Integrarea tehnologiilor de procesare (IT) cu cele de comunicații (C).
+- Putere de procesare: Capacitatea hardware-ului de a executa instrucțiuni logice și matematice.
+- Interfețe de acces: Componente (hardware sau software) care permit interacțiunea cu restul infrastructurii.
+
+
+37.
+Situație: Vrei să vezi rezultatul unei comenzi în terminal, dar în același timp vrei să îl salvezi și într-un fișier de log pentru mai târziu.
+Tee Utility - Data Stream Manipulation (Standard I/O)
+  - a. clonează stdin în fișiere: Funcția de bază a tee; multiplică fluxul de date.
+      - EX: ls -l | tee lista.txt
+  - b. sort: Ordonează alfabetic sau numeric liniile primite.
+      - EX: sort nume.txt
+  - c. uniq: Filtrează liniile identice consecutive.
+      - EX: uniq date_redundante.txt
+  - d. grep: Filtrează textul pe baza unui tipar (pattern).
+      - EX: grep -i "eroare" log.txt
+  - e. cat -n / nl: Numerotează liniile de text pentru lizibilitate.
+      - EX: nl script.sh
+  - f. touch: Actualizează timestamp-ul sau creează un fișier vid.
+      - EX: touch test.log
+
+Definiții Abrevieri:
+- stdin (Standard Input): Sursa de date de intrare (implicit tastatura).
+- stdout (Standard Output): Destinația datelor de ieșire (implicit terminalul).
+- Regular Expression (Regex): Șir de caractere care definește un tipar de căutare.
+- Timestamp: Marca temporală care indică ultima accesare sau modificare a unui fișier.
+
+
+39.
+Situație: Trebuie să identifici componentele hardware de bază care permit unui calculator să stocheze și să execute programe conform modelului clasic.
+Von Neumann Architecture - Computer Theory (Hardware Structure)
+  - b. Unitatea de memorie: Varianta corectă; spațiul unde sunt stocate împreună datele și instrucțiunile.
+      - EX: Memoria RAM.
+  - d. Procesorul (CPU): Varianta corectă; unitatea care execută instrucțiunile prin ALU și CU.
+      - EX: Intel Core i7, AMD Ryzen.
+  - f. Dispozitivele I/O: Varianta corectă; componentele care asigură comunicarea cu mediul exterior.
+      - EX: Tastatură (Intrare), Monitor (Ieșire).
+  - a. setul de instrucțiuni (ISA): Greșit; acesta este un model abstract (limbajul hardware-ului), nu o componentă fizică a arhitecturii.
+  - c. unitatea de procesare grafică (GPU): Greșit; este un procesor specializat modern, nu face parte din pilonii universali de bază.
+  - e. sistemul de operare: Greșit; reprezintă componenta software, în timp ce Von Neumann descrie exclusiv organizarea hardware.
+
+Definiții Abrevieri:
+- ALU (Arithmetic Logic Unit): Componenta CPU care efectuează calculele matematice și logice.
+- CU (Control Unit): Componenta CPU care coordonează fluxul de date și execuția codului.
+- Stored-program concept: Principiul conform căruia instrucțiunile sunt tratate la fel ca datele în memorie.
+- Bus (Magistrală): Calea de comunicație fizică ce leagă componentele sistemului de calcul.
+- RISC (Recued Instruction Set Computer): prezinta ISA simplu
+- CIST (Coomplex Instruction Set Computer): prezinta ISA complex
+
+
+40.
+Situație: Trebuie să instalezi o placă video nouă într-un sistem desktop sau să adaugi un mediu de stocare suplimentar.
+Hardware Interfaces - Expansion Slots and Storage (Motherboard Ports)
+  - b. PCIe: Varianta corectă; slot de mare viteză folosit pentru plăci video, plăci de rețea performante sau SSD-uri NVMe.
+      - EX: O placă video modernă folosește de obicei un slot PCIe x16.
+  - c. SATA: Greșit; interfață dedicată unităților de stocare (HDD/SSD) și unităților optice.
+      - EX: Conectarea unui SSD de 2.5 inch la placa de bază.
+  - a. USB: Greșit; port universal pentru periferice externe (mouse, tastatură, stick-uri).
+      - EX: USB 3.0 sau USB-C.
+  - d. HDMI: Greșit; acesta este un port de ieșire video, nu de conectare internă a plăcii.
+      - EX: Cablul care pleacă de la placa video către monitor.
+
+Definiții Abrevieri:
+- PCIe (Peripheral Component Interconnect Express): Standard de magistrală serială de mare viteză pentru componente interne.
+- SATA (Serial Advanced Technology Attachment): Interfață de bus pentru conectarea adaptoarelor de magistrală gazdă la dispozitive de stocare.
+- GPU (Graphics Processing Unit): Procesor specializat în randarea grafică.
+- Bandwidth (Lățime de bandă): Cantitatea maximă de date ce poate fi transferată printr-o conexiune într-un timp dat.
+
+
+44.
+Situație: Ai un script complex care rulează sarcini paralele și vrei să te asiguri că acesta curăță resursele la ieșire și așteaptă finalizarea tuturor calculelor.
+Job Control and Signal Handling - Bash Scripting (Execution Control)
+  - b. wait: Varianta corectă; suspendă execuția scriptului până când procesele pornite în fundal sunt finalizate.
+      - EX: wait $PID (Așteaptă un proces specific) sau simplu wait (Așteaptă toate procesele).
+  - a. trap: Greșit în acest context; se folosește pentru a executa o comandă atunci când shell-ul primește un semnal de sistem.
+      - EX: trap "rm -f /tmp/temp_file; exit" SIGINT SIGTERM
+  - c. jobs: Greșit; enumeră procesele active gestionate de sesiunea curentă de shell.
+      - EX: jobs -r (Afișează doar procesele care rulează).
+  - d. bg: Greșit; mută un proces suspendat (prin CTRL+Z) să ruleze în fundal.
+      - EX: bg %1
+  - e. fg: Greșit; aduce un proces din fundal în prim-plan pentru interacțiune directă.
+      - EX: fg %1
+
+Definiții Abrevieri:
+- Background (&): Simbol care, pus la finalul unei comenzi, o lansează fără a bloca terminalul.
+- Job Control: Capacitatea shell-ului de a gestiona mai multe procese în cadrul aceleiași sesiuni.
+- PID (Process ID): Identificatorul numeric unic atribuit fiecărui proces de către kernel.
+- Semnal: O notificare software trimisă unui proces (ex: SIGKILL pentru oprire forțată).
+
+
+49.
+Situație: Trebuie să clasifici procesele din sistem în funcție de originea lor, modul de interacțiune și spațiul de execuție în memorie.
+Linux Process Classification - System Architecture (Types and Roles)
+  - Interactive Processes: Procese lansate de utilizator care comunică direct prin terminal (I/O).
+      - EX: bash, vim, top, nano, gdb, python (modul interactiv), ssh (clientul).
+  - Batch Processes: Procese non-interactive, programate să ruleze în loturi când resursele sunt libere.
+      - EX: Compilarea unui kernel (make), scripturi de backup (rsync), procesări de loguri (awk/sed), randări video 3D.
+  - Daemon Processes: Servicii de fundal persistente care oferă funcționalități sistemului sau rețelei.
+      - EX: systemd, crond, sshd, httpd (Apache), mysqld, bluetoothd, syslogd.
+  - Kernel Threads: Procese interne ale nucleului care gestionează hardware-ul și sarcinile critice de sistem.
+      - EX: kworker (sarcini generale), ksoftirqd (întreruperi software), kswapd (gestionarea memoriei virtuale).
+
+Definiții/Concepte:
+- User Space: Zona de memorie unde rulează procesele Interactive, Batch și Daemons.
+- Kernel Space: Zona protejată unde rulează exclusiv Kernel Threads și nucleul sistemului.
+- TTY (Terminal): Dispozitivul de intrare/ieșire de care depind procesele interactive.
+- Background Execution: Modul de rulare fără control direct de la consolă (specific pentru Batch și Daemons).
+
+
+clasele 11-12
+
+
+
+1.
+Situație: Trebuie să conectezi dispozitive într-o rețea locală (LAN) și să optimizezi viteza prin eliminarea traficului inutil.
+Networking Devices - Hub vs Switch (Intelligence and Efficiency)
+  - Hub: Transmite datele prin "flooding" (inundare) către toate porturile.
+      - EX: Calculatorul A trimite către B, dar și C și D primesc pachetul.
+  - Switch: Transmite datele prin "unicast" (direcționat) către un singur port.
+      - EX: Calculatorul A trimite către B, iar Switch-ul ignoră porturile unde sunt C și D.
+  - MAC Address: Cheia de acces pentru Switch; este folosită pentru a mapa porturile fizice la dispozitivele conectate.
+
+Definiții/Concepte:
+- MAC Address: Adresa fizică, unică la nivel mondial, arsă în cipul plăcii de rețea.
+- CAM Table (MAC Table): "Agenda" switch-ului care reține ce adresă MAC este conectată la fiecare port.
+- Collision Domain: Zona dintr-o retea in care pachetele se pot ciocni si informatia se poate amesteca daca doua dispozitive transmit trafic pe acelasi fir.
+  - Într-un Hub, există un singur domeniu; într-un Switch, fiecare port este propriul domeniu de coliziune.
+- Bandwidth Efficiency: Switch-ul oferă lățime de bandă mai mare per dispozitiv deoarece nu încarcă rețeaua cu pachete irelevante.
+
+
+4.
+Situație: Trebuie să diferențiezi între metodele de securizare a conexiunii (VPN), gestionarea locală a traficului (VLAN/QoS) și arhitectura de virtualizare.
+Network Concepts - Comparative Analysis (VPN, Wireless, VLAN, Virtualization)
+  - a. VPN (Virtual Private Network): Extinde o rețea privată peste internetul public prin tunelare criptată.
+      - EX: Angajat care accesează fișierele firmei de pe un Wi-Fi public folosind un tunel securizat.
+  - b. Wireless Security (WPA2/WPA3): Se referă strict la securizarea undelor radio între dispozitiv și Router/Access Point.
+      - EX: Introducerea parolei Wi-Fi pentru a cripta traficul local (nu tot drumul prin internet ca la VPN).
+  - c. Local Traffic Optimization (VLAN / QoS): Se referă la segmentarea logică a unui switch sau prioritizarea unor date.
+      - EX: VLAN (Virtual LAN) imparte un switch fizic in mai multe parti switch-uri logice.
+      - EX: QoS (Quality of Service) dă prioritate apelurilor video în detrimentul descărcărilor de fișiere.
+  - d. Virtual Networking (vSwitch in Hypervisor): Se referă la modul în care Mașinile Virtuale (VM) comunică în interiorul serverului gazdă.
+      - EX: O mașină virtuală cu Linux trimite date către o mașină virtuală cu Windows, ambele fiind gestionate de același Hipervizor.
+
+Alte metode de atacuri:
+Situație: Analizarea vectorilor de atac pentru a securiza o aplicație web sau o infrastructură de rețea.
+Cybersecurity Threats - Attack Vectors (Web and Network Security)
+  - SQL Injection (SQLi): Introducerea de cod SQL malițios în câmpurile de input pentru a manipula baza de date.
+      - EX: Scrierea de ' OR 1=1 -- în câmpul de parolă pentru a te loga fără cont.
+  - Cross-Site Scripting (XSS): Injectarea de scripturi dăunătoare (JS) în pagini web vizualizate de alți utilizatori.
+      - EX: Un comentariu pe un blog care fură cookie-urile oricui îl citește.
+  - Phishing: Înșelarea utilizatorului pentru a-și introduce datele pe un site fals care arată identic cu cel real.
+      - EX: Un e-mail fals de la bancă care te trimite pe o pagină de login clonată.
+  - Man-in-the-Middle (MitM): Interceptarea și eventual modificarea comunicării dintre două părți fără ca acestea să știe.
+      - EX: Un atacator care folosește un Wi-Fi public pentru a citi traficul dintre tine și serverul tău.
+  - Denial of Service (DoS/DDoS): Aglomerarea unui server cu atât de multe cereri încât acesta devine indisponibil.
+      - EX: 1 milion de calculatoare care accesează simultan un site până când pică serverul.
+
+Atribuire și Distincție:
+- SQL Injection: Atacă Baza de Date (Backend).
+- XSS: Atacă Utilizatorul prin intermediul Browser-ului (Frontend).
+- Phishing: Atacă Psihologia utilizatorului (Social Engineering).
+- MitM: Atacă Canalul de comunicare (Networking).
+- DoS: Atacă Disponibilitatea resurselor (Hardware/Bandwidth).
+
+Definiții/Concepte:
+- Payload: Partea din codul de atac care execută acțiunea malițioasă propriu-zisă.
+- Sanitization: Procesul de curățare a input-ului de la utilizator pentru a preveni SQLi și XSS.
+- Social Engineering: Manipularea persoanelor pentru a divulga informații confidențiale.
+- Botnet: O rețea de calculatoare compromise folosite pentru a lansa atacuri de tip DDoS.
+
+
+9.
+Situație: Trebuie să vizualizezi drumul pe care îl parcurg pachetele către internet într-un sistem Linux modern.
+Network Management - Routing Utilities (iproute2 vs net-tools)
+  - route: Afișează direct tabela de rutare (fără argumente necesare).
+      - EX: route
+  - ip: Utilitarul standard modern pentru configurarea rutei.
+      - EX: ip route show
+  - netstat: Utilitar pentru statistici de rețea; afișează ruta doar cu flag-ul -r.
+      - EX: netstat -r
+  - ifconfig: Utilitar pentru configurarea nivelului de interfață (Layer 2/3 local), nu pentru rutare.
+      - EX: ifconfig eth0
+
+Atribuirea Rolurilor:
+- ip: Managementul rutării și adresării (Modern).
+- netstat: Diagnoza conexiunilor și a porturilor deschise (Învechit).
+- route: Vizualizarea tabelei de rutare (Clasic).
+- ifconfig: Configurarea parametrilor plăcii de rețea (Învechit).
+
+Definiții/Concepte:
+- iproute2: Pachetul software care conține comanda 'ip'.
+- net-tools: Pachetul vechi care conține 'route', 'ifconfig' și 'netstat'.
+- Deprecated: Termen tehnic pentru un utilitar care nu mai este recomandat și va fi eliminat.
+- Socket: Combinația dintre o adresă IP și un port (ținta principală a lui netstat).
+
+
+11.
+Situație: Trebuie să gestionezi software-ul pe o distribuție bazate pe Debian (ex. Ubuntu, Kali) folosind uneltele native.
+Package Management - Debian Ecosystem (DPKG/APT)
+  - a. dpkg: Manager de pachete de nivel scăzut (IPC pentru instalare locală).
+      - EX: Similar cu rpm (Red Hat), pacman -U (Arch).
+  - e. apt: Manager de pachete de nivel înalt care rezolvă dependențe.
+      - EX: Similar cu dnf (Red Hat), zypper (SUSE), pacman -S (Arch).
+  - f. aptitude: Interfață avansată (Front-end) pentru gestionarea pachetelor.
+      - EX: Similar cu Synaptic (GUI), dselect (vechi).
+  - b. equery: Utilitar de interogare specific distribuției Gentoo.
+      - EX: Similar cu apt-cache (Debian), repoquery (Red Hat).
+  - c. dnf: Manager de pachete de nivel înalt pentru familia Red Hat.
+      - EX: Similar cu apt (Debian).
+  - d. rpm: Manager de pachete de nivel scăzut pentru familia Red Hat.
+      - EX: Similar cu dpkg (Debian).
+
+
+12.
+Situație: Trebuie să determini care dintre utilitarele Linux îndeplinește funcția de măsurare a spațiului sau de organizare alfabetică.
+File Management - Utility Analysis (du vs. ls vs. md5sum vs. userdel)
+  - a. du: Afișarea utilizării spațiului de disc pentru un fișier (Disk Usage).
+      - EX: du fisier.txt (arată exact cât spațiu ocupă fișierul pe sectoarele discului).
+  - b. ls: Listarea fișierelor dintr-un director în ordine alfabetică.
+      - EX: ls -v (comanda implicită care sortează alfabetic/numeric conținutul).
+  - c. md5sum / sha256sum: Verificarea integrității unui fișier.
+      - EX: md5sum -c checksum.txt (verifică dacă fișierul corespunde amprentei sale).
+        Obs. fsck verifica integritatea sistemului de fisiere, si md5sum verifica integritatea unitara a fisierului.
+  - d. userdel: Ștergerea unui utilizator.
+      - EX: userdel nume_utilizator (procesul de eliminare a contului din sistem).
+
+Analiza variantelor conform cerinței (Procese și Protocoale):
+- Disk Usage Measurement (du): Proces de calculare a spațiului ocupat prin interogarea inode-urilor sistemului de fișiere.
+- Alphabetical Sorting (ls): Proces de ordonare a fluxului de date (Standard Output) în funcție de setul de caractere (ASCII/UTF-8).
+- Integrity Verification (md5sum): Protocol de criptare hashing (MD5) utilizat pentru a valida că un fișier este identic cu originalul.
+- User Management Protocol (userdel): Proces de modificare a bazei de date a utilizatorilor (/etc/passwd) pentru revocarea accesului.
+
+Definiții/Concepte:
+- Inode: Structură de date din Linux care stochează informații despre un fișier, inclusiv dimensiunea citită de 'du'.
+- Standard Output: Formatul în care 'ls' trimite lista sortată către terminal.
+- Checksum: Valoarea hash rezultată din procesul de verificare a integrității.
+- User Account: Entitatea de sistem care este eliminată prin procesul 'userdel'.
+
+
+13.
+Situație: Trebuie să actualizezi manual nucleul sistemului sau să configurezi meniul de boot (GRUB) pentru a porni o versiune mai veche de kernel.
+Filesystem Hierarchy - Boot process and Kernel storage (/boot)
+  - a. /boot: Directorul care conține fișierele necesare procesului de pornire (Bootloader, Kernel images).
+      - EX: /boot/vmlinuz-5.15.0-generic (imaginea executabilă a nucleului).
+  - b. /usr/local/bin/: Director pentru binare (programe) instalate local de administrator.
+      - EX: Programe compilate manual care nu fac parte din distribuția oficială.
+  - c. /etc/kernel: Director care conține scripturi de configurare (post-install) pentru kernel, nu imaginile propriu-zise.
+      - EX: Scripturi care actualizează automat GRUB după un update de kernel.
+  - d. /opt/kernel-images: O locație non-standard; /opt este destinat pachetelor software adiționale (add-on).
+      - EX: O aplicație proprietară precum Google Earth sau un kit de instalare extern.
+
+
+15.
+Situație: Trebuie să extragi date dintr-un raport complex, să faci calcule matematice cu ele și să generezi un format nou de ieșire.
+Text Processing - Scripting and Pattern Scanning (awk vs. Filters)
+  - f. awk: Utilitar care folosește un limbaj de programare propriu pentru procesarea coloanelor și generarea de rapoarte.
+      - EX: awk '{sum += $3} END {print sum}' date.txt (calculează suma valorilor de pe coloana 3).
+  - a. grep: Utilitar pentru căutarea unor șiruri de caractere folosind expresii regulate (Global Regular Expression Print).
+      - EX: grep -i eroare /var/log/syslog (caută cuvântul eroare indiferent de majuscule).
+  - b. sed: Stream Editor utilizat pentru transformarea și filtrarea textului (înlocuiri la nivel de linie).
+      - EX: sed 's/vechi/nou/g' fisier.txt (înlocuiește global cuvântul vechi cu nou).
+  - c. find: Utilitar pentru căutarea fișierelor și directoarelor în ierarhia sistemului.
+      - EX: find /home -name "*.pdf" (găsește toate fișierele PDF din folderul home).
+  - d. tr: Utilitar pentru transliterarea sau ștergerea caracterelor (Translate).
+      - EX: tr 'a-z' 'A-Z' (transformă textul din litere mici în litere mari).
+  - e. cut: Utilitar pentru extragerea unor secțiuni (coloane sau caractere) din fiecare linie.
+      - EX: cut -d ':' -f 1 /etc/passwd (extrage doar prima coloană/utilizatorii).
+
+
+24.
+Situație Trebuie să optimizezi viteza de procesare a calculatorului prin stocarea temporară a informațiilor necesare imediat într-o memorie ultra-rapidă.
+Hardware - Memory Types and Roles (Cache vs Alternatives)
+  a. cache Crește viteza de acces la datele utilizate frecvent prin plasarea lor într-o memorie situată direct pe procesor.
+      EX L1 L2 L3 cache (Nivelurile de memorie cache ale unui Central Processing Unit modern).
+  b. LVM (Logical Volume Manager) NAS (Network Attached Storage) Cloud Asigură un spațiu de stocare extensibil permițând adăugarea de noi unități fără a reconfigura sistemul de bază.
+      EX lvextend (Comandă folosită pentru mărirea dimensiunii unui volum logic).
+  c. SWAP Virtual Memory Este folosită atunci când sistemul rămâne fără memorie RAM (Random Access Memory) prin utilizarea unei porțiuni din hard disk (HDD).
+      EX swapon (Activează utilizarea unei partiții sau a unui fișier pentru memorie virtuală).
+  d. TPM (Trusted Platform Module) LUKS (Linux Unified Key Setup) Securizează datele sensibile prin criptare folosind algoritmi matematici pentru a preveni accesul neautorizat.
+      EX cryptsetup (Utilitar pentru configurarea criptării discurilor în Linux).
+
+Definiții Acronime
+  CPU (Central Processing Unit) Unitatea centrală de procesare a calculatorului.
+  RAM (Random Access Memory) Memorie cu acces aleatoriu utilizată pentru stocarea datelor de lucru.
+  LVM (Logical Volume Manager) Tehnologie care permite gruparea mai multor discuri fizice în volume logice flexibile.
+  NAS (Network Attached Storage) Server dedicat stocării de fișiere accesibil prin rețea.
+  SWAP (Swap Space) Spațiu de pe unitatea de stocare utilizat de kernel pentru a elibera memoria RAM.
+  TPM (Trusted Platform Module) Microcip hardware care stochează chei de criptare și asigură integritatea platformei.
+  LUKS (Linux Unified Key Setup) Specificație standard pentru criptarea transparentă a partițiilor de disc.
+
+
+26.
+Situație Trebuie să identifici natura și arhitectura unui fișier necunoscut din sistem folosind semnătura acestuia din antet.
+System Utilities - File Identification (ELF vs Alternatives)
+  a. ELF (Executable and Linkable Format) Reprezintă formatul standard pentru executabilele Linux (64-bit LSB executable) conform output-ului comenzii.
+      EX file /bin/ls (Afișează tipul ELF pentru majoritatea comenzilor de sistem).
+  b. obiect (Object File) Reprezintă un fișier intermediar generat în timpul compilării care nu este încă un executabil complet.
+      EX fisier.o (Fișier care conține cod mașină dar nu este linkat).
+  c. Mach-O (Mach Object) Este formatul standard pentru fișiere executabile utilizat de sistemele macOS și iOS.
+      EX file /Applications/Calendar.app/Contents/MacOS/Calendar (Afișează Mach-O pe un Mac).
+  d. fișier video Reprezintă containere de date multimedia (stream-uri video și audio).
+      EX file film.mp4 (Afișează media data sau MPEG v4 system layer).
+  e. fișier imagine Reprezintă formate de date vizuale compresate sau brute.
+      EX file poza.jpg (Afișează JPEG image data JFIF standard).
+
+
+28.
+Situație Trebuie să izolezi resursele publice de cele private pentru a proteja integritatea rețelei interne.
+Networking - Segmentation and Security
+  c. O subrețea care conține sistemele și resursele accesibile publicului
+      EX: DMZ
+  a. Rețeaua internă a unei organizații
+      EX: LAN, WLAN, SAN
+  b. Un protocol de securitate
+      EX: SSL, TLS, IPsec, SSH
+  d. Un tip de firewall
+      EX: NGFW, WAF, IDS, IPS
+Definiții Acronime
+  DMZ (Demilitarized Zone) Zonă tampon securizată între internet și rețeaua privată.
+  LAN (Local Area Network) Rețea locală de calculatoare dintr-o locație fixă.
+  WLAN (Wireless Local Area Network) Rețea locală bazată pe conexiuni fără fir (Wi-Fi).
+  SAN (Storage Area Network) Rețea specializată pentru stocarea datelor la nivel de bloc.
+  SSL (Secure Sockets Layer) Protocol vechi pentru criptarea comunicațiilor web.
+  TLS (Transport Layer Security) Standardul modern și sigur care a înlocuit SSL.
+  IPsec (Internet Protocol Security) Set de protocoale pentru securizarea traficului IP.
+  SSH (Secure Shell) Protocol pentru administrarea securizată a sistemelor de la distanță.
+  NGFW (Next-Generation Firewall) Firewall capabil de inspecție profundă a pachetelor.
+  WAF (Web Application Firewall) Firewall specializat pe protejarea aplicațiilor web.
+  IDS (Intrusion Detection System) Sistem care monitorizează și detectează activități suspecte.
+  IPS (Intrusion Prevention System) Sistem care detectează și blochează automat atacurile.
+  PoLP (Principle of Least Privilege) Strategie care limitează drepturile de acces la minimul necesar.
+  MAC (Mandatory Access Control) Control al accesului impus de sistem pe baza nivelurilor de clasificare.
+  DAC (Discretionary Access Control) Control unde proprietarul resursei decide cine are acces.
+  RBAC (Role-Based Access Control) Acces oferit utilizatorilor în funcție de rolul lor în organizație.
+  ABAC (Attribute-Based Access Control) Model ce oferă acces pe baza atributelor subiectului resursei și mediului.
+
+
+29.
+  X11 (X Window System Version 11) Protocol de afișare vechi ce folosește porturile 6000-6063 pentru conexiuni la distanță.
+  WLD (Wayland) Protocol modern care înlocuiește serverul X oferind o gestionare mai eficientă a ferestrelor.
+  GUI (Graphical User Interface) Interfața grafică ce permite utilizatorului să interacționeze cu sistemul prin elemente vizuale.
+  DE (Desktop Environment) Ansamblu de software (GNOME KDE) care rulează deasupra serverului de afișare.
+  WM (Window Manager) Componentă care controlează plasarea și aspectul ferestrelor într-un sistem de operare.
+  XDMCP (X Display Manager Control Protocol) Protocol utilizat pentru a gestiona logările la distanță în sistemul X11.
+
+
+
+
+
+
+
+
+
