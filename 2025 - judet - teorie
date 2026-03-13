@@ -766,6 +766,155 @@ Definiții Acronime
 
 
 
+31.
+Diferențe Esențiale
+  TCP: Orientat pe conexiune (Three-way handshake) | UDP: Fără conexiune (Best-effort).
+  TCP: Garantează livrarea și ordinea datelor      | UDP: Nu garantează livrarea sau ordinea.
+  TCP: Verifică erorile și retransmite pachete     | UDP: Doar verifică erorile (fără retransmitere).
+  TCP: Mai lent (overhead mare)                    | UDP: Mai rapid (overhead minim).
+
+Networking - Protocol Transport Assignment
+  a. Servicii care necesită livrare garantată și controlul erorilor (TCP)
+      EX: HTTP, HTTPS, SSH, FTP, SMTP, POP3, IMAP, Telnet
+  b. Servicii care necesită viteză și latență minimă (UDP)
+      EX: VOIP, IPTV, DNS, DHCP, SNMP, TFTP, RIP, NTP
+  c. Servicii care pot folosi ambele protocoale în funcție de context
+      EX: DNS (UDP pentru interogări TCP pentru zone transfer), NFS
+
+Diferențe de utilizare
+  TCP: Folosit pentru pagini web mail și transfer de fișiere unde nicio literă nu trebuie să lipsească.
+  UDP: Folosit pentru streaming jocuri online și broadcast unde un cadru pierdut nu oprește transmisia.
+
+Definiții Acronime
+  POP3 (Post Office Protocol version 3) [TCP/110] sau [TCP/995] Utilizat pentru a descărca mesaje mail de pe un server pe un singur dispozitiv local.
+  IMAP (Internet Message Access Protocol) [TCP/143] Citirea și sincronizarea mesajelor de e-mail pe mai multe dispozitive.
+  SMTP (Simple Mail Transfer Protocol) [TCP/25] Trimiterea mesajelor de e-mail.
+  VOIP (Voice over IP) [UDP/5060] Telefonie prin internet (prioritate viteză).
+  IPTV (Internet Protocol TV) [UDP] Distribuție de conținut video în timp real.
+  DNS (Domain Name System) [UDP/53] Traducerea numelor de domenii în IP-uri.
+  DHCP (Dynamic Host Configuration Protocol) [UDP/67-68] Alocarea automată a adreselor IP.
+  SNMP (Simple Network Management Protocol) [UDP/161] Monitorizarea dispozitivelor de rețea.
+  NTP (Network Time Protocol) [UDP/123] Sincronizarea ceasului sistemului.
+  TFTP (Trivial File Transfer Protocol) [UDP/69] Versiune simplificată de FTP fără autentificare.
+
+
+33.
+Definiții Acronime
+  GNOME (GNU Network Object Model Environment) Mediu desktop modern axat pe simplitate și flux de lucru eficient.
+  KDE (K Desktop Environment) Mediu desktop extrem de personalizabil ce folosește librăriile Qt.
+  XFCE (XForms Common Environment) Mediu desktop ușor și rapid pentru calculatoare cu resurse limitate.
+  VLC (VideoLAN Client) Player multimedia open-source capabil să ruleze majoritatea formatelor video.
+Linux Infrastructure - Display Protocols
+  d. Protocoale care controlează desenarea ferestrelor și procesarea evenimentelor de mouse/tastatură
+      EX: X11, Wayland
+  a. Componenta care oferă suport pentru aplicațiile vechi în medii noi
+      EX: XWayland
+  b. Metoda de comunicare locală pentru afișarea ferestrelor
+      EX: Unix Sockets
+
+
+34.
+Situație Trebuie să diferențiezi între vizualizarea setărilor locale ale sistemului și utilizarea uneltelor de testare a rețelei.
+Networking - DNS Identification Tools
+  c. cat /etc/resolv.conf
+      EX: Afișează conținutul fișierului de configurare unde sunt listate serverele DNS active.
+  a. host
+      EX: Utilitar pentru identificarea rapidă a IP-ului sau a serverului de mail (MX) al unui domeniu.
+  b. nslookup
+      EX: Program interactiv folosit pentru a interoga serverele de nume și a testa răspunsurile acestora.
+  d. dig
+      EX: Unealtă profesională de diagnosticare care extrage detalii complete din pachetele DNS.
+  e. less
+      EX: Comandă de vizualizare (pager) care permite citirea fișierelor de configurare mari fără a le modifica.
+
+
+35.
+Networking - Full IP Classification
+  a. Static IP
+      EX: Adresă configurată manual care nu se schimbă la repornirea dispozitivului.
+  b. Dynamic IP
+      EX: Adresă primită automat de la un server DHCP pentru o perioadă determinată.
+  c. Public IP
+      EX: Adresă unică la nivel global care permite identificarea pe internet. E alocata de ISP (Internet Service Provider).
+  d. Private IP
+      EX: Adresă folosită în interiorul rețelelor locale (clasele 10.x, 192.168.x, 172.16.x).
+  e. Loopback IP
+      EX: Adresa 127.0.0.1 utilizată pentru testarea comunicațiilor interne ale sistemului.
+  f. APIPA
+      EX: Adresă din gama 169.254.x.x auto-atribuită când serverul DHCP este indisponibil.
+
+
+40.
+Diferenta dintre driver si modul:
+
+Driverul este funcția: Este software-ul specific care permite sistemului de operare să comunice cu o 
+piesă de hardware (placă video, imprimantă, mouse). Fără el, sistemul nu știe "ce să facă" cu dispozitivul.
+
+Modulul este metoda de livrare: Este un fișier care poate fi încărcat sau descărcat din nucleul 
+sistemului (Kernel) din mers, fără a fi nevoie de restart.
+
+Caracteristică	                      Driver	                                                          Modul
+Definiție	            Codul care controlează hardware-ul.	                      O bucată de cod care extinde funcțiile Kernel-ului.
+Relație	              Un driver poate fi implementat ca un modul.	              Un modul poate fi un driver, dar poate fi și un sistem de fișiere sau un firewall.
+Flexibilitate	        Poate fi compilat direct în nucleu (permanent).	          Este modular (îl poți opri/porni când ai nevoie).
+
+Pe scurt: Un driver este un tip de modul care se ocupă de hardware. 
+Totuși, nu toate modulele sunt drivere (de exemplu, un modul poate adăuga suport 
+pentru criptare sau pentru un format de fișiere, fără a atinge vreo piesă de hardware).
+
+
+
+41.
+Roluri si utilitare de prelucrare si afisare de text:
+  a. Comprimă un fișier
+      EX: gzip, bzip2, xz
+  d. Convertește un fișier din text în binar
+      EX: xxd, od (sau compilatoare precum gcc pentru cod sursă)
+  e. Afișează o imagine în linia de comandă
+      EX: cacaview, fbi, timg
+  f. Copiază conținutul unui fișier peste altul
+      EX: cp (sau cat fisier1 > fisier2)
+  g. Cataloghează fișierele dintr-un director
+      EX: ls, tree
+Filesystem - Data Redirection
+  a. Suprascrierea completă a destinației
+      EX: cp sursa.txt destinatie.txt (sau cat sursa.txt > destinatie.txt)
+  b. Adăugarea (Append) la sfârșitul fișierului existent
+      EX: cat sursa.txt >> destinatie.txt
+  c. Combinarea mai multor fișiere într-unul singur
+      EX: cat fisier1.txt fisier2.txt > total.txt
+
+
+42.
+System - Hardware and Kernel Info
+  a. cat /proc/version
+      EX: Afișează versiunea kernelului plus detaliile despre compilarea acestuia.
+  b. uname -a
+      EX: Afișează toate informațiile despre sistem (nume, kernel, arhitectură, OS).
+Comenzi pentru alte proprietăți de sistem
+  1. Identificarea memoriei RAM (Totală/Liberă)
+      EX: free -m (sau cat /proc/meminfo)
+  2. Identificarea procesorului (Model/Frecvență)
+      EX: lscpu (sau cat /proc/cpuinfo)
+  3. Identificarea versiunii distribuției (OS version)
+      EX: cat /etc/os-release (sau lsb_release -a)
+  4. Identificarea timpului de funcționare (Uptime)
+      EX: uptime
+  5. Identificarea arhitecturii hardware
+      EX: arch (sau uname -m)
+Hardware & System - File to Command Mapping
+  1. Identificarea partițiilor și a dispozitivelor de stocare
+      EX: lsblk (sau cat /proc/partitions)
+  2. Identificarea plăcilor video, de rețea sau a altor dispozitive pe magistrala PCI
+      EX: lspci (sau ls /sys/bus/pci/devices)
+  3. Identificarea dispozitivelor conectate prin USB
+      EX: lsusb (sau ls /sys/bus/usb/devices)
+  4. Identificarea modulelor de kernel încărcate (după cum am discutat anterior)
+      EX: lsmod (sau cat /proc/modules)
+  5. Identificarea întreruperilor hardware (folosit în depanarea conflictelor de dispozitive)
+      EX: cat /proc/interrupts
+  6. Verificarea sistemelor de fișiere montate și a spațiului disponibil
+      EX: df -h (sau cat /proc/mounts)
 
 
 
