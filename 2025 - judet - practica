@@ -1,0 +1,387 @@
+clasele 9-10
+
+Linux Search - Indexed vs Exhaustive Methods
+  1. Căutarea Indexată (Utility: locate)
+      - Mecanism: Utilizează o bază de date preconstruită (index) localizată de obicei în /var/lib/mlocate.db.
+      - Avantaj: Viteză extrem de mare; consum minim de resurse CPU în momentul căutării.
+      - Dezavantaj: Rezultatele pot fi neactualizate dacă baza de date nu a fost reîmprospătată.
+      - Mentenanță: Necesită serviciul updatedb pentru a monitoriza și înregistra schimbările din sistem.
+      EX: locate config.txt
+  
+  2. Căutarea Exhaustivă (Utility: find)
+      - Mecanism: Parcurge fizic structura de directoare de pe disc la fiecare execuție a comenzii.
+      - Avantaj: Rezultate mereu actualizate (real-time) și precizie maximă.
+      - Dezavantaj: Consum ridicat de resurse I/O (disc) și timp de execuție mare pe volume mari de date.
+      - Independență: Nu necesită baze de date sau servicii de fundal (daemons) pentru a funcționa.
+      EX: find /etc -name config.txt
+
+
+2.
+Analiza variantelor de răspuns
+  a. cat /proc/mod/<driver>
+    - directorul /proc/mod nu există
+    - informațiile despre module se află parțial în /proc/modules, dar sub formă de listă simplă.
+  b. lsmod <driver>
+    - lsmod (List Modules) doar afișează ce este încărcat în RAM; nu acceptă numele unui driver ca argument pentru a da detalii.
+  c. modinfo <driver>
+    - acesta interoghează fișierul .ko și afișează autorul, descrierea, parametrii și licența.
+  d. cat /proc/drivers/<driver>
+    - calea nu este validă pentru detalii despre module în ierarhia /proc.
+  e. dmesg <driver>
+    - dmesg (Display Message) arată log-urile sistemului; poți vedea mesaje despre driver
+    - nu informații tehnice despre fișierul acestuia.
+Obs. .ko (Kernel Object) Extensia fișierelor care conțin modulele de kernel.
+  -> deci si modulele si driverele au extensia .ko
+
+
+  3.
+  OS Architecture - Graphic Stack Layering
+  - Ierarhia este descendentă: de la cel mai abstract (User) la cel mai concret (Hardware).
+
+Analiza ordinii alese
+  1. User (Utilizatorul)
+    - Cel care inițiază acțiunea; punctul de start al interacțiunii.
+  2. Graphic Interface (Aplicațiile GUI)
+    - Programele pe care le vedem (browser, setări).
+    - EX: Firefox, LibreOffice.
+  3. Display Server (Serverul de afișare)
+    - „Coordonatorul” care desenează pixelii pe ecran.
+    - EX: X11 sau Wayland.
+  4. Window Manager (Managerul de ferestre)
+    - Legat direct de Display Server; se ocupă de borduri, butoane de închidere și poziționare.
+    - EX: GNOME Shell, KWin.
+  5. Kernel (Nucleul)
+    - Primește cererea de la Display Server și o traduce în limbaj hardware.
+  6. Hardware (Componentele fizice)
+    - Placa video (GPU) și monitorul care afișează rezultatul final.
+
+
+4.
+Situație: Trebuie să citești conținutul unui fișier lung (.v - Verilog) în terminal și să identifici comenzile Linux valide.
+Analiza variantelor de răspuns
+  f. less firestorm.v
+    - Corect. Este utilitarul ideal pentru fișiere lungi (permite scroll și search).
+  j. cat firestorm.v
+    - Valid, dar mai puțin eficient pentru fișiere "cu foarte multe linii" (nu are scroll).
+  d. ls firestorm.v
+    - Valid, dar greșit aici. ls (List) arată doar dacă fișierul există, nu și ce scrie în el.
+  e. cowsay firestorm.v
+    - Valid, dar comic. Desenează o vacă în ASCII care spune textul primit; nu e un viewer serios.
+  b. bash < firestorm.v
+    - Valid, dar periculos. Încearcă să execute conținutul fișierului ca și cum ar fi un script bash.
+  a, c, g, h, i, k (open, type, show, display, osb, scroll)
+    - Invalide/Inexistente în acest context. În Linux nu există utilitare standard cu aceste nume pentru vizualizarea textului în terminal (ex: type este în CMD Windows, open este în macOS).
+Definiții Acronime
+  Verilog (.v) Limbaj HDL (Hardware Description Language) utilizat pentru proiectarea circuitelor integrate.
+  .vhdl sau .vhd: Specifice limbajului VHDL (rivalul principal al Verilog).
+  .sv: Specifică pentru SystemVerilog, o versiune mult mai modernă și complexă a Verilog-ului, folosită intens pentru verificare și simulare.
+
+
+6.
+- whereis
+    - Utilizată pentru a localiza fișierele binare, sursă și manuale.
+    - Caută în directoare standard (/bin, /usr/share/man).
+- which
+  - Utilizată pentru a arăta calea completă a unui executabil.
+  - Se bazează strict pe variabila de mediu $PATH.
+- type
+  - Utilizată pentru a descrie o comandă: alias, funcție shell, binar sau builtin.
+  - EX: type ll (va returna că este un alias pentru ls -l).
+- find / locate / updatedb
+  - find: Caută fișiere recursiv în ierarhia de directoare.
+  - locate: Caută rapid într-o bază de date pre-construită.
+  - updatedb: Actualizează baza de date folosită de comanda locate.
+- restul variantelor (give, cmd, show, describe)
+  - Sunt termeni descriptivi sau comenzi din alte sisteme, nefiind folosite pentru localizarea executabilelor în Linux.
+
+
+8.
+Situație: Trebuie să identifici dacă o cale este fixă (absolută) sau depinde de locația curentă (relativă) pentru a rula corect o comandă.
+Path Identification - Absolute vs Relative
+  - Absolute Path: Începe mereu cu / (root) sau ~ (home).
+    - EX: /var/log/syslog
+  - Relative Path: Începe cu un nume de folder, . (curent) sau .. (părinte).
+    - EX: ./script.sh
+
+Diferențe Cheie
+  - Punctul de start: Căile absolute au un punct de start global ( / sau ~ ).
+  - Flexibilitate: Căile relative sunt mai scurte, dar se "strică" dacă schimbi directorul de lucru.
+
+Analiza variantelor de răspuns
+  - ./code/studio
+    - Relativă. Începe cu ./, ceea ce înseamnă că fișierul este căutat în directorul curent.
+  - /var/spool
+    - Absolută. Începe cu /, plecând direct din rădăcina sistemului de fișiere.
+  - ../apcupsd/apcupsd.conf
+    - Relativă. Începe cu ../, deci pleacă din directorul părinte al locației actuale.
+  - lib/vz/images
+    - Relativă. Începe direct cu un nume de folder (lib), deci caută folderul lib în locația curentă.
+  - /home/hawk/Documents/../Pictures
+    - Absolută. Deși conține .., calea începe cu /, deci punctul de referință este fix (rădăcina).
+  - ~/Documents/skip/wall.img
+    - Absolută. Simbolul ~ este o scurtătură pentru /home/user/, fiind considerată o cale completă (absolută).
+
+
+9.
+Folderul [C:\Windows] conține mai multe resurse ale sistemului de operare.
+Folderul [C:\Users] conține datele fiecărui utilizator. În [C:\Program Files] se
+pot găsi aplicațiile instalate pe sistem. Folderul [C:\Windows\System32]
+conține executabile de sistem, biblioteci și drivere. Ștergerea folderului
+[C:\Windows], care îl conține pe [C:\Windows\System32], va duce la un
+sistem inoperabil. Ștergerea folderelor [C:\Users] sau [C:\Program Files] doar
+va duce la pierderea datelor.
+
+Obs. C este „centrul de comandă”, unde locuiește sistemul de operare.
+Obs. D și restul literelor sunt folosite pentru stocare suplimentară sau dispozitive optice (CD/DVD).
+
+Gemini a spus
+Ai dreptate, am lungit-o cu explicațiile. Iată textul adaptat, păstrând formatul cerut pentru Linux:
+
+Directorul / conține mai multe resurse ale sistemului de operare. Directorul /home conține datele 
+fiecărui utilizator. În /usr se pot găsi aplicațiile instalate pe sistem. Directoarele /bin și /lib 
+conțin executabile de sistem, biblioteci și drivere. Ștergerea directorului /, care le conține pe /bin 
+și /lib, va duce la un sistem inoperabil. Ștergerea directoarelor /home sau /usr doar va duce la pierderea datelor.
+
+
+11.
+Citiți următoarele comenzi date în linia de comandă:
+
+root@acadnet:/home/hawk# cat everest.v      -> Confirmă că fișierul sursă există în /home/hawk și are conținutul APL1W10.
+APL1W10
+root@acadnet:/home/hawk# ln -s ./everest.v /var/lib/pam/blizzard.v        -> Momentul erorii: S-a creat un link care caută everest.v relativ la locația link-ului, nu la locația sursei.
+root@acadnet:/var/lib/pam# ls -l
+total 4
+-rw-r--r-- 1 root root61 Jul 25 06:24 auth
+lrwxrwxrwx 1 root root11 Jul 26 22:35 blizzard.v -> ./everest.v            -> Litera l indică un link simbolic; săgeata arată către ce cale punctează acesta.
+-rw-r--r-- 1 root root71 Jul 25 06:24 password
+root@acadnet:/var/lib/pam# cat blizzard.v
+cat: blizzard.v: No such file or directory          -> Eroare: Sistemul caută /var/lib/pam/everest.v (care nu există) în loc de /home/hawk/everest.v.
+
+Implementarea corectă (pentru a evita eroarea):
+- Varianta Absolută: ln -s /home/hawk/everest.v /var/lib/pam/blizzard.v
+- Varianta Relativă corectă: ln -s ../../../home/hawk/everest.v /var/lib/pam/blizzard.v  
+
+
+12.
+  - /bin → Fișiere binare esențiale rulării sistemului de operare,
+  - /dev → Fișiere speciale, care interacționează direct cu dispozitive hardware sau logice,
+  - /boot → Fișiere necesare la încărcarea sistemului de operare, precum imaginea kernelului,
+  - /root → Directorul home al utilizatorului root,
+  - /opt → Aplicații de dimensiuni mari, instalate ulterior,
+  - /proc → Sistem virtual de fișiere cu informații despre sistem și aplicații,
+  - /var → Fișiere al căror conținut se schimbă des,
+  - /home → Directoarele de home ale utilizatorilor normali,
+  - /etc → Fișiere pentru configurarea sistemului,
+  - /lib → Biblioteci esențiale necesare binarelor din sistem,
+  - /sbin → Executabile destinate exclusiv administrării sistemului (System Binaries),
+  - /mnt → Locație pentru montarea manuală și temporară a sistemelor de fișiere,
+  - /media → Locație pentru montarea automată a mediilor de stocare detașabile,
+  - /sys → Interfață virtuală pentru configurarea și vizualizarea parametrilor de kernel,
+  - /usr → Ierarhia secundară pentru utilitarele și datele utilizatorilor,
+  - /tmp → Stocarea fișierelor temporare care sunt șterse la reboot,
+  - /srv → Date specifice pentru serviciile găzduite de sistem.
+
+
+20.
+Shell Special Parameters List
+  - $? (Question Mark): Codul de ieșire al celei mai recente comenzi (0 = Succes, orice altceva = Eroare).
+      EX: ls /folder/inexistent; echo $?
+  - $! (Bang): PID-ul celui mai recent proces trimis în background.
+      EX: sleep 100 & echo $!
+  - $_ (Underscore): Ultimul argument al celei mai recente comenzi executate.
+      EX: mkdir proiect; cd $_
+  - $$ (Dollar): PID-ul procesului curent (al shell-ului în care te afli).
+      EX: echo $$
+  - $# (Hash): Numărul total de argumente transmise unui script sau unei funcții.
+      EX: Daca rulezi ./script.sh a b, $# va fi 2.
+  - $@ (At): Toate argumentele transmise, tratate ca elemente individuale (lista de argumente).
+      EX: for arg in "$@"; do echo $arg; done
+  - $* (Asterisk): Toate argumentele transmise, tratate ca un singur șir de caractere.
+  - $0 (Zero): Numele scriptului care rulează sau al shell-ului curent.
+      EX: echo $0 (va afișa /bin/bash sau numele scriptului).
+  - $USER: Numele utilizatorului curent (variabilă de mediu, dar des folosită analog).
+
+
+21.
+Situație: Vrei să afli ce resurse (fișiere, porturi, biblioteci) sunt blocate sau utilizate de un anumit program.
+lsof - List Open Files
+  - Rol: Interoghează kernel-ul pentru a lista toate fișierele deschise de procesele active.
+  - -p [PID]: Filtrează rezultatele pentru un singur identificator de proces (Process ID).
+      EX: lsof -p 11404
+
+Analiza variantelor din grilă:
+  - Varianta a (subprocese): Specifică pentru comanda pgrep -P 11404 sau pstree -p 11404.
+      EX: pstree -p 11404 (arată ierarhia de procese).
+  - Varianta b (oprire): Specifică pentru comanda kill 11404.
+      EX: kill -9 11404 (forțează închiderea).
+  - Varianta d (CPU/RAM): Specifică pentru comanda top -p 11404 sau ps -p 11404 -u.
+      EX: top -p 11404 (monitorizare în timp real a consumului).
+
+
+26.
+Concept: Shell Arithmetic Expansion
+  - $5: Reprezintă al cincilea argument pozițional transmis la execuție.
+  - $(( ... )): Sintaxa standard pentru calcule întregi în Bash.
+  - &&: Operator logic care condiționează 'echo' de succesul calculului anterior.
+
+De ce comanda originală este FALSE (Rezultat != 5):
+  1. Într-un shell normal, $5 este NULL (gol).
+  2. Substituția devine: result=$(( + 3 )). Aceasta este o eroare de sintaxă.
+  3. Deoarece prima parte eșuează, 'echo' nu se mai execută (Short-circuit).
+
+Scenariu ipotetic: Când ar fi fost TRUE?
+  - Dacă rulăm comanda după: set 1 2 3 4 2
+  - Atunci $5 devine 2, iar $((2 + 3)) returnează 5.
+  - Comanda 'echo $result' va afișa valoarea 5.
+
+EX (Eșec): result=$(($5 + 3)) && echo $result -> Eroare/Nimic afișat.
+EX (Succes): set a b c d 2; result=$(($5 + 3)) && echo $result -> Afișează 5.
+
+Definiții Acronime
+  Positional Parameters ($1...$N) Variabile automate care preiau argumentele din linia de comandă (IPC).
+  Arithmetic Expansion $(( )) Mecanismul de bază pentru lucrul cu numere întregi în scripturi Linux.
+  Exit Status ($?) Codul de eroare (0 pentru succes) care determină dacă operatorul && continuă execuția.
+
+
+
+27.
+Regula de aur pentru examen:
+
+Același dispozitiv:
+  O mutare (mv) este instantanee (timp scurt) pentru că sistemul doar schimbă "numele" 
+  sau calea în tabelul de index, fără să mute datele fizic.
+Dispozitive diferite: 
+  O mutare (mv) între două partiții diferite (ex: de pe sdb1 pe nvme) devine automat o 
+  copiere urmată de ștergere. Asta durează mult (timp lung).
+
+Situație: Determinarea timpului de execuție (scurt vs. lung) bazată pe locația fizică și dimensiunea datelor.
+Key Deductions from System Info
+  - Partiția A (ext4): /System/Volumes/Preboot/Cryptexes/xarts (locația fișierului SystemRecovery).
+  - Partiția B (vfat): /System/Volumes/Preboot/FieldService/iSCPreboot (destinație NVMe).
+  - Fișier Gigant: SystemRecovery (~5 GB). Copierea lui durează mereu > 3s.
+  - Fișiere Mici: MobileActivation, srvo (bytes). Se copiază instantaneu.
+
+Reguli de viteză pentru Olimpiadă:
+  - cp [fișier mare] -> LUNG (trebuie să scrie biții unul câte unul).
+  - cp [fișier mic] -> SCURT.
+  - mv [orice] pe aceeași partiție -> SCURT (doar schimbă indexul/numele).
+  - mv [fișier mare] între partiții diferite -> LUNG (se comportă ca un cp).
+
+EX: mv SystemRecovery ./NouNume -> SCURT (aceeași partiție).
+EX: cp SystemRecovery /alta/partitie -> LUNG (5GB de scris).
+
+Definiții Acronime
+  mount Utilitar care arată corespondența dintre dispozitivele hardware și directoarele din sistem.
+  ext4 / vfat Tipuri de sisteme de fișiere (Linux native vs. Windows compatible).
+  Metadata Informațiile despre un fișier (nume, dimensiune, locație) pe care 'mv' le modifică rapid.
+
+Luam pe rand operatiile:
+
+1.
+elev@Blackbird xarts % cp ./SystemRecovery ../../BaseSystem/Data/../../FieldService/./iSCPreboot
+De ce este LUNG (> 3 secunde):
+  1. Dimensiunea Fișierului: SystemRecovery are ~5 GB (5.368.709.120 bytes). Chiar și pe un disc rapid, scrierea a 5GB de date durează considerabil.
+  2. Schimbarea Partiției (Cross-Device):
+     - Sursă: /System/Volumes/Preboot/Cryptexes/xarts (pe /dev/sdb1 - ext4).
+     - Destinație: /System/Volumes/Preboot/FieldService/iSCPreboot (pe /dev/nvme2n1p1 - vfat).
+  3. Calea Relativă Complexă: Deși navigarea prin ../.. nu consumă timp, destinația finală 'iSCPreboot' este un Mount Point diferit față de punctul de plecare 'xarts'.
+
+Concluzie: Trebuie mutați fizic 5 GB de pe un dispozitiv (sdb1) pe altul (nvme), ceea ce este o operațiune grea pentru procesor și disc.
+
+2.
+elev@Blackbird xarts % cp SystemRecovery SystemRebuild
+De ce este LUNG (> 3 secunde):
+  - Natura comenzii 'cp': Spre deosebire de 'mv' (care doar redenumește), 'cp' trebuie să creeze un set nou de date.
+  - Dimensiune: Trebuie să citească 5 GB din locația A și să îi scrie în locația B pe același disc.
+  - I/O Stress: Citirea și scrierea simultană pe același dispozitiv fizic (/dev/sdb1) este adesea mai lentă decât între două discuri diferite, deoarece capul de citire al HDD-ului (sau controlerul SSD) trebuie să sară între adrese constant.
+
+De ce locația contează:
+  - SystemRebuild: Neexistând o cale specificată, el va fi creat tot în 'xarts'.
+  - Chiar dacă sunt "vecine" pe disc, 5 GB rămân 5 GB de procesat.
+
+  3.
+  elev@Blackbird IRIX % mv ../MobileActivation .
+  Rolul exact al comenzii:
+  1. Identifică sursa: '../MobileActivation' (fișierul aflat cu un nivel mai sus în ierarhie).
+  2. Identifică destinația: '.' (punctul reprezintă directorul curent, adică 'IRIX').
+  3. Acțiune: Fișierul este mutat din folderul 'xarts' în folderul 'IRIX'.
+
+De ce este SCURT (sub 3 secunde):
+  - Aceeași Partiție: Atât 'xarts' cât și 'IRIX' se află pe același dispozitiv (/dev/sdb1).
+  - Dimensiune: Fișierul are doar 224 bytes. Chiar dacă ar fi fost o copie, ar fi fost instantanee.
+  - Metadate: Deoarece sursa și destinația sunt pe aceeași partiție, sistemul doar modifică intrarea în tabelul de fișiere (un simplu update de pointer).
+
+  4.
+  elev@Blackbird FieldService % mv iSCPreboot/SFR iSCPreboot/SFB
+  De ce este SCURT:
+  1. Aceeași Partiție: Sistemul nu trebuie să copieze biții dintr-o zonă în alta a hardware-ului.
+  2. Modificare Metadate: Se schimbă doar textul 'SFR' cu 'SFB' în tabelul de index al partiției.
+  3. Fără I/O Intensiv: Nu se citește și nu se scrie conținutul fișierului, deci viteza nu depinde de mărimea acestuia.
+
+  De ce dispare 'SFR':
+  - Redundanță zero: Pentru a evita ocuparea inutilă a spațiului cu aceeași informație, 'mv' elimină vechea referință.
+  - Actualizare Pointer: Datele fizice rămân pe disc, dar acum pot fi găsite doar sub numele 'SFB'.
+  - Comportament 'Cut-Paste': Spre deosebire de 'cp', 'mv' asigură că există o singură instanță a fișierului în sistem.
+
+  5.
+  elev@Blackbird Cryptexes % mv xarts/SystemRecovery ../FieldService/iSCPreboot
+  De ce este LUNG (> 3 secunde):
+  1. Granița Fizică: Sursa este pe /dev/sdb1 (HDD/SSD), iar destinația pe /dev/nvme2n1p1 (NVMe). Datele trebuie să circule prin magistrala sistemului.
+  2. Dimensiune Critică: SystemRecovery are ~5.3 GB. Chiar și la o viteză de 100 MB/s, ar dura peste 50 de secunde.
+  3. Conversie Filesystem: Datele trec de pe un sistem de fișiere 'ext4' pe unul 'vfat', necesitând o reconstrucție a structurii de alocare.
+
+Mecanismul din spate:
+  - Pas 1: Sistemul citește bloc cu bloc cei 5 GB din 'xarts'.
+  - Pas 2: Sistemul scrie blocurile în 'iSCPreboot'.
+  - Pas 3: Abia după ce scrierea este 100% gata, fișierul original din 'xarts' este șters.
+
+  6.
+  elev@Blackbird Preboot % cp -r Cryptexes FieldService/iSCPreboot
+  Command Analysis: cp -r Cryptexes FieldService/iSCPreboot
+  - Flag -r (Recursive): Obligă utilitarul să intre în subdirectoare (xarts) și să copieze tot conținutul.
+  - Conținut: Include fișierul SystemRecovery (~5.3 GB) identificat anterior în 'xarts'.
+  - Timp de execuție: LUNG (peste 3 secunde).
+
+De ce este LUNG:
+  1. Volum de Date: Doar fișierul SystemRecovery singur necesită zeci de secunde pentru a fi scris pe noua partiție.
+  2. Overhead Recursiv: Sistemul trebuie să creeze manual structura de directoare la destinație înainte de a popula fișierele.
+  3. I/O Cross-Device: Datele sunt citite de pe dispozitivul ext4 și transcrise pe dispozitivul vfat (NVMe), implicând o utilizare intensă a procesorului și a magistralei de disc.
+
+Efectul asupra sistemului:
+  - Spațiu: Se ocupă alți 5 GB pe partiția NVMe.
+  - Redundanță: Se creează o copie identică, lăsând fișierele originale la locul lor (spre deosebire de 'mv').
+
+  7. 
+  elev@Blackbird Preboot % mv Cryptexes/xarts/IRIX Cryptexes/xarts/systems
+  Command Analysis: mv Cryptexes/xarts/IRIX Cryptexes/xarts/systems
+  - Sursa: IRIX (directorul existent).
+  - Destinația: systems (numele dorit).
+  - Locație: Ambele sunt pe /dev/sdb1 (ext4).
+  - Timp de execuție: SCURT (sub 3 secunde).
+
+De ce este SCURT:
+  1. Operare pe Metadate: Sistemul doar șterge numele 'IRIX' din tabelul folderului 'xarts' și scrie în loc 'systems'.
+  2. Pointer Constant: Toate fișierele din interiorul folderului (dacă există) rămân exact pe aceleași sectoare fizice ale discului.
+  3. Fără Copiere: Deoarece sursa și destinația sunt sub același 'mount point', nu se mută niciun bit de date.
+
+Ce se întâmplă cu 'IRIX':
+  - Dispare: Numele vechi nu mai este valid.
+  - Redenumire vs Mutare: Deși comanda este 'mv', rezultatul practic este o redenumire (rename), deoarece calea părinte a rămas aceeași (Cryptexes/xarts/).
+
+  8.
+  elev@Blackbird iSCPreboot % cp ../../Cryptexes/xarts/srvo .
+  De ce este SCURT (în ciuda schimbării partiției):
+  1. Dimensiune Redusă: 96 bytes reprezintă mai puțin de un "sector" de disc (care are de obicei 512 bytes sau 4KB). Este o singură operație de scriere.
+  2. Performanța NVMe: Destinația este un SSD NVMe, care poate scrie date de mii de ori mai repede decât ar fi necesar pentru acest fișier.
+  3. Lățimea de Bandă: Cantitatea de date este atât de mică încât nu poate satura magistrala, indiferent de distanța logică dintre partiții.
+
+Comparație critică:
+  - cp SystemRecovery (5 GB) -> LUNG (milioane de operații de scriere).
+  - cp srvo (96 bytes) -> SCURT (o singură operație de scriere).
+
+
+
+28.
+
+
+      
