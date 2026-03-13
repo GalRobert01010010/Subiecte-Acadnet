@@ -936,5 +936,19 @@ Cybersecurity - CIA Triad Framework
       Alte practici: Redundanță (RAID), sisteme de tip Load Balancing, soluții UPS (pentru pene de curent), Clusterizare.
 
 
-
-
+49.
+  a. Firewall (Filtrare trafic rețea)
+      EX: iptables (Utilitar clasic Linux)
+      EX: nftables (Succesorul modern al iptables)
+      EX: UFW (Uncomplicated Firewall - interfață simplificată)
+      EX: Firewalld (Folosit implicit pe RHEL/CentOS)
+      Situație: Vrei să permiți conexiunile pe portul 443 (HTTPS) dar să le blochezi pe toate celelalte.
+  c. Software Antivirus (Detecție cod malițios)
+      EX: ClamAV (Standard open-source pentru Linux)
+      EX: Sophos Antivirus for Linux
+      EX: ESET NOD32 Antivirus
+      EX: Bitdefender Endpoint Security
+      Situație: Scanezi un fișier primit prin transfer de date pentru a te asigura că nu conține scripturi dăunătoare.
+Diferențe Cheie
+  Firewall Situație: Vrei să blochezi accesul unui atacator care încearcă să se conecteze prin portul 23 (Telnet).
+  Antivirus Situație: Vrei să detectezi un troian ascuns într-o arhivă .zip descărcată de pe internet.
