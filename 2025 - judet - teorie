@@ -862,6 +862,11 @@ Pe scurt: Un driver este un tip de modul care se ocupă de hardware.
 Totuși, nu toate modulele sunt drivere (de exemplu, un modul poate adăuga suport 
 pentru criptare sau pentru un format de fișiere, fără a atinge vreo piesă de hardware).
 
+Thread (firul de executie):
+- se ocupa cu executia
+Ce este: Cea mai mică unitate de procesare care poate fi programată de sistemul de operare.
+Rol: Permite unui program să facă mai multe lucruri deodată (multitasking).
+Exemplu: Într-un browser, un thread încarcă textul paginii, altul descarcă imaginile, iar altul verifică dacă ai apăsat un buton.
 
 
 41.
@@ -917,6 +922,18 @@ Hardware & System - File to Command Mapping
       EX: df -h (sau cat /proc/mounts)
 
 
+44.
+Cybersecurity - CIA Triad Framework
+  1. Confidentiality (Confidențialitate)
+      EX: d. Prin folosirea permisiunilor pentru utilizatori (permite doar celor autorizați să citească datele).
+      Alte practici: Criptarea datelor (LUKS), utilizarea protocolului SSH, mascarea parolelor (/etc/shadow).
+  2. Integrity (Integritate)
+      EX: a. Prin calcularea unei sume de control (detectează modificările neautorizate).
+      EX: f. Prin jurnalizare (previne coruperea structurii sistemului de fișiere).
+      Alte practici: Semnături digitale, utilizarea SELinux/AppArmor, Backup-uri cu verificare (Read-only snapshots).
+  3. Availability (Disponibilitate)
+      EX: b. Prin salvarea datelor SMART ale discurilor (previne pierderea accesului prin monitorizarea hardware).
+      Alte practici: Redundanță (RAID), sisteme de tip Load Balancing, soluții UPS (pentru pene de curent), Clusterizare.
 
 
 
