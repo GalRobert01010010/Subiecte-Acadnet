@@ -1342,20 +1342,146 @@ Def. Infrastructura de comunicație care permite schimbul de date între servere
 
 
 
+17.
+### Notițe: Exerciții Practice Bash (Control Flow One-Liners)
+### Proces/Protocol: Scripting Logic / Automation
+
+1. Exercițiu: Verificarea disponibilității unui server web (Ping)
+Cerință: Creează un script care verifică la fiecare 10 secunde dacă google.com răspunde la ping și afișează online sau offline.
+Comanda: while true; do ping -c 1 google.com; if [ $? -eq 0 ]; then echo "online"; else echo "offline"; fi; sleep 10; done
+
+2. Exercițiu: Monitorizarea existenței unui fișier de blocare (Lock File)
+Cerință: Creează un script care verifică în fiecare secundă dacă fișierul /tmp/lock există. Dacă există, afișează Blocat, altfel afișează Liber.
+Comanda: while true; do ls /tmp/lock; if [ $? -eq 0 ]; then echo "Blocat"; else echo "Liber"; fi; sleep 1; done
+
+3. Exercițiu: Verificarea prezenței unui utilizator în sistem (Who/Grep)
+Cerință: Verifică la fiecare 5 secunde dacă utilizatorul student este logat în sistem și afișează un mesaj corespunzător.
+Comanda: while true; do who | grep -q "student"; if [ $? -eq 0 ]; then echo "Utilizator activ"; else echo "Utilizator absent"; fi; sleep 5; done
+
+4. Exercițiu: Verificarea spațiului pe disc (Disk Usage)
+Cerință: Creează un script care verifică dacă partiția rădăcină (/) a depășit 90% utilizare și afișează Alerta sau OK la fiecare minut.
+Comanda: while true; do df / | grep "9[0-9]%"; if [ $? -eq 0 ]; then echo "Alerta"; else echo "OK"; fi; sleep 60; done
+
+5. Exercițiu: Monitorizarea unui serviciu activ (Systemctl)
+Cerință: Verifică la fiecare 30 de secunde dacă serviciul de rețea (NetworkManager) este activ (running).
+Comanda: while true; do systemctl is-active --quiet NetworkManager; if [ $? -eq 0 ]; then echo "Serviciu OK"; else echo "Serviciu Picat"; fi; sleep 30; done
 
 
 
 
+18.
+### Notițe: Arhitectura Hipervizoarelor (Virtualizare)
+### Proces/Protocol: Type 1 vs Type 2 Hypervisors / Virtual Machine Monitor (VMM)
+
+Situație: Alegerea tipului de virtualizare în funcție de performanța dorită și infrastructura disponibilă.
+
+- VM (Tip 1): Hipervizor -> Mai multe OS-uri.
+- VM (Tip 2): OS Gazdă -> Hipervizor -> OS Oaspete.
+
+1. Hipervizor de Tip 1 (Bare-Metal)
+Structură (de jos în sus):
+- hardware: Resursele fizice (CPU, RAM, Disk).
+- hipervizor: Instalat direct pe hardware; gestionează resursele fără un OS intermediar.
+- management: Consola de control pentru administrarea mașinilor virtuale.
+- OS oaspete: Sistemele de operare care rulează în interiorul mașinilor virtuale.
+Caracteristică: Performanță ridicată, latență minimă.
+EX: KVM, VMware ESXi, Microsoft Hyper-V (varianta server).
+
+2. Hipervizor de Tip 2 (Hosted)
+Structură (de jos în sus):
+- hardware: Resursele fizice.
+- OS gazdă: Sistemul de operare principal al calculatorului (ex: Windows 11, Ubuntu).
+- hipervizor: Rulează ca o aplicație în interiorul OS-ului gazdă.
+- OS oaspete: Sistemele virtualizate.
+Caracteristică: Ușor de instalat, dar depinde de stabilitatea și performanța OS-ului gazdă.
+EX: Oracle VirtualBox, VMware Workstation.
+
+Obs. Hipervizorul de Tip 1 rulează direct pe hardware pentru performanță industrială, în timp ce cel 
+  de Tip 2 rulează peste un OS gazdă, fiind ideal pentru medii de testare și utilizare personală.
+
+Virtualizare de Hardware (VM)
+- Ce se virtualizează: Totul (CPU, RAM, Placă de rețea, BIOS).
+- Rezultat: Un calculator complet virtual în care trebuie să instalezi un OS întreg.
+- Eficiență: Scăzută (consumi RAM și pentru al doilea OS).
+Virtualizare de OS (Containere)
+- Ce se virtualizează: Doar mediul de rulare (fișiere, biblioteci, rețea logică).
+- Nucleul (Kernel): Toate containerele folosesc nucleul OS-ului gazdă. Nu există un nucleu propriu în container.
+- Rezultat: O cutie izolată care pornește instantaneu pentru că OS-ul este deja pornit dedesubt.
+- Eficiență: Foarte ridicată (zeci de containere pot rula pe un singur server).
 
 
 
+21.
+### Notițe: Evaluarea Condițiilor în Bash (Comanda test)
+### Proces/Protocol: Conditional Expressions / Shell Scripting Logic
 
+Situație: Verificarea stării sistemului (fișiere, variabile, parametri) pentru controlul fluxului de execuție.
 
+1. test -f /etc/passwd
+Rol / Efect: verifică dacă /etc/passwd este fișier
+- EX: if [ -f /etc/passwd ]; then echo "Fișier găsit"; fi
 
+2. test -d "$d"
+Rol / Efect: verifică dacă valoarea variabilei d este director
+- EX: test -d /home/student && echo "Este director"
 
+3. test -x my_script
+Rol / Efect: verifică dacă my_script are permisiuni de execuție
+- EX: [ -x ./script.sh ] || echo "Nu pot executa"
 
+4. test "$#" -gt 2
+Rol / Efect: verifică dacă numărul de parametri ai scriptului este mai mare (strict) decât 2
+- EX: verifică dacă utilizatorul a introdus destule argumente la lansarea scriptului.
 
+5. test "$v" -eq 10
+Rol / Efect: verifică dacă valoarea variabilei v este egală cu 10
+- EX: folosit pentru compararea numerelor întregi.
 
+6. test "$1" = "/etc/passwd"
+Rol / Efect: verifică dacă primul parametru al scriptului are ca valoare "/etc/passwd"
+- EX: folosit pentru compararea șirurilor de caractere (string).
+
+7. test -z "$store"
+Rol / Efect: verifică dacă variabila store nu contine nicio informație (este un șir de caractere vid)
+- EX: verifică dacă o variabilă obligatorie a fost lăsată goală.
+
+8. test ! -z "$store"
+Rol / Efect: verifică dacă variabila store nu este vidă
+- EX: operatorul ! neagă condiția, deci verifică dacă există text în variabilă.
+
+Alte exemple:
+
+ test -r /etc/shadow
+Rol / Efect: verifică dacă fișierul poate fi citit (Read) de către utilizatorul curent
+- EX: verifică dacă ai drepturi de citire pe un fișier sensibil.
+
+ test -w config.log
+Rol / Efect: verifică dacă fișierul poate fi modificat (Write)
+- EX: înainte de a salva date noi, verifici dacă ai permisiunea de scriere.
+
+ test -s data.txt
+Rol / Efect: verifică dacă fișierul există și NU este gol (are dimensiunea > 0)
+- EX: verifici dacă un proces de download s-a finalizat cu succes și a scris ceva în fișier.
+
+ test "$a" -ne "$b"
+Rol / Efect: verifică dacă valoarea variabilei a este diferită (Not Equal) de b (numeric)
+- EX: folosit în bucle pentru a verifica dacă un contor a ajuns la valoarea țintă.
+
+ test "$USER" != "root"
+Rol / Efect: verifică dacă textul din variabila USER este diferit de "root"
+- EX: util pentru a opri execuția scriptului dacă nu este rulat de administrator.
+
+ test -n "$var"
+Rol / Efect: verifică dacă variabila este populată (lungimea șirului este mai mare de 0)
+- EX: opusul lui -z; verifică dacă o variabilă de mediu este setată.
+
+ test file1 -nt file2
+Rol / Efect: verifică dacă file1 este mai nou (Newer Than) decât file2
+- EX: util în scripturi de backup pentru a copia doar fișierele modificate recent.
+
+ test -e /dev/sda
+Rol / Efect: verifică dacă entitatea (fișier, director, device) există pur și simplu
+- EX: verificare generală de existență înainte de orice altă operațiune.
 
 
 
