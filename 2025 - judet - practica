@@ -1014,4 +1014,141 @@ EX: cat /etc/os-release
 Rol: Afișează detalii complete despre distribuția și versiunea sistemului de operare pe Linux.
 
 
+
+
+
+
+clasele 11-12
+
+
+
+
+2.
+-  microcontrolerele interacționează cu mediul fizic prin conectori (pini)
+-  aceștia sunt interfețe fizice prin care firmware-ul (codul) poate citi date de la senzori sau poate controla actuatori (motoare, LED-uri)
+Def. Multiplexarea este tehnica prin care un singur pin fizic poate îndeplini mai multe funcții diferite, optimizând spațiul pe cip.
+
+Situație: Conectarea și controlul componentelor electronice externe (senzori, actuatori) prin pini hardware.
+
+1. Pini de Alimentare (Bază)
+- Vcc (Voltage Common Collector): Sursă de tensiune fixă (polul pozitiv); nu se controlează din firmware. (valori comune: 3.3V, 5V etc.)
+- GND (Ground): Masa dispozitivului; referința pentru tensiune (0V); nu se controlează din firmware.
+
+2. Pini de Control și Achiziție Date
+- GPIO (General Purpose Input Output): Pini universali controlați din firmware; pot funcționa ca sursă de tensiune, masă sau voltmetru.
+    - Pini controlabili din firmware, fiind fie Vcc fie GND
+- ADC (Analog to Digital Converter): Transformă semnalele analogice de la senzori în valori digitale citibile de software.
+    - Pini care exprimă un voltaj aplicat drept o valoare digitală
+- DAC (Digital to Analog Converter): Generază o tensiune variabilă între 0 și Vcc pentru controlul perifericelor (ex: motoare).
+    - Pini care pot fi controlați din firmware și expun un voltaj între Vcc și 0
+- PWM (Pulse Width Modulation): Simulează tensiunea variabilă (ca DAC) prin oscilație rapidă între GND și Vcc; soluție mai ieftină.
+    - Pini care simulează pinii DAC, oscilând între Vcc și GND
+3. Pini pentru Protocoale de Comunicație
+- SDA + SCL (Serial Data + Serial Clock): Pini utilizați pentru protocolul de comunicație I2C (Inter-Integrated Circuit).
+- SCK + MOSI + MISO (Serial Clock + Master Out Slave In + Master In Slave Out): Pini utilizați pentru protocolul de comunicație SPI (Serial Peripheral Interface).
+- TX + RX (Transmit + Receive): Pini utilizați pentru comunicația serială (UART - Universal Asynchronous Receiver-Transmitter).
+
+EX: analogRead(ADC_PIN)
+Rol: Funcție tipică în firmware pentru a citi valoarea digitală convertită de la un senzor analogic conectat la pinul ADC.
+
+ Rezoluție pe 8 biți (2^8)
+- Gamă valori: 0 - 255
+- Utilizare: PWM uzual, protocoale video (RGB).
+ Rezoluție pe 10 biți (2^10)
+- Gamă valori: 0 - 1023
+- Utilizare: ADC standard (ex: citire potențiometru pe Arduino).
+ Rezoluție pe 12 biți (2^12)
+- Gamă valori: 0 - 4095
+- Utilizare: Microcontrolere avansate (STM32/ESP32) pentru precizie ridicată.
+
+
+
+4.
+### Notițe: Variabile Speciale în Bash (Special Parameters)
+### Proces/Protocol: Shell Scripting / Environment Variables
+
+Situație: Preluarea metadatelor despre execuția unui script sau a unei comenzi.
+
+- $0
+  - Reprezintă: Numele scriptului curent sau al shell-ului.
+  - EX: echo $0
+
+- $1, $2, ... $9
+  - Reprezintă: Argumentele poziționale transmise scriptului (primul, al doilea etc.).
+  - EX: ./script.sh arhiva.tar /backup (unde $1 este arhiva.tar)
+
+- $#
+  - Reprezintă: Numărul total de argumente transmise scriptului.
+  - EX: if [ $# -lt 2 ]; then echo "Lipsesc argumente"; fi
+
+- $*
+  - Reprezintă: Toate argumentele transmise, tratate ca un singur cuvânt ("$1 $2 $3").
+  - EX: echo $*
+
+- $@
+  - Reprezintă: Toate argumentele transmise, tratate ca cuvinte separate ("$1" "$2" "$3").
+  - EX: for arg in "$@"; do echo $arg; done
+
+- $?
+  - Reprezintă: Exit status-ul (codul de retur) al ultimei comenzi executate (0 = succes, altceva = eroare).
+  - EX: ls /root; echo $?
+
+- $$
+  - Reprezintă: PID-ul (Process ID) al shell-ului sau scriptului curent.
+  - EX: echo $$
+
+- $!
+  - Reprezintă: PID-ul ultimului proces rulat în fundal (background).
+  - EX: sleep 100 & echo $!
+
+- $-
+  - Reprezintă: Flag-urile (opțiunile) active în shell-ul curent.
+  - EX: echo $-
+
+- $_
+  - Reprezintă: Ultimul argument al comenzii anterioare.
+  - EX: mkdir proiect; cd $_
+
+
+
+6.
+### Notițe: Utilitare de Interogare DNS și Rețea
+### Proces/Protocol: DNS (Domain Name System) / Networking
+
+Situație: Identificarea adresei IP, a serverelor de mail sau a record-urilor DNS pentru un domeniu.
+
+1. host (Cel mai simplu utilitar)
+- Descriere: Program pentru interogări DNS rapide.
+- EX: host google.com
+- EX: host -t mx google.com (Află serverele de mail - Mail Exchange)
+
+2. dig (Domain Information Groper)
+- Descriere: Cel mai puternic și detaliat utilitar pentru interogări DNS; preferat de administratori.
+- EX: dig google.com
+- EX: dig +short google.com (Afișează doar adresa IP, util în scripturi)
+
+3. nslookup (Name Service Lookup)
+- Descriere: Utilitar clasic (disponibil și pe Windows) pentru interogări interactive sau directe.
+- EX: nslookup google.com
+- EX: nslookup google.com 8.8.8.8 (Întreabă un server DNS specific, ex: Google DNS)
+
+4. ping (Packet Internet Groper)
+- Descriere: Verifică conectivitatea, dar ca efect secundar rezolvă și afișează IP-ul domeniului.
+- EX: ping -c 1 google.com
+- EX: ping -4 google.com (Forțează rezolvarea adresei IPv4)
+
+5. whois
+- Descriere: Oferă informații despre deținătorul domeniului, data expirării și serverele de nume.
+- EX: whois google.com
+
+6. getent (System Database Entries)
+- Descriere: Verifică cum vede sistemul de operare (local) un domeniu, consultând /etc/hosts și DNS.
+- EX: getent hosts google.com
+
+
+
+
+
+
+
       
