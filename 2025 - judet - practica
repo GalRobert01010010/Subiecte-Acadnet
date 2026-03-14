@@ -382,6 +382,636 @@ Comparație critică:
 
 
 28.
+# Gestiunea Proceselor și Automatizarea Comenzilor în Shell
+
+### 1. Job Control (Gestiunea sarcinilor)
+Situație: Trebuie să gestionezi mai multe procese simultan în același terminal (TTY).
+Proces/Protocol: Job Control / Signals (SIGTSTP, SIGCONT)
+
+Semnificația simbolurilor în comanda `jobs`:
+- [+] (Current Job) - Ultimul job pornit sau adus în background/foreground. Este ținta implicită pentru comenzile fg/bg.
+- [-] (Previous Job) - Penultimul job din stivă. Devine job curent (+) dacă cel actual este închis.
+- Fără simbol - Job-uri mai vechi în ierarhie.
+
+Comenzi și steaguri pentru `jobs`:
+- jobs : Afișează starea job-urilor (Running/Stopped).
+- -l : Afișează PID-ul (Process ID) lângă numărul job-ului.
+- -p : Afișează exclusiv PID-urile (util pentru automatizare).
+- -s : Afișează doar job-urile suspendate (Stopped).
+- -r : Afișează doar job-urile care rulează în background (Running).
+
+Controlul execuției:
+- Ctrl+Z : Suspendă procesul curent (trimite SIGTSTP - 20).
+- bg : Reluarea procesului în background.
+    - EX: bg %1 (reluează job-ul 1)
+- fg : Aducerea procesului în foreground (prim-plan).
+    - EX: fg %+ (aduce job-ul curent)
+- kill : Terminarea proceselor folosind Job ID.
+    - EX: kill -9 %- (omoară forțat job-ul precedent)
+
+---
+
+### 2. Automatizare cu Command Substitution
+Situație: Folosirea rezultatului unei comenzi ca argument pentru o altă comandă.
+Proces/Protocol: Subshell Execution
+
+Model de utilizare:
+- $(...) : Sintaxa standard pentru substituția comenzilor.
+- EX: kill -9 $(jobs -p -s)
+    - [Analiză]: jobs -p -s scoate PID-urile proceselor oprite, care sunt apoi pasate comenzii kill.
+- EX: ls -l $(which python3)
+    - [Analiză]: Găsește calea executabilului și afișează detaliile acestuia.
+
+---
+
+### 3. Utilitarul `find` și acțiunea `-exec`
+Situație: Executarea unei comenzi asupra fiecărui fișier găsit pe baza unor criterii.
+Proces/Protocol: Argument Passing / Batch Processing
+
+Sintaxa `-exec [comanda] {} [terminator]`:
+- {} : Placeholder pentru numele fișierului găsit.
+- \; : (Semicolon) Execută comanda individual pentru fiecare fișier (lent).
+    - EX: find . -name "*.log" -exec rm {} \;
+- + : (Plus) Grupează toate fișierele într-o singură apelare a comenzii (rapid, evită problemele cu spațiile).
+    - EX: find . -name "*.txt" -exec ls -l {} +
+- -ok : Varianta interactivă a lui -exec (cere confirmare y/n).
+    - EX: find /home -name "*.tmp" -ok rm {} \;
+
+---
+
+### 4. Sinteză Semnale (IPC)
+- SIGINT (2) : Ctrl+C (Terminare politicoasă).
+- SIGKILL (9) : kill -9 (Terminare forțată, nu poate fi ignorată).
+- SIGSTOP (19) : kill -19 (Suspendare forțată).
+- SIGTSTP (20) : Ctrl+Z (Suspendare din terminal, poate fi ignorată de proces).
+- SIGCONT (18) : Reluarea execuției (bg/fg).
+
+
+29.
+Situație: Identificarea tipurilor de fișiere și calculul permisiunilor în funcție de identitate.
+Proces/Protocol: DAC (Discretionary Access Control) / File Metadata
+
+1. Identificarea Tipului (Primul caracter din ls -l):
+- - : Fișier obișnuit (regular file).
+- d : Director (directory).
+- l : Link simbolic (soft link).
+- s : Socket (local inter-process communication).
+- p : Pipe (named pipe).
+- b/c: Block/Character device (discuri sau terminale).
+
+2. Indicatorul de Legături (Coloana 2 din ls -l):
+- Fișier: De obicei are valoarea 1.
+- Director: Valoarea minimă este 2 (referința către sine "." și referința din părinte).
+- Hard Link: Crește acest număr pentru fiecare link nou creat către același inode.
+- Soft Link: Apare ca un fișier separat (tip 'l') și nu modifică numărul de legături al sursei.
+
+3. Calculul Permisiunilor (UGO):
+- U (User/Owner): Biții 2, 3, 4.
+- G (Group): Biții 5, 6, 7.
+- O (Others): Biții 8, 9, 10.
+
+EX: ls -l (Interpretare emma)
+- Identitate: Owner=hawk, Group=arts
+- Permisiuni: --w-r-x--- (Octal: 250)
+- Logica: Owner primeste -w-, membrii grupului arts (sam) primesc r-x.
+EX: ls -l (Interpretare ford)
+- Identitate: Owner=claire, Group=state
+- Permisiuni: -rwxr----x (Octal: 741)
+- Logica: Owner primeste rwx, membrii grupului state (hawk) primesc r--, restul (chuck) primesc --x.
+EX: ls -l (Interpretare nyc)
+-rwx-w-r-- 1 miguel west 0 Jul 23 17:53 nyc
+- Tip: - (fișier)
+- Legături: 1 (nu este director)
+- User (miguel): rwx (7)
+- Group (west - frank, claire): -w- (2)
+- Others (sam, tim): r-- (4)
+
+
+30.
+
+Model de listing:
+-r-xr-xr-x 1 _uucp  wheel  291840 Jul 19 13:05 uuxqt
+| |  |  |  |   |      |       |      |     |     |
+| |  |  |  |   |      |       |      |     |     Numele fișierului
+| |  |  |  |   |      |       |      |     Ora ultimei modificări
+| |  |  |  |   |      |       |      Data ultimei modificări (Zi/Lună)
+| |  |  |  |   |      |       Dimensiunea în octeți (Bytes)
+| |  |  |  |   |      Grupul deținător
+| |  |  |  |   Utilizatorul deținător
+| |  |  |  Numărul de legături (Hard links)
+| |  |  Permisiunile restului de utilizatori (Others)
+| |  Permisiunile grupului deținător (Group)
+| Permisiunile utilizatorului deținător (User/Owner)
+Tipul fișierului (-=fișier, d=director, l=link)
+
+### Categorii Explicate:
+- Tipul fișierului: Indică natura intrării în sistemul de fișiere.
+  - Alternativă: file [fișier]
+  - EX: file /etc/passwd
+- Permisiuni (UGO): Definește cine poate citi (r), scrie (w) sau executa (x).
+  - Alternativă: stat -c %a [fișier]
+  - EX: stat -c %a script.sh
+- Utilizator/Grup: Identifică posesorii legali ai resursei.
+  - Alternativă: id [utilizator] (pentru grupuri) sau stat -c %U:%G [fișier]
+  - EX: stat -c %U /home/user
+- Dimensiunea în octeți: Reprezintă spațiul logic ocupat de date (1 Octet = 8 Biți).
+  - Alternativă: du -b [fișier] (Disk Usage in bytes)
+  - EX: du -b fisier.txt
+- Timestamp (mtime): Momentul ultimei scrieri în conținutul fișierului.
+  - Alternativă: stat [fișier] (secțiunea Modify)
+  - EX: stat document.txt | grep Modify
+
+
+31.
+Situație: Utilizarea scurtăturilor avansate și neintuitive pentru Job Control.
+Proces/Protocol: Shell Job Expansion
+
+1. Referirea directă (fără fg):
+- Comandă: %1
+- Rol: Aduce jobul 1 în foreground direct, fără a mai scrie comanda 'fg'.
+- EX: %1
+
+2. Referirea prin nume (Prefix):
+- Comandă: %nume
+- Rol: Aduce în foreground jobul care începe cu "nume".
+- EX: %vi
+- Rezultat: Dacă ai un proces 'vim' în background, îl aduce în față.
+
+3. Referirea prin căutare (Substring):
+- Comandă: %?nume
+- Rol: Aduce în foreground jobul care conține șirul "nume" oriunde în comandă.
+- EX: %?log
+- Rezultat: Aduce jobul care conține 'log' (ex: tail -f access.log).
+
+4. Jobul curent și anterior:
+- Comandă: %+ (sau %%)
+- Rol: Aduce în foreground jobul marcat cu '+' (cel mai recent).
+- Comandă: %-
+- Rol: Aduce în foreground jobul marcat cu '-' (penultimul).
+
+5. Ultimul job trimis in background:
+- Comandă: fg %& (sau fg %+)
+- Rol: Aduce în foreground jobul marcat cu '+' (cel mai recent).
+
+EX: kill -9 %1
+Rol: Trimite semnalul de terminare forțată direct către Job ID 1.
+
+
+32.
+Situație: Vizualizarea tipurilor de fișiere Linux prin ls -l.
+Proces/Protocol: File System Entry Identification
+
+1. fișier normal (Regular file)
+- EX: -rw-r--r-- 1 user group 1024 Mar 14 12:00 document.txt
+- Semn: Cratima '-' la început.
+
+2. director (Directory)
+- EX: drwxr-xr-x 2 user group 4096 Mar 14 12:00 foldere/
+- Semn: Litera 'd' la început.
+
+3. legătură simbolică (Symbolic link)
+- EX: lrwxrwxrwx 1 user group 7 Mar 14 12:00 shortcut -> target
+- Semn: Litera 'l' la început și prezența săgeții '->'.
+
+4. FIFO (Named Pipe)
+- EX: prw------- 1 user group 0 Mar 14 12:00 my_pipe
+- Semn: Litera 'p' la început.
+
+5. socket
+- EX: srwxrwxrwx 1 user group 0 Mar 14 12:00 mysql.sock
+- Semn: Litera 's' la început.
+
+6. fișier special character (Character device)
+- EX: crw-rw-rw- 1 root root 1, 3 Mar 14 12:00 /dev/null
+- Semn: Litera 'c' la început.
+
+7. fișier special block (Block device)
+- EX: brw-rw---- 1 root disk 8, 0 Mar 14 12:00 /dev/sda
+- Semn: Litera 'b' la început.
+
+obs. La ttyS18 (character) și zd784 (block), în loc de dimensiune, apar două numere 
+    despărțite de virgulă (ex: 4, 82). Acestea sunt Major și Minor numbers:
+  Major: Identifică driverul care controlează dispozitivul. (Driverul: driverul pentru porturi seriale)
+  Minor: Identifică instanța specifică a dispozitivului gestionată de acel driver. (Instanța: al câtelea port serial este acesta)
+
+8. fișier ascuns (Hidden file)
+- EX: -rw-r--r-- 1 user group 150 Mar 14 12:00 .bashrc
+- Semn: Numele începe cu punct '.', tipul fiind de obicei '-' sau 'd'.
+
+9. fișier read-only
+- EX: -r--r--r-- 1 root root 500 Mar 14 12:00 secret.txt
+- Semn: Lipsa permisiunii 'w' pe toate coloanele.
+
+
+33.
+Situație: Clasificarea actualizată a aplicațiilor (Context Desktop vs Mobile).
+Proces/Protocol: Software Deployment Models
+
+1. Aplicație nativă (Necesită executabil pe disc):
+- Exemple: Microsoft Word, Notepad, VLC Media Player (VideoLAN Client Media Player), Notepad, Paint, WinRAR, Calculator, VLC, Adobe Photoshop.
+- Caracteristică: Necesită instalare; funcționează adesea fără internet (offline).
+- Notă: Acestea nu pot fi folosite într-un browser (nu poți deschide Photoshop.com să editezi la fel ca în aplicație).
+
+2. Ambele (Web și Nativă):
+- Exemple: Gmail, Discord, WhatsApp, Spotify, Netflix, Microsoft Teams, Canva, Facebook, YouTube.
+- Caracteristică: Pot fi accesate prin browser (URL) sau prin aplicații dedicate (App Store / Google Play / Desktop App).
+- Notă: Au și site (web) și aplicație instalabilă (nativă) pe majoritatea platformelor.
+
+3. Predominant Web (Fără aplicație oficială Desktop):
+- Exemple: ChatGPT, Google Search, Wikipedia, Dexonline, Google Maps (pe PC).
+- Caracteristică: Nu au (de obicei) o variantă instalabilă care să funcționeze independent de browser.
+- Notă: Chiar dacă au aplicații pe telefon, pe calculator rămân servicii accesibile prin browser.
+
+
+34.
+Situație: Gestionarea persistenței proceselor (nohup vs disown).
+Proces/Protocol: Signal Handling (SIGHUP) / Job Management
+
+1. Utilitarul nohup (No Hang Up):
+- Moment: Se folosește ÎNAINTE de lansarea comenzii.
+- Întrebare: Putem folosi nohup fără &?
+  - Răspuns: DA. Dacă rulezi "nohup comanda", procesul va fi imun la închiderea terminalului, dar va rula în FOREGROUND (îți va bloca terminalul până termină).
+  - EX: nohup ./backup.sh
+- Clarificare: Dacă rulezi fără &, procesul deține controlul terminalului; chiar dacă ești blocat, îl poți închide fără teamă, procesul va continua în spate.
+
+2. Utilitarul disown:
+- Moment: Se folosește DUPĂ ce procesul a fost lansat (și de cele mai multe ori trimis în background).
+- Întrebare: Se poate folosi înainte de lansare?
+  - Răspuns: NU. disown este o comandă de tip "shell built-in" care acționează asupra unui Job ID existent în lista de 'jobs'.
+- Întrebare: Folosim & pentru disown?
+  - Răspuns: Nu direct cu disown, ci procesul vizat trebuie să fie deja în background (lansat cu & sau suspendat cu Ctrl+Z și bg).
+  - EX: 
+    1. ./proces_lung & 
+    2. disown %1
+- Clarificare: Rolul disown este să șteargă procesul din "inventarul" shell-ului (jobs table), astfel încât shell-ul să nu îi mai trimită semnalul de oprire la ieșire.
+
+3. Diferențe de tratare a output-ului:
+- nohup: Redirecționează automat output-ul (stdout/stderr) către 'nohup.out' dacă nu specifici tu altceva.
+- disown: NU redirecționează output-ul. Dacă procesul scrie în terminal, va continua să o facă și după disown, ceea ce poate fi deranjant.
+- Clarificare: Mesajele apar pe ecran după disown pentru că procesul încă "ține" legătura cu dispozitivul de afișare (terminalul), chiar dacă shell-ul nu îl mai monitorizează.
+
+4. Comanda completă ideală:
+- Cu nohup: nohup ./script.sh > log.txt 2>&1 &
+- Cu disown: ./script.sh & disown
+- Clarificare (nohup): "2>&1" înseamnă că erorile sunt trimise în același loc cu datele normale (log.txt), deci ecranul rămâne curat.
+- Clarificare (disown): Utilizarea "& disown" este necesară pentru că un proces în background (&) fără disown va fi totuși omorât la închiderea terminalului.
+
+EX: disown -a
+Rol: Elimină TOATE joburile curente din tabelul de joburi al shell-ului, protejându-le pe toate la închiderea terminalului.
+
+
+35.
+Situație: Identificarea tipului real de fișier și diferența dintre conținut și metadate.
+Proces/Protocol: File Signature Analysis (Magic Numbers) vs. Inode Metadata
+
+Analiza cazului photo.jpg redenumit în photo.txt:
+1. Comanda file:
+- Mod de lucru: Analizează conținutul binar (primii octeți numiți Magic Numbers).
+- Concluzie: Recunoaște fișierul ca fiind JPG deoarece conținutul (header-ul) nu i s-a schimbat prin simpla redenumire.
+- EX: file photo.txt
+
+2. Comanda stat:
+- Mod de lucru: Interoghează metadatele stocate în Inode (sistemul de fișiere).
+- Concluzie: Afișează informații administrative (nume, dimensiune, data ultimei modificări), dar nu "vede" tipul de conținut binar precum o face 'file'.
+- EX: stat photo.txt
+
+Concluzii trase:
+- Extensia în Linux: Este doar o parte a numelui (o metadată); schimbarea ei nu modifică natura sau structura internă a fișierului.
+- Identitatea fișierului: Este determinată de semnătura binară (ex: FF D8 FF pentru JPEG), motiv pentru care varianta corectă în exercițiu este "Deoarece conținutul nu i s-a schimbat".
+- Comanda mv: Redenumește fișierul (modifică metadatele), dar nu efectuează nicio conversie de format (nu modifică biții de conținut).
+
+
+36.
+Situație: Identificarea nivelului de privilegii în shell-ul Linux.
+Proces/Protocol: User Privileges / UID (User ID)
+
+1. Simbolul $:
+- Utilizator: Standard / Regular user.
+- Privilegii: Limitate (doar pe fișierele proprii din /home/user).
+- UID: De regulă, un număr >= 1000.
+
+2. Simbolul #:
+- Utilizator: root (Superuser).
+- Privilegii: Totale (poate citi, scrie sau șterge orice fișier).
+- UID: Întotdeauna 0.
+
+EX: sudo su
+Rol: Comandă care schimbă promptul din $ în # prin logarea ca superuser.
+
+
+40.
+Situație: Clasificarea extinsă a aplicațiilor în funcție de interfață (CLI, GUI, TUI).
+Proces/Protocol: User Interface Abstraction Layers
+
+1. Fără GUI (CLI - Command Line Interface):
+- Bash (Shell-ul Linux implicit)
+- PowerShell (Shell-ul Windows modern)
+- SSH (Secure Shell - protocol de administrare la distanță)
+- CMD (Command Prompt - Windows vechi)
+- Zsh (Z Shell - popular pe macOS și Linux)
+- git (Sistem de versionare, varianta de bază)
+- netstat (Utilitar de rețea)
+
+2. Cu GUI (Graphical User Interface):
+Obs. Necesită un server grafic (precum X11 sau Wayland).
+- Google Chrome (Browser web)
+- Spotify (Player muzical)
+- Tetris (Versiunea modernă, grafică)
+- VLC Media Player (Interfața standard)
+- GIMP (Editor imagini)
+- Microsoft Word (Procesare text)
+- FileZilla (Client FTP grafic)
+
+3. Cazuri Ambigue / Neconvenționale (TUI - Text User Interface):
+- ncurses : Bibliotecă ce permite desenarea de "ferestre" din caractere text în terminal.
+- htop : Monitor de procese care are bare colorate și răspunde la mouse, dar rulează în terminal.
+- vim / nano : Editoare de text care ocupă tot ecranul terminalului și au meniuri/scurtături proprii.
+- Midnight Commander (mc) : Manager de fișiere cu două panouri care arată ca un program vechi de DOS, dar rulează în CLI.
+- lynx : Un browser web care afișează doar textul de pe site-uri, fără poze, direct în terminal.
+
+
+43.
+#!/bin/bash
+function copil() {
+sleep 10
+echo "Copil terminat"
+}
+copil &
+echo "PID-ul copilului: $!"
+
+Fluxul de execuție detaliat:
+- Pasul 1: Definirea funcției copil (nu produce output încă).
+- Pasul 2: Lansarea copil & (se creează un proces separat, scriptul trece imediat la linia următoare).
+- Pasul 3: Execuția echo cu variabila $!. Aceasta este prima linie care apare pe ecran.
+- Pasul 4: Scriptul principal se închide (exit).
+- Pasul 5: Procesul "copil" aflat în fundal termină comanda sleep 10.
+- Pasul 6: Procesul "copil" scrie pe stdout mesajul final.
+
+Comportamentul variabilei $!:
+- Valoare: Reține PID-ul (Process ID) al celei mai recente sarcini trimise în fundal.
+- Utilitate: Permite controlul procesului asincron din scriptul părinte.
+
+EX: wait $!
+Rol: Dacă adaugi această comandă la finalul scriptului, acesta va "îngheța" și va aștepta cele 10
+secunde până când copilul termină, înainte de a-ți reda promptul terminalului.
+
+
+44.
+Situație: Evaluarea condițiilor folosind utilitarul standard POSIX.
+Proces/Protocol: Exit Status Evaluation (Standard Command)
+
+Sintaxa:
+1. test [expresie]
+2. [ [expresie] ] -> Notă: Spațiile după '[' și înainte de ']' sunt OBLIGATORII.
+
+Verdictul (Exit Status):
+- Valoarea 0: Condiția este ADEVĂRATĂ (Succes).
+- Valoarea 1: Condiția este FALSĂ (Eșec).
+- Notă: Poți verifica acest cod imediat după comandă folosind 'echo $?'.
+
+Categorii de teste și exemple:
+
+1. Teste pentru FIȘIERE:
+- [ -f fisier ] : Adevărat (0) dacă fișierul există și este un fișier normal.
+- [ -d director ] : Adevărat (0) dacă este un director.
+- [ -x program ] : Adevărat (0) dacă ai drept de execuție pe el.
+- EX: [ -f /etc/hosts ] && echo "Există"
+
+2. Teste pentru STRING-URI (Șiruri):
+- [ "abc" = "abc" ] : Adevărat (0) dacă sunt identice.
+- [ -z "$variabila" ] : Adevărat (0) dacă variabila este GOLĂ.
+- EX: [ "$USER" = "root" ] # Verifică dacă ești administrator.
+
+3. Teste NUMERICE:
+- [ $a -eq $b ] : Equal (Egal).
+- [ $a -ne $b ] : Not Equal (Diferit).
+- [ $a -gt $b ] : Greater Than (Mai mare).
+- [ $a -lt $b ] : Less Than (Mai mic).
+- EX: [ 10 -gt 5 ] # Rezultat: 0 (Adevărat).
+
+Logica internă (Escaping necesar):
+- Deoarece este o comandă externă, operatorii precum parantezele pentru gruparea condițiilor trebuie precedați de backslash.
+- EX: [ \( 1 -eq 1 \) -a \( 2 -eq 2 \) ]
+
+
+45.
+### Notițe: Clasificarea fișierelor prin comanda file
+### Proces/Protocol: File Signature Analysis (Magic Bytes)
+
+Situație: Identificarea tipului de binar sau document independent de extensie.
+Asocierea variantelor cu output-ul comenzii file:
+
+a. Fișier imagine
+- Descriptor: JPEG image data / PNG image data
+- EX: file imagine.png
+b. Executabil Mach-O
+- Descriptor: Mach-O 64-bit executable
+- Context: Formatul specific sistemelor macOS (Apple).
+- EX: file /usr/bin/python (pe Mac)
+c. Fișier video
+- Descriptor: ISO Media, MP4 Base Media / Matroska data
+- EX: file video.mp4
+d. Obiect
+- Descriptor: ELF 64-bit LSB relocatable
+- Context: Un fișier compilat (.o) care nu a fost încă transformat în executabil final.
+- EX: file main.o
+e. Executable and linkable format (ELF) - CORECT
+- Descriptor: ELF 64-bit LSB executable
+- Context: Formatul binar standard pentru executabile în sistemele Linux.
+- EX: file /bin/ls
+
+EX: file -L binar
+Rol: Urmează link-urile simbolice pentru a raporta tipul fișierului destinație, nu al link-ului în sine.
+
+Obs. ELF nu este un sistem de fisiere, ci este un format de fisier binar (un mod de a organiza codul executabil).
+
+### Notițe: Formate alternative de fișiere binare
+### Proces/Protocol: Binary Executable Structures
+
+Situație: Identificarea executabilelor pe diferite platforme.
+Dacă în loc de ELF s-ar fi folosit alte formate, output-ul ar fi fost:
+
+1. Formatul PE (Portable Executable)
+- Utilizat de: Windows.
+- Descriptor: PE32 executable (console) Intel 80386, for MS Windows.
+- EX: file program.exe
+2. Formatul Mach-O (Mach Object)
+- Utilizat de: macOS / iOS.
+- Descriptor: Mach-O 64-bit executable x86_64.
+- EX: file /bin/ls (pe macOS)
+3. Formatul a.out (Assembler Output)
+- Utilizat de: Versiuni foarte vechi de UNIX/Linux.
+- Descriptor: a.out separate pure executable.
+- Context: Formatul istoric care a precedat ELF.
+4. Script-uri (Text executabil)
+- Descriptor: POSIX shell script, ASCII text executable.
+- EX: file script.sh
+
+
+
+46.
+### Notițe: Redirecționarea fluxurilor standard (I/O Redirection)
+### Proces/Protocol: Standard Streams / File Descriptors
+
+Sistemul utilizează descriptori numerici: 0 (stdin), 1 (stdout), 2 (stderr).
+
+1. Redirecționarea intrării (stdin < fișier)
+- Comandă: apt install zfsutils-linux < yes
+- Sursă: fișier
+- Destinație: stdin
+- Explicație: Comanda apt citește input-ul (cum ar fi confirmările de instalare) direct din fișierul "yes", fără intervenția utilizatorului.
+
+2. Redirecționarea ieșirii standard (stdout > fișier)
+- Comandă: ./lspci > aer_cap
+- Sursă: stdout
+- Destinație: fișier
+- Explicație: Rezultatul execuției programului lspci este salvat în fișierul "aer_cap". Dacă fișierul există, conținutul este suprascris.
+
+3. Redirecționarea erorilor (stderr 2> fișier)
+- Comandă: rm ./shadow 2> outform
+- Sursă: stderr
+- Destinație: fișier
+- Explicație: Mesajele de eroare generate (ex: dacă fișierul nu există sau lipsesc permisiunile) sunt scrise în fișierul "outform", lăsând ecranul curat.
+
+4. Redirecționarea combinată (stdout + stderr către fișier)
+- Comandă: lscpu > firestorm.txt 2>&1
+- Sursă: stdout + stderr
+- Destinație: fișier
+- Explicație: Atât informațiile despre procesor (stdout), cât și eventualele erori (stderr) sunt trimise în "firestorm.txt". Simbolul 2>&1 spune sistemului să trimită fluxul 2 acolo unde merge fluxul 1.
+
+5. Redirecționarea erorilor către ieșirea standard (stderr 2>&1)
+- Comandă: lsmod 2>&1
+- Sursă: stderr
+- Destinație: stdout
+- Explicație: Erorile sunt forțate să apară pe același flux cu ieșirea normală. Este util când vrei să procesezi erorile printr-un pipe (|) către o altă comandă.
+
+EX: echo "text" >> fisier.txt
+Rol: Adaugă text la finalul fișierului (append) fără a șterge conținutul existent.
+
+
+47.
+### Notițe: Structura ierarhică a sistemelor de fișiere
+### Proces/Protocol: OS Directory Structure Comparison
+
+Situație: Identificarea locațiilor standard pentru fișiere de sistem și utilizatori pe diferite platforme.
+
+1. Windows
+- Rădăcină: C:\
+- Director home: C:\Users\username
+- Aplicații: C:\Program Files
+- Configurări ale sistemului: Windows Registry
+
+2. Linux
+- Rădăcină: /
+- Director home: /home/username
+- Aplicații: /bin; /sbin; /usr/bin; /usr/sbin; /usr/local/sbin
+- Configurări ale sistemului: /etc
+
+3. Mac OS
+- Rădăcină: /
+- Director home: /Users/username
+- Aplicații: /Applications; /bin; /sbin
+- Configurări ale sistemului: /Users/username/Library; /etc
+
+EX: cd ~
+Rol: Comandă universală în Linux și macOS pentru a te întoarce rapid în directorul home al utilizatorului curent.
+
+
+
+48.
+### Notițe: Managementul proceselor orfane și adoptarea lor
+### Proces/Protocol: Process Re-parenting (IPC / Process Management)
+
+Situație: Un proces părinte se termină înaintea fiului său.
+
+1. Mecanismul de Adoptare
+- Procese orfane: Toate procesele orfane sunt adoptate de procesul cu PID 1.
+- PID 1 (systemd/init): Este părintele tuturor proceselor și are responsabilitatea de a "curăța" după procesele care se termină.
+- Excepții: În containere (Docker) sau în spații de nume (namespaces) izolate, adoptarea poate fi făcută de un "sub-reaper" (un proces desemnat să colecteze orfanii din acel grup), dar la nivel de sistem global, systemd rămâne destinația finală.
+
+2. Conceptul de LightDM
+- Ce este: Un Display Manager (DM) / Login Manager.
+- Rol: Gestionează interfața grafică de autentificare (unde introduci parola) și pornește serverul grafic (Xorg).
+- Context de pornire: Este pornit automat la boot de către systemd dacă sistemul este configurat să pornească în mod grafic (Graphical Target / Runlevel 5).
+
+3. Diferența Orfan vs. Zombie
+- Orfan: Părintele a murit, procesul încă rulează și este adoptat de PID 1.
+- Zombie: Procesul a murit (s-a terminat), dar părintele nu i-a citit încă exit status-ul, deci ocupă un loc în tabela de procese.
+
+EX: ps -ef | grep <PID_proces_orfan>
+Rol: Permite vizualizarea noului părinte (PPID) al procesului, care va fi 1 după adoptare.
+
+
+49.
+### Notițe: Mecanisme de securitate și integritate a datelor
+### Proces/Protocol: CIA Triad Implementation (Information Security)
+Sistemul utilizează strategii specifice pentru a proteja datele împotriva pierderii, coruperii sau accesului neautorizat.
+
+1. Mecanisme pentru Menținerea Integrității
+Asigură că datele rămân corecte și nemodificate pe parcursul stocării sau transmisiei.
+- Jurnalizare (Journaling)
+Definiție: menținerea unei baze de date a modificărilor care se intenționează a fi aduse sistemului de fișiere înainte de scrierea lor efectivă.
+- Calcularea unui checksum (Suma de control)
+Definiție: menținerea unei bucăți mici de date derivate dintr-un set de date mai mare prin intermediul unei funcții specifice pentru detectarea erorilor.
+- Semnătura Digitală (Digital Signature)
+Definiție: utilizarea criptografiei asimetrice pentru a garanta că un fișier provine de la o sursă de încredere și nu a fost alterat.
+- Liste de Control al Accesului (ACL)
+Definiție: definirea unor permisiuni granulare la nivel de obiect pentru a preveni modificarea neautorizată a fișierelor de către utilizatori obișnuiți.
+
+2. Mecanisme pentru Menținerea Confidențialității
+Asigură că datele sunt accesibile doar persoanelor care dețin autorizația necesară.
+- Criptarea datelor (Encryption)
+Definiție: transformarea datelor clare într-un format ilizibil folosind un algoritm și o cheie, astfel încât doar posesorul cheii să le poată citi.
+- Mascarea datelor (Data Masking)
+Definiție: ascunderea elementelor sensibile dintr-un set de date prin înlocuirea lor cu caractere generice pentru a proteja informația în medii de testare.
+- Autentificarea Multi-factor (MFA)
+Definiție: solicitarea a două sau mai multe dovezi independente de identitate înainte de a permite vizualizarea informațiilor protejate.
+
+3. Mecanisme pentru Menținerea Disponibilității (Valabilității)
+Asigură că sistemele și datele sunt funcționale și accesibile în momentul în care sunt solicitate.
+- Backup-ul datelor (Sistem de rezervă)
+Definiție: crearea și menținerea unor copii periodice ale datelor pe medii de stocare externe pentru recuperarea lor în caz de dezastru.
+- Redundanța (RAID)
+Definiție: utilizarea mai multor unități de stocare fizice care lucrează împreună pentru a asigura funcționarea sistemului chiar și la defectarea unui disc.
+- Echilibrarea încărcării (Load Balancing)
+Definiție: distribuirea traficului și a cererilor către mai multe servere pentru a preveni supraîncărcarea și a menține timpii de răspuns optimi.
+
+EX: md5sum fisier.txt
+Rol: Calculează un checksum (hash) pentru a verifica dacă fisier.txt este identic cu originalul.
+
+
+50.
+### Notițe: Clasificarea Sistemelor de Operare (SO)
+### Proces/Protocol: OS Functional Categorization
+
+Situație: Identificarea rapidă a rolului unui SO în funcție de hardware-ul țintă.
+
+1. Dispozitive Mobile
+- Exemple: Android, Apple iOS, HarmonyOS
+- Utilitate: Sistem de operare pentru dispozitive mobile și tablete.
+
+2. Desktop / Server / Laptop
+- Exemple: Windows, GNU/Linux (Ubuntu, Debian), macOS, FreeBSD
+- Utilitate: Sistem de operare pentru computere de uz general și servere.
+
+3. Echipamente de Rețea
+- Exemple: Cisco iOS, Juniper JUNOS, MikroTik RouterOS
+- Utilitate: Sistem de operare pentru rutere, switch-uri și infrastructură de date.
+
+4. Smart TV și Multimedia
+- Exemple: webOS, Tizen OS, tvOS, Android TV
+- Utilitate: Sistem de operare pentru televizoare inteligente și media playere.
+
+5. Console de Jocuri
+- Exemple: Nintendo Horizon, PlayStation System Software, Xbox System Software
+- Utilitate: Sistem de operare optimizat pentru redare grafică și jocuri.
+
+6. Smartwatch-uri și IoT (Internet of Things)
+- Exemple: Wear OS, watchOS, FreeRTOS
+- Utilitate: Sistem de operare pentru ceasuri inteligente și dispozitive înglobate (embedded).
+
+EX: cat /etc/os-release
+Rol: Afișează detalii complete despre distribuția și versiunea sistemului de operare pe Linux.
 
 
       
