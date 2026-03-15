@@ -1484,8 +1484,344 @@ Rol / Efect: verifică dacă entitatea (fișier, director, device) există pur �
 - EX: verificare generală de existență înainte de orice altă operațiune.
 
 
+22.
+
+Explicația conceptului
+Izolarea (pasul 1) este ca o carantină: virusul rămâne pe calculator, dar nu mai poate "vorbi" 
+cu nimeni afară. Actualizarea (pasul 4) repară "geamul spart" prin care a intrat hoțul. 
+Resetarea parolelor (pasul 5) este necesară deoarece, odată intrat, virusul ar fi putut trimite cheile 
+tale atacatorului. La final, restaurarea (pasul 7) înseamnă că, dacă nu ești 100% sigur că ai curățat tot, 
+ștergi tot și pui o versiune de backup despre care știi sigur că era curată înainte de incident.
+
+### Notițe: Procedura Oficială de Eliminare Malware (Conform Barem)
+
+1. Izolează sistemul de rețea.
+- De ce: Oprește comunicarea cu serverele de comandă ale atacatorului și previne infectarea altor stații de lucru.
+2. Rulează o scanare completă a sistemului cu un program antivirus actualizat.
+- De ce: Folosește baze de date de semnături pentru a localiza automat amenințările ascunse.
+3. Identifică și elimină fișierele suspecte.
+- De ce: Eliminarea fizică a executabilelor sau scripturilor malicioase găsite la pasul anterior.
+4. Actualizează sistemul de operare și software-ul instalat.
+- De ce: Închide breșele de securitate (vulnerabilitățile) prin care malware-ul a pătruns inițial.
+5. Resetează toate parolele de utilizator.
+- De ce: Invalidează orice credențial care ar fi putut fi furat de malware în timpul infecției.
+6. Monitorizează activitatea sistemului.
+- De ce: Observarea comportamentului post-curățare pentru a detecta semne de persistență sau reinfectare.
+7. (Opțional) Restaurează sistemul dintr-o copie de rezervă curată.
+- De ce: Măsură finală de siguranță dacă deparazitarea nu a oferit certitudinea unei curățări de 100%.
+
+
+### Notițe: Secvența de Boot în Linux
+### Proces/Protocol: Boot Sequence / System Initialization
+
+Secvența de boot pornește de la verificarea hardware-ului prin BIOS, continuă cu 
+încărcarea Kernel-ului de către GRUB și se finalizează cu pornirea serviciilor de către procesul systemd (init).
+
+1. BIOS / UEFI (Hardware Initialization)
+- Rol: Efectuează testul POST (Power-On Self-Test) și identifică dispozitivul de boot (HDD, SSD, USB).
+- Explicatie: Verifică dacă hardware-ul esențial (RAM, procesor) funcționează.
+
+2. MBR / GPT (Boot Loader Location)
+- Rol: Rulează codul de boot de dimensiuni mici aflat în primul sector al discului.
+- Explicatie: Indică sistemului unde se află programul principal de încărcare.
+
+3. GRUB (Boot Loader)
+- Rol: Afișează meniul de selecție a sistemului de operare și încarcă Kernel-ul în memorie.
+- Explicatie: Permite utilizatorului să aleagă versiunea de Linux sau alți parametri de boot.
+
+4. KERNEL (The Core)
+- Rol: Montează sistemul de fișiere root (/) și inițializează driverele hardware.
+- Explicatie: „Inima” sistemului preia controlul total asupra resurselor fizice.
+
+5. INIT / SYSTEMD (First Process)
+- Rol: Lansează primul proces din sistem (PID 1) care pornește toate celelalte servicii.
+- Explicatie: Gestionează pornirea interfeței grafice, a rețelei și a serviciilor de fundal.
+
+6. RUNLEVELS / TARGETS (Final State)
+- Rol: Stabilește starea finală a sistemului (Multi-user, Graphical, etc.).
+- Explicatie: Determină dacă sistemul pornește în mod text (server) sau cu interfață desktop.
+
+
+### Notițe: Depanarea Problemelor de Rețea (Troubleshooting)
+### Proces/Protocol: Bottom-Up Approach / Network Diagnostics
+
+Depanarea rețelei se realizează pornind de la verificarea fizică a cablurilor, continuând cu validarea adresei IP 
+și a gateway-ului, și finalizând cu testarea serviciului DNS și a conectivității aplicației.
+
+1. Nivelul Fizic (Hardware Check)
+- Rol: Verificarea conexiunilor fizice (cabluri infipte, led-uri aprinse pe switch/router).
+- Explicație: Te asiguri că echipamentul este alimentat și conectat corect.
+
+2. Verificarea Interfeței Locale (Loopback)
+- Rol: Executarea comenzii `ping 127.0.0.1`.
+- Explicație: Verifică dacă stiva TCP/IP a sistemului de operare este configurată corect.
+
+3. Configurarea IP (Local IP Check)
+- Rol: Executarea comenzii `ip addr` sau `ifconfig`.
+- Explicație: Verifică dacă placa de rețea a primit o adresă IP validă (nu una de tip 169.254.x.x - APIPA).
+
+4. Conectivitatea cu Gateway-ul (Local Network)
+- Rol: Executarea comenzii `ping [IP_Router]`.
+- Explicație: Verifică dacă calculatorul tău poate comunica cu routerul din rețeaua locală.
+
+5. Conectivitatea Externă (Internet IP)
+- Rol: Executarea comenzii `ping 8.8.8.8`.
+- Explicație: Verifică dacă există acces la internet prin IP, eliminând problemele de routare.
+
+6. Rezoluția Numelor (DNS Check)
+- Rol: Executarea comenzii `ping google.com` sau `nslookup google.com`.
+- Explicație: Verifică dacă serverul DNS traduce corect numele de domeniu în adrese IP.
+
+7. Nivelul Aplicație (Service Check)
+- Rol: Utilizarea `curl` sau deschiderea browserului.
+- Explicație: Verifică dacă serviciul specific (HTTP/HTTPS) funcționează după ce toți pașii de rețea au fost validați.
 
 
 
+### Notițe: Gestionarea Actualizărilor pe Servere
+### Proces/Protocol: Patch Management / Change Control
+
+Gestionarea actualizărilor începe obligatoriu cu realizarea unui backup, urmată de testarea într-un mediu izolat și se încheie 
+cu aplicarea pe producție și monitorizarea atentă a stabilității serviciilor.
+
+1. Realizarea unui Backup complet (Snapshot)
+- Rol: Crearea unui punct de restaurare în caz de eșec total.
+- Explicație: Este cel mai important pas; permite revenirea instantanee la starea funcțională dacă update-ul corupe sistemul.
+
+2. Documentarea și Analiza (Changelog)
+- Rol: Citirea listei de modificări pentru a identifica posibile conflicte.
+- Explicație: Verifici dacă noile versiuni sunt compatibile cu aplicațiile actuale (ex: o versiune nouă de PHP care nu mai suportă codul tău vechi).
+
+3. Testarea în mediu de Staging (Sandbox)
+- Rol: Aplicarea update-ului pe o copie a serverului, nu pe cel real.
+- Explicație: Observi comportamentul sistemului într-un mediu controlat înainte de a afecta utilizatorii reali.
+
+4. Aplicarea actualizărilor (Deployment)
+- Rol: Executarea comenzilor de instalare (ex: `apt upgrade`) în ferestre de mentenanță.
+- Explicație: Momentul în care modificările sunt scrise efectiv pe serverul de producție.
+
+5. Verificarea serviciilor (Smoke Test)
+- Rol: Testarea funcționalității principale după restart/update.
+- Explicație: Te asiguri că baza de date a pornit, web serverul răspunde și log-urile nu indică erori.
+
+6. Monitorizarea post-update
+- Rol: Supravegherea sistemului pentru câteva ore/zile.
+- Explicație: Unele erori (cum ar fi scurgerile de memorie) apar doar după un timp de funcționare, nu imediat după instalare.
+
+
+
+
+### Notițe: Configurarea Autentificării cu Chei SSH
+### Proces/Protocol: SSH Key-Based Authentication / Secure Access
+
+Răspunsul meu într-o singură propoziție:
+Ordinea corectă este generarea cheilor, copierea cheii publice pe server, setarea permisiunilor 
+de securitate și efectuarea conexiunii finale, ignorând certificatul SSL care aparține protocolului web.
+
+1. Generezi o pereche de chei SSH (publică și privată) pe calculatorul tău local.
+- De ce: Este primul pas obligatoriu; folosești comanda `ssh-keygen` pentru a crea identitatea ta digitală.
+
+2. Copiezi conținutul cheii publice în fișierul ~/.ssh/authorized_keys de pe serverul la distanță.
+- De ce: Serverul trebuie să cunoască cheia ta publică pentru a te recunoaște. Se folosește de obicei `ssh-copy-id`.
+
+3. Configurezi permisiunile corecte pentru fișierul ~/.ssh/authorized_keys.
+- De ce: SSH refuză conexiunea din motive de securitate dacă fișierul cu chei este accesibil altor utilizatori (permisiuni recomandate: 600).
+
+4. Te conectezi la serverul la distanță folosind comanda ssh.
+- De ce: Verificarea finală; acum ar trebui să fii logat fără a ți se cere parola.
+
+
+
+
+### Notițe: Procedura de Oprire/Repornire Corectă (Graceful Shutdown)
+### Proces/Protocol: System Termination Signals / Data Integrity
+
+Procedura de oprire corectă presupune notificarea utilizatorilor, salvarea datelor din RAM pe disc prin comanda sync 
+și oprirea gradată a proceselor pentru a evita coruperea sistemului de fișiere.
+
+1. Notificarea utilizatorilor conectați
+- Rol: Trimiterea unui mesaj de alertă (ex: `wall "System reboot in 5 min"`).
+- Explicație: Permite utilizatorilor logați să își salveze munca și să închidă sesiunile active.
+
+2. Oprirea aplicațiilor de nivel înalt (Services)
+- Rol: Închiderea manuală sau automată a serviciilor (ex: `systemctl stop nginx`).
+- Explicație: Aplicațiile au timp să golească bufferele de memorie și să închidă conexiunile la rețea.
+
+3. Sincronizarea datelor pe disc (Sync)
+- Rol: Executarea comenzii `sync`.
+- Explicație: Forțează scrierea tuturor datelor aflate încă în memoria RAM (cache) pe mediul de stocare fizic (SSD/HDD).
+
+4. Trimiterea semnalului SIGTERM către procese
+- Rol: Sistemul cere tuturor proceselor rămase să se închidă singure.
+- Explicație: Este o cerere „politicoasă” prin care procesele își pot face curățenie în fișierele temporare.
+
+5. Trimiterea semnalului SIGKILL
+- Rol: Închiderea forțată a proceselor care au refuzat să se oprească la pasul anterior.
+- Explicație: Se asigură că niciun proces blocat nu împiedică oprirea sistemului.
+
+6. Demontarea sistemelor de fișiere (Unmount)
+- Rol: Desfacerea legăturii dintre OS și disk (`umount`).
+- Explicație: Se asigură că toate sistemele de fișiere sunt marcate ca „curate” înainte de tăierea curentului.
+
+7. Power Off / Halt
+- Rol: Oprirea efectivă a alimentării hardware-ului.
+- Explicație: Pasul final, executat doar după ce software-ul a confirmat că totul este în siguranță.
+
+
+
+
+### Notițe: Instalarea și Configurarea unui Serviciu Nou
+### Proces/Protocol: Service Deployment / Systemd Integration
+
+Instalarea unui serviciu presupune izolarea acestuia sub un utilizator dedicat, crearea fișierelor de configurare și integrarea 
+în systemd pentru a asigura pornirea automată și gestionarea erorilor.
+
+1. Pregătirea Mediului și Dependențelor
+- Rol: Instalarea bibliotecilor necesare (Runtime) și crearea utilizatorului dedicat.
+- Explicație: Un serviciu nu trebuie rulat niciodată ca 'root'; se creează un utilizator fără drepturi de login pentru a limita pagubele în caz de hack.
+
+2. Plasarea Binarelor și Setarea Permisiunilor
+- Rol: Copierea executabilelor în directoare standard (ex: /usr/local/bin) și setarea proprietarului (chown).
+- Explicație: Te asiguri că doar utilizatorul serviciului poate citi sau executa fișierele respective.
+
+3. Configurarea Serviciului (Config Files)
+- Rol: Crearea fișierelor .conf în /etc/[serviciu].
+- Explicație: Definirea parametrilor de funcționare (porturi, căi către log-uri, limite de resurse).
+
+4. Crearea Unit File-ului pentru Systemd
+- Rol: Scrierea unui fișier .service în /etc/systemd/system/.
+- Explicație: Îi spui sistemului cum să pornească aplicația, ce să facă dacă crapă (Restart=always) și după ce alte servicii trebuie să aștepte (After=network.target).
+
+5. Reîncărcarea Configurației Systemd
+- Rol: Executarea comenzii `systemctl daemon-reload`.
+- Explicație: Notifici nucleul sistemului de management că a apărut un serviciu nou de care trebuie să țină cont.
+
+6. Activarea și Pornirea (Enable & Start)
+- Rol: `systemctl enable --now [serviciu]`.
+- Explicație: 'Enable' asigură pornirea automată la boot, iar 'Start' pornește serviciul imediat.
+
+7. Validarea și Testarea (Health Check)
+- Rol: Verificarea stării cu `systemctl status` și inspectarea log-urilor cu `journalctl -u`.
+- Explicație: Confirmarea finală că serviciul rulează fără erori și ascultă pe porturile corecte.
+
+
+
+23.
+Alte exemple de Shebang-uri (Headere)
+- #!/bin/sh -> Standardul universal (POSIX). Este cel mai rapid, dar are cele mai puține funcții.
+- #!/usr/bin/awk -f -> Folosit pentru scripturi de procesare de text (AWK).
+- #!/usr/bin/sed -f -> Folosit pentru scripturi de editare a fluxurilor de text (SED).
+- #!/usr/bin/expect -f -> Folosit pentru scripturi care automatizează interacțiunea cu terminalul (ex: răspunde automat la parole).
+- #!/usr/bin/ruby -> Pentru limbajul Ruby.
+- #!/bin/false -> Un header "capcană". Dacă cineva încearcă să ruleze scriptul, acesta se va opri imediat fără să facă nimic (folosit pentru securitate).
+
+Comparație rapidă
+- Cale fixă: #!/usr/bin/python3 (Dacă e mutat în alt folder, scriptul nu mai merge).
+- Cale dinamică: #!/usr/bin/env python3 (Merge oriunde, atâta timp cât python3 e instalat).
+
+
+
+29.
+Fiecare mașină gazdă (denali, everest, rocket etc.) este perechea exclusivă a comenzii QEMU care 
+vizează exact arhitectura sa hardware, permițând accelerarea KVM prin potrivirea setului de instrucțiuni.
+
+### Notițe: Catalog Complet Asocieri QEMU-Host
+### Proces/Protocol: Hardware Acceleration (KVM) / Architecture Alignment
+
+1. qemu-system-ppc64le -> denali (ppc64le)
+- Rol: Rularea arhitecturii PowerPC pe 64 biți (Little Endian).
+- De ce: Mașina denali are raportat ppc64le în uname.
+- EX: Folosit pentru simularea serverelor IBM de mare putere.
+
+2. qemu-system-i386 -> broadcom (i686)
+- Rol: Rularea unui sistem pe 32 biți (x86).
+- De ce: i686 este varianta modernă a arhitecturii x86 pe 32 biți găsită pe broadcom.
+- EX: Rularea unor aplicații industriale vechi care nu suportă 64 biți.
+
+3. qemu-system-aarch64 -> everest (aarch64)
+- Rol: Rularea arhitecturii ARM pe 64 biți.
+- De ce: Mașina everest rulează pe un Raspberry Pi (raspi), care este nativ aarch64.
+- EX: Testarea aplicațiilor pentru dispozitive mobile sau plăci de dezvoltare ARM.
+
+4. qemu-system-riscv64 -> codasip (riscv64)
+- Rol: Rularea arhitecturii open-source RISC-V pe 64 biți.
+- De ce: Corespondență directă cu arhitectura raportată pe mașina codasip.
+- EX: Experimente cu arhitecturi hardware noi, open-source.
+
+5. qemu-system-x86_64 -> rocket (x86_64)
+- Rol: Rularea sistemelor standard moderne pe 64 biți.
+- De ce: Mașina rocket are un procesor x86_64 (cel mai comun pe PC-uri/Servere).
+- EX: Virtualizarea unui server Ubuntu sau Windows modern pe un PC obișnuit.
+
+6. qemu-system-mips -> cisco (mips)
+- Rol: Rularea arhitecturii MIPS.
+- De ce: Mașina cisco este configurată cu arhitectură mips (platforma malta).
+- EX: Simularea sistemelor de operare pentru echipamente de rețea (switch-uri, routere).
+
+
+
+30.
+### Notițe: Tehnologii de Virtualizare și Compatibilitate
+### Proces/Protocol: Cross-Platform Execution / Isolation Methods
+
+Situație: Alegerea uneltei corecte pentru a rula software pe o platformă străină.
+
+1. Aplicație x86 pe Gazdă ARM -> BOCHS
+- Rol: Emulare hardware completă.
+- De ce: Bochs emulează fiecare instrucțiune x86 pe un procesor care nu o înțelege (ARM). Este foarte lent, dar funcționează oriunde.
+
+2. Aplicație Windows pe Gazdă Linux -> Wine
+- Rol: Strat de compatibilitate (Translation Layer).
+- De ce: W.I.N.E (Wine Is Not an Emulator) traduce apelurile Windows API în apeluri Linux în timp real, fără a virtualiza un OS întreg.
+
+3. Aplicație Linux pe Gazdă Windows -> Hyper-V (sau WSL2)
+- Rol: Hypervisor de tip 1 (Virtualizare).
+- De ce: Windows folosește Hyper-V pentru a rula o instanță de Kernel Linux în fundal pentru a executa aplicația.
+
+4. Aplicație ARM pe Gazdă SPARC -> Emularea arhitecturii ARM
+- Rol: Emulare software.
+- De ce: Deoarece arhitecturile sunt complet diferite și SPARC nu are suport nativ pentru ARM, singura cale este emularea instrucțiunilor.
+
+5. OS Windows pe Gazdă Linux -> KVM
+- Rol: Virtualizare hardware accelerată.
+- De ce: KVM (Kernel-based Virtual Machine) permite Linux-ului să acționeze ca un Hypervisor pentru a rula un sistem de operare Windows întreg la viteze aproape native.
+
+6. Aplicație Linux pe Gazdă Linux -> Containerizare
+- Rol: Izolare la nivel de proces (ex: Docker).
+- De ce: Deoarece gazda și aplicația folosesc același tip de kernel, nu avem nevoie de virtualizare, ci doar de "împachetarea" aplicației cu bibliotecile ei.
+
+
+
+37.
+Configurarea presupune setarea unei politici restrictive de tip DROP pentru tot traficul de intrare 
+și adăugarea unei excepții explicite pentru portul 22 (SSH) cu acțiunea ACCEPT.
+
+### Notițe: Configurarea de bază iptables
+### Proces/Protocol: Firewall Management / Packet Filtering
+
+1. sudo iptables -P INPUT DROP
+- Rol: Setează politica implicită (Policy) pentru lanțul de intrare.
+- Explicație: DROP înseamnă că orice pachet care intră și nu se potrivește cu o regulă specifică va fi ignorat complet (ca și cum serverul nu ar exista).
+
+2. sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+- Rol: Adaugă (Append) o regulă care permite traficul pe portul 22.
+- Explicație: 
+    - -p tcp: Specifică protocolul (SSH folosește TCP).
+    - --dport 22: Identifică portul destinație (22 este portul standard SSH).
+    - -j ACCEPT: Specifică acțiunea (Jump) de a permite pachetul.
+
+
+42.
+### Notițe: Clasificarea Protocoalelor de Comunicație
+### Proces/Protocol: Physical Layer Standards / Connectivity Types
+
+Protocoalele de comunicație se împart în soluții prin fir pentru stabilitate industrială 
+și locală și soluții wireless pentru mobilitate și senzori la distanță.
+
+1. Comunicare prin fir (Wired)
+- EX: SPI, I2C, Serial, CAN, Modbus, Ethernet, USB, One-Wire, Profibus, HDMI.
+
+2. Comunicare wireless (Fără fir)
+- EX: Wi-Fi, Bluetooth, LoRa, Z-Wave, Zigbee, NFC, Infrared (IrDA), 5G/LTE, Satelit.
 
 
