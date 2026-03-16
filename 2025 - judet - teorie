@@ -1,4 +1,4 @@
-1.
+  1.
 - Semnalele proceselor (kill signals)
 Situatie: Vrei să trimiți instrucțiuni specifice unui proces pentru a-i schimba starea sau pentru a-l opri forțat.
 
@@ -558,7 +558,10 @@ Network Concepts - Comparative Analysis (VPN, Wireless, VLAN, Virtualization)
       - EX: Introducerea parolei Wi-Fi pentru a cripta traficul local (nu tot drumul prin internet ca la VPN).
   - c. Local Traffic Optimization (VLAN / QoS): Se referă la segmentarea logică a unui switch sau prioritizarea unor date.
       - EX: VLAN (Virtual LAN) imparte un switch fizic in mai multe parti switch-uri logice.
+          - asta duce la reducerea domeniului de broadcast si la izolarea traficului (securitate)
       - EX: QoS (Quality of Service) dă prioritate apelurilor video în detrimentul descărcărilor de fișiere.
+          - decide cine are prioritate cand reteaua este aglomerata
+      - EX: Best Effort: nu conteaza daca un fisier ajunge mai tarziu, atata vreme cat ajunge intact
   - d. Virtual Networking (vSwitch in Hypervisor): Se referă la modul în care Mașinile Virtuale (VM) comunică în interiorul serverului gazdă.
       - EX: O mașină virtuală cu Linux trimite date către o mașină virtuală cu Windows, ambele fiind gestionate de același Hipervizor.
 
@@ -693,6 +696,12 @@ Situație Trebuie să optimizezi viteza de procesare a calculatorului prin stoca
 Hardware - Memory Types and Roles (Cache vs Alternatives)
   a. cache Crește viteza de acces la datele utilizate frecvent prin plasarea lor într-o memorie situată direct pe procesor.
       EX L1 L2 L3 cache (Nivelurile de memorie cache ale unui Central Processing Unit modern).
+      - L1 (Level 1): Cea mai rapidă și mică memorie; integrată direct în fiecare nucleu (core).
+          - Divizată de obicei în L1i (instrucțiuni) și L1d (date).
+      - L2 (Level 2): Mai lentă decât L1, dar cu capacitate mai mare; de obicei dedicată fiecărui nucleu.
+      - L3 (Level 3): Cea mai lentă din cele trei, dar cea mai mare; este partajată între toate nucleele procesorului.
+- Cache Hit: Situația în care datele sunt găsite în cache (viteză maximă).
+- Cache Miss: Situația în care datele nu sunt în cache și trebuie aduse din RAM (latență mare).
   b. LVM (Logical Volume Manager) NAS (Network Attached Storage) Cloud Asigură un spațiu de stocare extensibil permițând adăugarea de noi unități fără a reconfigura sistemul de bază.
       EX lvextend (Comandă folosită pentru mărirea dimensiunii unui volum logic).
   c. SWAP Virtual Memory Este folosită atunci când sistemul rămâne fără memorie RAM (Random Access Memory) prin utilizarea unei porțiuni din hard disk (HDD).
@@ -723,6 +732,7 @@ System Utilities - File Identification (ELF vs Alternatives)
       EX file film.mp4 (Afișează media data sau MPEG v4 system layer).
   e. fișier imagine Reprezintă formate de date vizuale compresate sau brute.
       EX file poza.jpg (Afișează JPEG image data JFIF standard).
+Obs. Pentru Windows, termenul omolog celor pentru Linux (ELF) si macOS (Mach-O) este PE (Portable Executable).
 
 
 28.
@@ -731,11 +741,13 @@ Networking - Segmentation and Security
   c. O subrețea care conține sistemele și resursele accesibile publicului
       EX: DMZ
   a. Rețeaua internă a unei organizații
-      EX: LAN, WLAN, SAN
+      EX: LAN, WLAN (Wireless LAN), SAN (Storage Area Network - sistem de stocare rapida de comunicare intre servere)
   b. Un protocol de securitate
-      EX: SSL, TLS, IPsec, SSH
+      EX: SSL (Secure Sockets Layer - protocol vechi de securizare a sesiunilor web), TLS (Transport Layer Security - varianta moderna a SSL), IPsec (IP security - protocol de securizare la nivelul adreselor IP), SSH
   d. Un tip de firewall
-      EX: NGFW, WAF, IDS, IPS
+  - un Firewall normal selecteaza doar adresele IP pe care le considera sigure
+      EX: NGFW (New Generation Firewall - analizeaza si aplicatiile care genereaza traficul), WAF (Web Application Firewall - specializat in filtrarea traficului 
+          HTTP, identifica SQL injections), IDS (Intruzion Detection System - monitorizeaza si emite alerte), IPS (Intruzion Prevention System - monitorizeaza si blocheaza activitati suspecte)
 Definiții Acronime
   DMZ (Demilitarized Zone) Zonă tampon securizată între internet și rețeaua privată.
   LAN (Local Area Network) Rețea locală de calculatoare dintr-o locație fixă.
@@ -753,7 +765,7 @@ Definiții Acronime
   MAC (Mandatory Access Control) Control al accesului impus de sistem pe baza nivelurilor de clasificare.
   DAC (Discretionary Access Control) Control unde proprietarul resursei decide cine are acces.
   RBAC (Role-Based Access Control) Acces oferit utilizatorilor în funcție de rolul lor în organizație.
-  ABAC (Attribute-Based Access Control) Model ce oferă acces pe baza atributelor subiectului resursei și mediului.
+  ABAC (Attribute-Based Access Control) Model ce oferă acces pe baza atributelor subiectului, resursei și mediului.
 
 
 29.
@@ -775,7 +787,7 @@ Diferențe Esențiale
 
 Networking - Protocol Transport Assignment
   a. Servicii care necesită livrare garantată și controlul erorilor (TCP)
-      EX: HTTP, HTTPS, SSH, FTP, SMTP, POP3, IMAP, Telnet
+      EX: HTTP, HTTPS, SSH, FTP, SMTP, POP3, IMAP, Telnet, SMB
   b. Servicii care necesită viteză și latență minimă (UDP)
       EX: VOIP, IPTV, DNS, DHCP, SNMP, TFTP, RIP, NTP
   c. Servicii care pot folosi ambele protocoale în funcție de context
@@ -819,7 +831,7 @@ Networking - DNS Identification Tools
   c. cat /etc/resolv.conf
       EX: Afișează conținutul fișierului de configurare unde sunt listate serverele DNS active.
   a. host
-      EX: Utilitar pentru identificarea rapidă a IP-ului sau a serverului de mail (MX) al unui domeniu.
+      EX: Situație: Utilitar pentru identificarea rapidă a IP-ului sau a serverelor unor domenii.
   b. nslookup
       EX: Program interactiv folosit pentru a interoga serverele de nume și a testa răspunsurile acestora.
   d. dig
